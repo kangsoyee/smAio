@@ -38,6 +38,7 @@ public class ReviewWriteActivity extends AppCompatActivity {
         Start = (ImageButton)findViewById(R.id.imageButton);
         Speech = (TextView)findViewById(R.id.review_message);
 
+        //음성인식 버튼 클릭 이벤트
         Start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,6 +54,7 @@ public class ReviewWriteActivity extends AppCompatActivity {
 
         });
 
+        //별표
         final TextView tv = (TextView) findViewById(R.id.textView3);
         RatingBar rb = (RatingBar)findViewById(R.id.ratingBar);
 
@@ -64,6 +66,7 @@ public class ReviewWriteActivity extends AppCompatActivity {
         });
     }
 
+    //음성인식 인터넷 연결 코드
     public  boolean isConnected()
     {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -75,6 +78,7 @@ public class ReviewWriteActivity extends AppCompatActivity {
         }
     }
 
+    //음성인식 다이얼로그 표시
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
