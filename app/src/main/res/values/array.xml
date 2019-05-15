@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="category">
+        <item>식당</item>
+        <item>카페</item>
+        <item>스터디룸</item>
+    </string-array>
+
+</resources>
