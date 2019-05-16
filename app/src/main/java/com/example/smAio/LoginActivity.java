@@ -1,7 +1,10 @@
 package com.example.smAio;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -36,8 +39,19 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        //카메라, 위치 권한 허용 팝업
+        int PERMISSION_ALL = 1;
+        String[] PERMISSIONS = {Manifest.permission.CAMERA,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE};
+
+        if(!hasPermissions(this, PERMISSIONS)){
+            ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
+        }
+
         //카메라권한
-        getCameraPermission();
+        //getCameraPermission();
 
         txtResult=(TextView)findViewById(R.id.txtResult);
         editId=(EditText)findViewById(R.id.editId);
@@ -138,24 +152,35 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-    //카메라 권한 허용 팝업
-    private boolean getCameraPermission() {
-        if(ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        } else {
-            // 권한이 필요한 이유 설명
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    android.Manifest.permission.CAMERA)) {
-                Toast.makeText(this, "카메라 사용을 위해 확인버튼을 눌러주세요!", Toast.LENGTH_SHORT).show();
-                return true;
-            } else {
-                // No explanation needed, we can request the permission.
-                ActivityCompat.requestPermissions(this,
-                        new String[]{android.Manifest.permission.CAMERA},
-                        CAMERA_PERMISSIONS_GRANTED);
-                return true;
+//    //카메라 권한 허용 팝업
+//    private boolean getCameraPermission() {
+//        if(ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+//            return true;
+//        } else {
+//            // 권한이 필요한 이유 설명
+//            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+//                    android.Manifest.permission.CAMERA)) {
+//                Toast.makeText(this, "카메라 사용을 위해 확인버튼을 눌러주세요!", Toast.LENGTH_SHORT).show();
+//                return true;
+//            } else {
+//                // No explanation needed, we can request the permission.
+//                ActivityCompat.requestPermissions(this,
+//                        new String[]{android.Manifest.permission.CAMERA},
+//                        CAMERA_PERMISSIONS_GRANTED);
+//                return true;
+//            }
+//        }
+//    }
+
+    public static boolean hasPermissions(Context context, String... permissions) {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
             }
         }
+        return true;
     }
 }
 
