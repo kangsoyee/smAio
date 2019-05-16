@@ -82,8 +82,7 @@ public class FirstActivity extends AppCompatActivity {
             case 2:
                 // Map 프래그먼트 호출
                 MapFragment fragment2 = new MapFragment();
-                transaction.replace(R.id.fragment_container, fragment2);
-                transaction.commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment2, "main").commit();
                 break;
 
             case 3:
@@ -168,6 +167,5 @@ public class FirstActivity extends AppCompatActivity {
         Intent startQRActivity = new Intent(FirstActivity.this, QRActivity.class);
         startActivity(startQRActivity);
     }
-
 
 }
