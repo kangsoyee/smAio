@@ -1,41 +1,17 @@
 package com.example.smAio;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.ArrayList;
 
 public class FirstActivity extends AppCompatActivity {
 
@@ -160,7 +136,7 @@ public class FirstActivity extends AppCompatActivity {
 
     //레스토랑 버튼 클릭 이벤트
     public void Clicked_res(View view) {
-        Intent startRestaurantActivity = new Intent(FirstActivity.this, MainActivity.class);
+        Intent startRestaurantActivity = new Intent(FirstActivity.this, StoreListActivity.class);
         startActivity(startRestaurantActivity);
 //        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 //        StoreListFragment startStoreListFrag = new StoreListFragment();
@@ -171,19 +147,19 @@ public class FirstActivity extends AppCompatActivity {
 
     //카페 버튼 클릭 이벤트
     public void Clicked_cafe(View view) {
-        Intent startRestaurantActivity = new Intent(FirstActivity.this, MainActivity.class);
+        Intent startRestaurantActivity = new Intent(FirstActivity.this, StoreListActivity.class);
         startActivity(startRestaurantActivity);
     }
 
     //노래방 버튼 클릭 이벤트
     public void Clicked_karaoke(View view) {
-        Intent startRestaurantActivity = new Intent(FirstActivity.this, MainActivity.class);
+        Intent startRestaurantActivity = new Intent(FirstActivity.this, StoreListActivity.class);
         startActivity(startRestaurantActivity);
     }
 
     //피시방 버튼 클릭 이벤트
     public void Clicked_internet(View view) {
-        Intent startRestaurantActivity = new Intent(FirstActivity.this, MainActivity.class);
+        Intent startRestaurantActivity = new Intent(FirstActivity.this, StoreListActivity.class);
         startActivity(startRestaurantActivity);
     }
 

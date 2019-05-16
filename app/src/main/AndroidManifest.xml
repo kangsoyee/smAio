@@ -24,7 +24,7 @@
         <activity android:name=".FirstActivity" />
         <activity android:name=".PlaceAdd" />
         <activity android:name=".DetailActivity" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".StoreListActivity" />
         <activity
             android:name=".LoadingActivity"
             android:screenOrientation="portrait"

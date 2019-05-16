@@ -27,7 +27,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class StoreListActivity extends AppCompatActivity {
     ListView list;
     Button btnAdd,btnSearch;
     Spinner spnCategory;
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             PlaceAdapter adapter = new PlaceAdapter(
-                    MainActivity.this,
+                    StoreListActivity.this,
                     R.layout.place_row,
                     items);
             list.setAdapter(adapter);
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.setContentView(R.layout.activity_main);
+        this.setContentView(R.layout.activity_store_list);
 
         list=(ListView)findViewById(R.id.list);
         spnCategory=(Spinner)findViewById(R.id.spnCategory);
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(MainActivity.this, PlaceAdd.class);
+                Intent intent=new Intent(StoreListActivity.this, PlaceAdd.class);
                 startActivity(intent);
             }
         });
@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     items = new ArrayList<PlaceDTO>();
                     String page = Common.SERVER_URL+"/place_list.php";
-                    Log.e("MainActivity","여기까지야");
+                    Log.e("StoreListActivity","여기까지야");
 
                     URL url = new URL(page);
                     // 커넥션 객체 생성
@@ -272,7 +272,7 @@ public class MainActivity extends AppCompatActivity {
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent=new Intent(MainActivity.this, DetailActivity.class);
+                    Intent intent=new Intent(StoreListActivity.this, DetailActivity.class);
                     intent.putExtra("idx", dto.getPlace_idx()); //putExtra 는 값을 전달하는 역할을 한다. 받는곳은 getExtra 가 된다.
                     startActivity(intent);
                 }

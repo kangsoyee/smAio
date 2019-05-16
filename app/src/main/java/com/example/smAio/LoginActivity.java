@@ -124,7 +124,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         th.start();
-        Log.e("MainActivity","login check");
+        Log.e("StoreListActivity","login check");
         Intent startFirstActivity = new Intent(this,FirstActivity.class);
         startActivity(startFirstActivity);
     }
