@@ -87,8 +87,8 @@ public class FirstActivity extends AppCompatActivity {
 
             case 3:
                 // QR 액티비티 호출
-                Intent startQRActivity = new Intent(FirstActivity.this, QRActivity.class);
-                startActivity(startQRActivity);
+//                Intent startQRActivity = new Intent(FirstActivity.this, QRActivity.class);
+//                startActivity(startQRActivity);
                 break;
 
             case 4:

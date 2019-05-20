@@ -50,9 +50,6 @@ public class LoginActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
         }
 
-        //카메라권한
-        //getCameraPermission();
-
         txtResult=(TextView)findViewById(R.id.txtResult);
         editId=(EditText)findViewById(R.id.editId);
         editPwd=(EditText)findViewById(R.id.editPwd);
@@ -150,27 +147,6 @@ public class LoginActivity extends AppCompatActivity {
         Intent startFirstActivity = new Intent(this,FirstActivity.class);
         startActivity(startFirstActivity);
     }
-
-
-//    //카메라 권한 허용 팝업
-//    private boolean getCameraPermission() {
-//        if(ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-//            return true;
-//        } else {
-//            // 권한이 필요한 이유 설명
-//            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-//                    android.Manifest.permission.CAMERA)) {
-//                Toast.makeText(this, "카메라 사용을 위해 확인버튼을 눌러주세요!", Toast.LENGTH_SHORT).show();
-//                return true;
-//            } else {
-//                // No explanation needed, we can request the permission.
-//                ActivityCompat.requestPermissions(this,
-//                        new String[]{android.Manifest.permission.CAMERA},
-//                        CAMERA_PERMISSIONS_GRANTED);
-//                return true;
-//            }
-//        }
-//    }
 
     public static boolean hasPermissions(Context context, String... permissions) {
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null) {
