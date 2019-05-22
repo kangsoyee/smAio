@@ -361,30 +361,30 @@ public class DetailActivity extends AppCompatActivity {
         });
         th.start();
     }
-    class ReviewAdapter extends ArrayAdapter<ReviewDTO> {
+    static class ReviewAdapter extends ArrayAdapter<ReviewDTO> {
         public ReviewAdapter(Context context, int textViewResourceId,
                              ArrayList<ReviewDTO> objects) {
             super(context, textViewResourceId, objects);
         }
 
-        @Override
-        public View getView(int position, View convertView,
-                            ViewGroup parent) {
-            View v = convertView;
-            if (v == null) {
-                LayoutInflater li = (LayoutInflater)
-                        getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                v = li.inflate(R.layout.review_row, null);
-            }
-            final ReviewDTO dto = review_list.get(position);
-            Log.i("test","review dto:"+dto);
-            Log.i("test","review content:"+dto.getReview_content());
-            if (dto != null) {
-                TextView review_content =(TextView) v.findViewById(R.id.review_content);
-                review_content.setText(dto.getReview_content());
-            }
-            return v;
-        }
+//        @Override
+//        public View getView(int position, View convertView,
+//                            ViewGroup parent) {
+//            View v = convertView;
+//            if (v == null) {
+//                LayoutInflater li = (LayoutInflater)
+//                        getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//                v = li.inflate(R.layout.review_row, null);
+//            }
+//            final ReviewDTO dto = review_list.get(position);
+//            Log.i("test","review dto:"+dto);
+//            Log.i("test","review content:"+dto.getReview_content());
+//            if (dto != null) {
+//                TextView review_content =(TextView) v.findViewById(R.id.review_content);
+//                review_content.setText(dto.getReview_content());
+//            }
+//            return v;
+//        }
     }
 }
 

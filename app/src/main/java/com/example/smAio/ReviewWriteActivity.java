@@ -6,29 +6,44 @@ import android.content.Intent;
 import android.media.Image;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Handler;
+import android.os.Message;
 import android.speech.RecognizerIntent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ImageButton;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class ReviewWriteActivity extends AppCompatActivity {
 
+    int place_idx;
     private static final int REQUEST_CODE = 1234;
     ImageButton Start;
-    TextView Speech;
     Dialog match_text_dialog;
     ListView textlist;
     ArrayList<String> matches_text;
+    EditText txtReview;
+    Button button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +51,14 @@ public class ReviewWriteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_review_write);
 
         Start = (ImageButton)findViewById(R.id.imageButton);
-        Speech = (TextView)findViewById(R.id.review_message);
+        txtReview=(EditText)findViewById(R.id.review_message);
+        button=(Button)findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                review();
+            }
+        });
 
         //음성인식 버튼 클릭 이벤트
         Start.setOnClickListener(new View.OnClickListener() {
@@ -54,7 +76,7 @@ public class ReviewWriteActivity extends AppCompatActivity {
 
         });
 
-        //별표
+        //별점 레이팅바
         final TextView tv = (TextView) findViewById(R.id.textView3);
         RatingBar rb = (RatingBar)findViewById(R.id.ratingBar);
 
@@ -96,7 +118,7 @@ public class ReviewWriteActivity extends AppCompatActivity {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,
                                         int position, long id) {
-                    Speech.setText(matches_text.get(position));
+                    txtReview.setText(matches_text.get(position));
                     match_text_dialog.hide();
                 }
             });
@@ -104,5 +126,43 @@ public class ReviewWriteActivity extends AppCompatActivity {
 
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    void review(){
+//네트워크 관련 작업은 백그라운드 스레드에서 처리
+        final StringBuilder sb=new StringBuilder();
+        Thread th = new Thread(new Runnable() {
+            public void run() {
+                try {
+                    String review_content=txtReview.getText().toString();
+//                    String userid="kim";
+                    String page =
+                            Common.SERVER_URL+"/review_insert.php?idx="+place_idx+"&userid="+Common.userid
+                                    +"&place_idx="+place_idx
+                                    +"&review_content="+review_content;
+//                    Common.SERVER_URL+"/review_insert.php?userid="+Common.userid
+//                            +"&place_idx="+place_idx
+//                            +"&review_content="+review_content;
+
+                    URL url = new URL(page);
+                    // 커넥션 객체 생성
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    // 연결되었으면.
+                    if (conn != null) {
+                        //타임아웃 시간 설정
+                        conn.setConnectTimeout(10000);
+                        //캐쉬 사용 여부
+                        conn.setUseCaches(false);
+                        //url에 접속 성공하면
+                        if(conn.getResponseCode() == HttpURLConnection.HTTP_OK){
+                        }
+                        conn.disconnect();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        th.start();
     }
 }
