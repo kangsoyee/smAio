@@ -7,7 +7,7 @@
     tools:context=".MyFragment">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/loading_image"
         android:layout_width="153dp"
         android:layout_height="121dp"
         android:src="@drawable/person_24px" />

@@ -1,6 +1,5 @@
 package com.example.smAio;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,23 +15,110 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RatingBar;
+import android.widget.SimpleAdapter;
+import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 public class DetailActivity extends AppCompatActivity {
+    private ArrayList<HashMap<String,String>> Data1 = new ArrayList<HashMap<String, String>>();
+    private HashMap<String,String> InputData1 = new HashMap<>();
 
+    ImageView iv;
+    boolean change=false;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_detail);
+
+        iv = (ImageView) findViewById(R.id.heart_image);
+
+        //drawable에 있는 이미지로 셋팅하기
+        iv.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+
+        //하트 버튼 클릭 이벤트
+        iv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(change) {
+                    iv.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+                    change = false;
+                }else {
+                    iv.setImageResource(R.drawable.ic_favorite_black_24dp);
+                    change = true;
+                }
+            }
+        });
+
+        ListView listView2 = (ListView) findViewById(R.id.ListView2);
+        //데이터 초기화
+        InputData1.put("name","김수연");
+        Data1.add(InputData1);
+
+        //simpleAdapter 생성
+        SimpleAdapter simpleAdapter = new SimpleAdapter(this,Data1,android.R.layout.simple_list_item_2,
+                new String[]{"name","review"},
+                new int[]{android.R.id.text1,android.R.id.text2});
+
+        InputData1.put("review","너무 맛있어요~"); listView2.setAdapter(simpleAdapter);
+
+        //별점
+        final TextView tv = (TextView) findViewById(R.id.textView4);
+        RatingBar rb = (RatingBar) findViewById(R.id.ratingBar);
+
+        rb.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                tv.setText("" + rating);
+            }
+        });
+
+        //tabHost Widget과 연결
+        TabHost tabHost = (TabHost) findViewById(R.id.tabHost);
+
+        //TabHost를 설정할 때 가장 먼저 호출해 주어야함
+        tabHost.setup();
+
+        //Tab Spec생성 (Tab Spec:탭을 구성하는 요소들의 집합)
+        TabHost.TabSpec tabSpec1 = tabHost.newTabSpec("tab1");
+        tabSpec1.setIndicator("정보");
+        tabSpec1.setContent(R.id.tabSpec1);
+
+        TabHost.TabSpec tabSpec2 = tabHost.newTabSpec("tab2");
+        tabSpec2.setIndicator("리뷰");
+        tabSpec2.setContent(R.id.tabSpec2);
+
+        TabHost.TabSpec tabSpec3 = tabHost.newTabSpec("tab3");
+        tabSpec3.setIndicator("지도");
+        tabSpec3.setContent(R.id.tabSpec3);
+
+        //Tab 추가
+        tabHost.addTab(tabSpec1);
+        tabHost.addTab(tabSpec2);
+        tabHost.addTab(tabSpec3);
+
+        //초기 Tab 설정
+        tabHost.setCurrentTab(0);
+
+    }
+
+
+
+    /*
     int place_idx;
 
     EditText txtCategory, txtPlaceName, txtStartTime, txtEndTime, txtAddress, txtTel, txtReview, txtMenu, txtPrice;
@@ -361,30 +447,30 @@ public class DetailActivity extends AppCompatActivity {
         });
         th.start();
     }
-    static class ReviewAdapter extends ArrayAdapter<ReviewDTO> {
+    class ReviewAdapter extends ArrayAdapter<ReviewDTO> {
         public ReviewAdapter(Context context, int textViewResourceId,
                              ArrayList<ReviewDTO> objects) {
             super(context, textViewResourceId, objects);
         }
 
-//        @Override
-//        public View getView(int position, View convertView,
-//                            ViewGroup parent) {
-//            View v = convertView;
-//            if (v == null) {
-//                LayoutInflater li = (LayoutInflater)
-//                        getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//                v = li.inflate(R.layout.review_row, null);
-//            }
-//            final ReviewDTO dto = review_list.get(position);
-//            Log.i("test","review dto:"+dto);
-//            Log.i("test","review content:"+dto.getReview_content());
-//            if (dto != null) {
-//                TextView review_content =(TextView) v.findViewById(R.id.review_content);
-//                review_content.setText(dto.getReview_content());
-//            }
-//            return v;
-//        }
-    }
+        @Override
+        public View getView(int position, View convertView,
+                            ViewGroup parent) {
+            View v = convertView;
+            if (v == null) {
+                LayoutInflater li = (LayoutInflater)
+                        getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                v = li.inflate(R.layout.review_row, null);
+            }
+            final ReviewDTO dto = review_list.get(position);
+            Log.i("test","review dto:"+dto);
+            Log.i("test","review content:"+dto.getReview_content());
+            if (dto != null) {
+                TextView review_content =(TextView) v.findViewById(R.id.review_content);
+                review_content.setText(dto.getReview_content());
+            }
+            return v;
+        }
+    }*/
 }
 

@@ -14,7 +14,7 @@ public class LoadingActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loading);
 
-        ImageView iv = (ImageView)findViewById(R.id.imageView);
+        ImageView iv = (ImageView)findViewById(R.id.loading_image);
         Glide.with(this).load(R.raw.loading_aio).into(iv);
         
         thread_sleep sleep = new thread_sleep(this);
