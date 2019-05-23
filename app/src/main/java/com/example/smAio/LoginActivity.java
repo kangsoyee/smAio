@@ -1,162 +1,151 @@
 package com.example.smAio;
 
-import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.HashMap;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
-    private static final int CAMERA_PERMISSIONS_GRANTED = 100;
-    //변수 선언
-    TextView txtResult;
-    EditText editId, editPwd;
-    String result="";
-    String userid="";
-    String name="";
-    Button signup;
+    public static final String TAG = "sucess";
+
+    private EditText id,password;
+    private ImageButton login;
+    private TextView link_signup;
+    private ProgressBar loading;
+    private static String URL_LOGIN ="http://eileenyoo.cafe24.com/login.php/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        //카메라, 위치 권한 허용 팝업
-        int PERMISSION_ALL = 1;
-        String[] PERMISSIONS = {Manifest.permission.CAMERA,
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE};
-
-        if(!hasPermissions(this, PERMISSIONS)){
-            ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
-        }
-
-        txtResult=(TextView)findViewById(R.id.txtResult);
-        editId=(EditText)findViewById(R.id.editId);
-        editPwd=(EditText)findViewById(R.id.editPwd);
-
-        signup=(Button)findViewById(R.id.signup_button);
-        signup.setOnClickListener(new View.OnClickListener() {
+        id=(EditText)findViewById(R.id.id);
+        password=(EditText)findViewById(R.id.password);
+        loading=(ProgressBar)findViewById(R.id.progress_loading);
+        login = (ImageButton)findViewById(R.id.login);
+        login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent startSignUpActivity = new Intent(LoginActivity.this, SignUpActivity.class);
-                startActivity(startSignUpActivity);
+                String mId=id.getText().toString().trim();
+                String mPass = password.getText().toString().trim();
+
+                if(!mId.isEmpty() || !mPass.isEmpty()){
+                    Login(mId,mPass);
+
+
+                }else{
+                    id.setError("Please insert id");
+                    password.setError("Please insert password");
+                    loading.setVisibility(View.GONE);
+                }
             }
+
         });
 
-    }
 
-    //로그인 버튼 클릭
-    public void Click_Signin(View v){
+        link_signup=(TextView)findViewById(R.id.signupButton);
 
-        HashMap map=new HashMap<>();
-        map.keySet();
-
-        //백그라운드 스레드로 아이디, 패스워드를 웹서버에 전달
-        Thread th=new Thread(new Runnable() {
+        link_signup.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void run() {
-                try{
-                    //웹서버의 주소
-                    String page=
-                            Common.SERVER_URL+"/login_check.php";
-                    URL url = new URL(page);
-                    // 커넥션 객체 생성
-                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                    String param="userid="+editId.getText().toString()+"&passwd="+editPwd.getText().toString();
-                    Log.i("test","page:"+page);
-                    Log.i("test","param:"+param);
-                    // 연결되면
-                    StringBuilder sb=new StringBuilder();
-                    if (conn != null) {
-                        //타임아웃 시간 설정
-                        conn.setConnectTimeout(10000);
-                        conn.setRequestMethod("POST");
-                        //캐쉬 사용 여부
-                        conn.setUseCaches(false);
-                        conn.getOutputStream().write(param.getBytes("utf-8"));
-                        //url에 접속 성공하면
-                        if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                            //스트림 생성
-                            BufferedReader br =
-                                    new BufferedReader(
-                                            new InputStreamReader(
-                                                    conn.getInputStream(), "utf-8"));
-                            while (true) {
-                                String line = br.readLine(); //한 라인을 읽음
-                                if (line == null) break;//더이상 내용이 없으면 종료
-                                sb.append(line + "\n");
-                            }
-                            br.close(); //버퍼 닫기
-                        }
-                        conn.disconnect();
-                    }
-//스트링을 json 객체로 변환
-                    Log.i("test",sb.toString());
-                    final JSONObject jsonObj=new JSONObject(sb.toString());
-// json.get("변수명") json변수의 값
-                    result=jsonObj.getString("message");
-
-                    try {
-                        userid = jsonObj.getString("userid");
-                        name = jsonObj.getString("name");
-                    }catch(Exception e){
-                        e.printStackTrace();
-                    }
-//백그라운드 스레드에서는 메인화면을 변경할 수 없음
-// runOnUiThread ( 메인스레드 영역  )
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if(result.trim().equals("success")){
-                                Common.userid=userid;
-                                Common.name=name;
-                                Intent intent=new Intent(LoginActivity.this, FirstActivity.class);
-                                startActivity(intent);
-                            }else {
-                                txtResult.setText(result);
-                            }
-                        }
-                    });
-                }catch(Exception e){
-                    e.printStackTrace();
-                }
+            public void onClick(View v) {
+                Intent signupIntent = new Intent(LoginActivity.this, SignupActivity.class);
+                LoginActivity.this.startActivity(signupIntent);
             }
         });
-        th.start();
-        Log.e("StoreListActivity","login check");
-        Intent startFirstActivity = new Intent(this,FirstActivity.class);
-        startActivity(startFirstActivity);
     }
+    private void Login(final String cid, final String cpassword){
 
-    public static boolean hasPermissions(Context context, String... permissions) {
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null) {
-            for (String permission : permissions) {
-                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
-                    return false;
-                }
+        loading.setVisibility(View.VISIBLE);
+
+        StringRequest stringRequest=new StringRequest(Request.Method.POST, URL_LOGIN,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try{Log.e(TAG,"try");
+                            JSONObject jsonObject=new JSONObject(response);
+                            String success = jsonObject.getString("success");
+                            Log.e(TAG,success);
+                            JSONArray jsonArray = jsonObject.getJSONArray("login");
+
+                            if(success.equals("1")){
+                                for(int i = 0; i<jsonArray.length();i++){
+                                    JSONObject object=jsonArray.getJSONObject(i);
+
+                                   String email=object.getString("name").trim();
+
+                                   Toast.makeText(LoginActivity.this,
+                                            "Success Login. \nYour NAME : "
+                                                    +email,Toast.LENGTH_SHORT)
+                                            .show();
+                                    loading.setVisibility(View.GONE);
+                                    Intent loginIntent = new Intent(LoginActivity.this, FirstActivity.class);
+                                    LoginActivity.this.startActivity(loginIntent);
+                                }
+                            }
+                            else{
+
+                                password.setError("Please check your PASSWORD!!");
+                                loading.setVisibility(View.GONE);
+                            }
+                        }catch (JSONException e){
+                            Log.e(TAG,"catch");
+                            loading.setVisibility(View.GONE);
+                            login.setVisibility(View.VISIBLE);
+                            e.printStackTrace();
+                            id.setError("Please check your ID!!");
+
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        loading.setVisibility(View.GONE);
+                        login.setVisibility(View.VISIBLE);
+                        Log.e(TAG,"error");
+                        Toast.makeText(LoginActivity.this,
+                                "Error "
+                                        +error.toString(),
+                                Toast.LENGTH_SHORT).show();
+
+                    }
+
+                })
+        {
+            @Override
+            protected Map<String,String> getParams() throws AuthFailureError{
+                Map<String,String> params = new HashMap<>();
+                Log.e(TAG,cid);
+                Log.e(TAG,cpassword);
+                params.put("id",cid);
+                params.put("password",cpassword);
+                return params;
             }
-        }
-        return true;
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+
     }
 }
-
