@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -33,7 +34,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity {/*
     private ArrayList<HashMap<String,String>> Data1 = new ArrayList<HashMap<String, String>>();
     private HashMap<String,String> InputData1 = new HashMap<>();
 
@@ -74,7 +75,14 @@ public class DetailActivity extends AppCompatActivity {
                 new String[]{"name","review"},
                 new int[]{android.R.id.text1,android.R.id.text2});
 
-        InputData1.put("review","너무 맛있어요~"); listView2.setAdapter(simpleAdapter);
+        //InputData1.put("review","너무 맛있어요~");
+        //listView2.setAdapter(simpleAdapter);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        StoreListFragment fragment5 = new StoreListFragment();
+        transaction.replace(R.id.storelist_container, fragment5);
+        transaction.commit();
+        list=(ListView)findViewById(R.id.list);
+        review_list();
 
         //별점
         final TextView tv = (TextView) findViewById(R.id.textView4);
@@ -113,12 +121,8 @@ public class DetailActivity extends AppCompatActivity {
 
         //초기 Tab 설정
         tabHost.setCurrentTab(0);
+    }*/
 
-    }
-
-
-
-    /*
     int place_idx;
 
     EditText txtCategory, txtPlaceName, txtStartTime, txtEndTime, txtAddress, txtTel, txtReview, txtMenu, txtPrice;
@@ -159,7 +163,7 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail);
+        setContentView(R.layout.activity_detail2);
 
         txtCategory=(EditText)findViewById(R.id.category);
         txtStartTime=(EditText)findViewById(R.id.start_time);
@@ -196,7 +200,6 @@ public class DetailActivity extends AppCompatActivity {
                         })
                         .setNegativeButton("No", null)
                         .show();
-
             }
         });
         btnReview.setOnClickListener(new View.OnClickListener() {
@@ -238,7 +241,7 @@ public class DetailActivity extends AppCompatActivity {
                             BufferedReader br=
                                     new BufferedReader(
                                             new InputStreamReader(
-                                                    conn.getInputStream(),"utf-8"));
+                                                    conn.getInputStream(),"UTF-8"));
                             while(true){
                                 String line=br.readLine(); //한 라인을 읽음
                                 if(line == null) break;//더이상 내용이 없으면 종료
@@ -471,6 +474,6 @@ public class DetailActivity extends AppCompatActivity {
             }
             return v;
         }
-    }*/
+    }
 }
 
