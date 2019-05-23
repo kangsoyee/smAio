@@ -30,7 +30,7 @@
         <activity android:name=".DetailActivity" />
         <activity android:name=".StoreListActivity" />
         <activity android:name=".LoginActivity"/>
-        <activity android:name=".SignupActivity"/>
+        <activity android:name=".SignUpActivity"/>
         <activity
             android:name=".LoadingActivity"
             android:screenOrientation="portrait"

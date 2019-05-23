@@ -13,9 +13,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="200dp"
-        android:textSize="70dp"
         android:text="SM Aio"
-        android:textColor="#5289E9"/>
+        android:textColor="#5289E9"
+        android:textSize="70dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -42,7 +42,7 @@
                 android:drawableStart="@drawable/id_icon"
                 android:drawableLeft="@drawable/id_icon"
                 android:paddingStart="10dp"
-                android:id="@+id/id"/>
+                android:id="@+id/editId"/>
 
             <EditText
                 android:layout_width="200dp"
@@ -57,17 +57,19 @@
                 android:drawableStart="@drawable/password_icon"
                 android:drawableLeft="@drawable/password_icon"
                 android:paddingStart="10dp"
-                android:id="@+id/password"/>
+                android:id="@+id/editPwd"/>
         </LinearLayout>
+
         <ImageButton
-            android:id="@+id/login"
+            android:id="@+id/btnLogin"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_marginTop="40dp"
             android:layout_marginLeft="20dp"
+            android:layout_marginTop="40dp"
             android:layout_marginRight="40dp"
-            android:src="@drawable/login_icon"
-            android:background="@drawable/login_button_border"/>
+            android:background="@drawable/login_button_border"
+            android:onClick="Click_Signin"
+            android:src="@drawable/login_icon" />
     </LinearLayout>
     <TextView
         android:layout_width="wrap_content"
@@ -76,7 +78,7 @@
         android:textColor="#5289E9"
         android:layout_gravity="center"
         android:textSize="20dp"
-        android:id="@+id/signupButton"/>
+        android:id="@+id/signup_button"/>
     <ProgressBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -84,5 +86,11 @@
         android:layout_marginTop="30dp"
         android:id="@+id/progress_loading"
         android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/txtResult"
+        android:layout_width="match_parent"
+        android:layout_height="67dp"
+        android:text="TextView" />
 
 </LinearLayout>

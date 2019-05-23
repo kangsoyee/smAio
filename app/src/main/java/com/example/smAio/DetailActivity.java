@@ -34,7 +34,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class DetailActivity extends AppCompatActivity {/*
+public class DetailActivity extends AppCompatActivity {
     private ArrayList<HashMap<String,String>> Data1 = new ArrayList<HashMap<String, String>>();
     private HashMap<String,String> InputData1 = new HashMap<>();
 
@@ -81,8 +81,8 @@ public class DetailActivity extends AppCompatActivity {/*
         StoreListFragment fragment5 = new StoreListFragment();
         transaction.replace(R.id.storelist_container, fragment5);
         transaction.commit();
-        list=(ListView)findViewById(R.id.list);
-        review_list();
+//        list=(ListView)findViewById(R.id.list);
+//        review_list();
 
         //별점
         final TextView tv = (TextView) findViewById(R.id.textView4);
@@ -121,8 +121,8 @@ public class DetailActivity extends AppCompatActivity {/*
 
         //초기 Tab 설정
         tabHost.setCurrentTab(0);
-    }*/
-
+    }
+/*
     int place_idx;
 
     EditText txtCategory, txtPlaceName, txtStartTime, txtEndTime, txtAddress, txtTel, txtReview, txtMenu, txtPrice;
@@ -474,6 +474,6 @@ public class DetailActivity extends AppCompatActivity {/*
             }
             return v;
         }
-    }
+    }*/
 }
 
