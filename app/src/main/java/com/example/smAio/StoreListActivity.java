@@ -14,9 +14,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -153,8 +156,13 @@ public class StoreListActivity extends AppCompatActivity {
                         dto.setTel(row.getString("tel"));
                         dto.setMenu(row.getString("menu"));
                         dto.setPrice(row.getString("price"));
-                        items.add(dto);
 
+                        if(!row.isNull("image"))
+                            dto.setImage(row.getString("image"));
+
+                        Log.e("test", dto.getImage());
+
+                        items.add(dto);
                     }
                     //핸들러에게 화면 갱신 요청
                     handler.sendEmptyMessage(0);
@@ -218,7 +226,12 @@ public class StoreListActivity extends AppCompatActivity {
                         dto.setPlace_name(row.getString("place_name"));
                         dto.setMenu(row.getString("menu"));
                         dto.setPrice(row.getString("price"));
+
+                        if(!row.isNull("image"))
+                            dto.setImage(row.getString("image"));
+
                         items.add(dto);
+
                     }
                     //핸들러에게 화면 갱신 요청
                     handler.sendEmptyMessage(0);
@@ -246,37 +259,51 @@ public class StoreListActivity extends AppCompatActivity {
                         getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 v = li.inflate(R.layout.place_row, null);
             }
-            final PlaceDTO dto = items.get(position);
-            if (dto != null) {
-                TextView place_idx = (TextView) v.findViewById(R.id.place_idx);
-                TextView place_name =(TextView) v.findViewById(R.id.place_name);
-                TextView start_time =(TextView) v.findViewById(R.id.start_time);
-                TextView end_time =(TextView) v.findViewById(R.id.end_time);
-                TextView category =(TextView) v.findViewById(R.id.category);
-                TextView address =(TextView) v.findViewById(R.id.address);
-                TextView tel =(TextView) v.findViewById(R.id.tel);
-                TextView menu = (TextView) v.findViewById(R.id.menu);
-                TextView price = (TextView) v.findViewById(R.id.price);
 
-                //place_idx.setText(dto.getPlace_idx()+"");  // 여기 주석처리 안하면 로그인 자체도 안됨
-                place_name.setText(dto.getPlace_name());
-                start_time.setText(dto.getStart_time());
-                end_time.setText(dto.getEnd_time());
-                category.setText(dto.getCategory());
-                address.setText(dto.getAddress());
-                tel.setText(dto.getTel());
-                menu.setText(dto.getMenu());
-                price.setText(dto.getPrice());
-            }
-            //클릭하면 코드를 넘겨서 받아옴
-            v.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent=new Intent(StoreListActivity.this, DetailActivity.class);
-                    intent.putExtra("idx", dto.getPlace_idx()); //putExtra 는 값을 전달하는 역할을 한다. 받는곳은 getExtra 가 된다.
-                    startActivity(intent);
+            try {
+
+                final PlaceDTO dto = items.get(position);
+                if (dto != null) {
+                    TextView place_idx = (TextView) v.findViewById(R.id.place_idx);
+                    TextView place_name = (TextView) v.findViewById(R.id.place_name);
+                    TextView start_time = (TextView) v.findViewById(R.id.start_time);
+                    TextView end_time = (TextView) v.findViewById(R.id.end_time);
+                    TextView category = (TextView) v.findViewById(R.id.category);
+                    TextView address = (TextView) v.findViewById(R.id.address);
+                    TextView tel = (TextView) v.findViewById(R.id.tel);
+                    TextView menu = (TextView) v.findViewById(R.id.menu);
+                    TextView price = (TextView) v.findViewById(R.id.price);
+                    TextView latitude = (TextView) v.findViewById(R.id.latitude);
+                    TextView longitude = (TextView) v.findViewById(R.id.longitude);
+                    ImageView imgPlace = (ImageView) v.findViewById(R.id.imgPlace);
+
+                    //place_idx.setText(dto.getPlace_idx()+"");  // 여기 주석처리 안하면 로그인 자체도 안됨
+                    place_name.setText(dto.getPlace_name());
+                    start_time.setText(dto.getStart_time());
+                    end_time.setText(dto.getEnd_time());
+                    category.setText(dto.getCategory());
+                    address.setText(dto.getAddress());
+                    tel.setText(dto.getTel());
+                    menu.setText(dto.getMenu());
+                    price.setText(dto.getPrice());
+
+                    Glide.with(StoreListActivity.this).load(dto.getImage()).into(imgPlace);
                 }
-            });
+                //클릭하면 코드를 넘겨서 받아옴
+                v.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(StoreListActivity.this, DetailActivity.class);
+                        intent.putExtra("idx", dto.getPlace_idx()); //putExtra 는 값을 전달하는 역할을 한다. 받는곳은 getExtra 가 된다.
+                        startActivity(intent);
+                    }
+                });
+
+            }catch (Exception e){
+
+                Log.e("Network Exception", e.getMessage());
+                return null;
+            }
             return v;
         }
     }

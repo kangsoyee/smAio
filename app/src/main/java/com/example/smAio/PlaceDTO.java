@@ -10,6 +10,26 @@ public class PlaceDTO {
     private String tel;
     private String menu;
     private String price;
+    private String latitude;
+    private String longitude;
+    private String image;
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
 
     //원래는 private int idx 로 get,set 만들어져 있었음
 
@@ -74,4 +94,8 @@ public class PlaceDTO {
     public String getPrice() { return price; }
 
     public void setPrice(String price) { this.price = price;}
+
+    public String getImage() { return image; }
+
+    public void setImage(String image) { this.image = image; }
 }
