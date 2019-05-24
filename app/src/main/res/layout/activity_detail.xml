@@ -26,8 +26,8 @@
 
     <TextView
         android:id="@+id/start_time"
-        android:layout_width="62dp"
-        android:layout_height="35dp"
+        android:layout_width="69dp"
+        android:layout_height="34dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
@@ -37,15 +37,15 @@
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.864"
+        app:layout_constraintHorizontal_bias="0.671"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.105" />
+        app:layout_constraintVertical_bias="0.106" />
 
     <TextView
         android:id="@+id/end_time"
-        android:layout_width="69dp"
-        android:layout_height="34dp"
+        android:layout_width="62dp"
+        android:layout_height="35dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
@@ -55,10 +55,10 @@
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.671"
+        app:layout_constraintHorizontal_bias="0.864"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.106" />
+        app:layout_constraintVertical_bias="0.105" />
 
     <RatingBar
         android:id="@+id/ratingBar"
@@ -99,6 +99,22 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.177" />
 
+    <ImageView
+        android:id="@+id/heart_image"
+        android:layout_width="53dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.941"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.181"
+        app:srcCompat="@drawable/ic_favorite_border_black_24dp" />
+
     <TabHost
         android:id="@+id/tabHost"
         android:layout_width="409dp"
@@ -134,7 +150,7 @@
                     android:orientation="vertical">
 
                     <ListView
-                        android:id="@+id/ListView1"
+                        android:id="@+id/detail_info_list"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
                 </LinearLayout>
@@ -146,7 +162,7 @@
                     android:orientation="vertical">
 
                     <ListView
-                        android:id="@+id/ListView2"
+                        android:id="@+id/detail_review_list"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
                 </LinearLayout>
@@ -167,21 +183,5 @@
             </FrameLayout>
         </LinearLayout>
     </TabHost>
-
-    <ImageView
-        android:id="@+id/heart_image"
-        android:layout_width="53dp"
-        android:layout_height="47dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.941"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.181"
-        app:srcCompat="@drawable/ic_favorite_border_black_24dp" />
 
 </android.support.constraint.ConstraintLayout>
