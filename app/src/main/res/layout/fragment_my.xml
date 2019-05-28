@@ -9,7 +9,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
 
         <ImageView
             android:id="@+id/user_image"
@@ -29,10 +30,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="155dp"
+                android:layout_marginStart="155dp"
                 android:text="name"
                 android:textColor="@color/Prime"
-                android:textSize="35dp" />
+                android:textSize="35sp" />
 
         </LinearLayout>
 
@@ -43,13 +44,13 @@
             android:layout_gravity="center"
             android:layout_marginTop="5dp"
             android:text="id"
-            android:textSize="20dp" />
+            android:textSize="20sp" />
 
         <ListView
             android:id="@+id/info_menu"
             android:layout_width="match_parent"
             android:layout_height="305dp"
-            android:layout_marginTop="30dp"></ListView>
+            android:layout_marginTop="30dp" />
 
 
     </LinearLayout>
