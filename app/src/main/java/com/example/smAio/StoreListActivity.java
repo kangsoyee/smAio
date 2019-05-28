@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -155,6 +156,8 @@ public class StoreListActivity extends AppCompatActivity {
                         dto.setTel(row.getString("tel"));
                         dto.setMenu(row.getString("menu"));
                         dto.setPrice(row.getString("price"));
+                        dto.setLatitude(row.getString("latitude"));
+                        dto.setLongitude(row.getString("longitude"));
 
                         if(!row.isNull("image"))
                             dto.setImage(row.getString("image"));
@@ -225,6 +228,8 @@ public class StoreListActivity extends AppCompatActivity {
                         dto.setPlace_name(row.getString("place_name"));
                         dto.setMenu(row.getString("menu"));
                         dto.setPrice(row.getString("price"));
+                        dto.setLatitude(row.getString("latitude"));
+                        dto.setLongitude(row.getString("longitude"));
 
                         if(!row.isNull("image"))
                             dto.setImage(row.getString("image"));
@@ -263,7 +268,6 @@ public class StoreListActivity extends AppCompatActivity {
 
                 final PlaceDTO dto = items.get(position);
                 if (dto != null) {
-                    TextView place_idx = (TextView) v.findViewById(R.id.place_idx);
                     TextView place_name = (TextView) v.findViewById(R.id.place_name);
                     TextView start_time = (TextView) v.findViewById(R.id.start_time);
                     TextView end_time = (TextView) v.findViewById(R.id.end_time);
@@ -272,8 +276,6 @@ public class StoreListActivity extends AppCompatActivity {
                     TextView tel = (TextView) v.findViewById(R.id.tel);
                     TextView menu = (TextView) v.findViewById(R.id.menu);
                     TextView price = (TextView) v.findViewById(R.id.price);
-                    TextView latitude = (TextView) v.findViewById(R.id.latitude);
-                    TextView longitude = (TextView) v.findViewById(R.id.longitude);
                     ImageView imgPlace = (ImageView) v.findViewById(R.id.imgPlace);
 
                     //place_idx.setText(dto.getPlace_idx()+"");  // 여기 주석처리 안하면 로그인 자체도 안됨
@@ -311,6 +313,8 @@ public class StoreListActivity extends AppCompatActivity {
                         intent.putExtra("placename",placename.getText().toString());
                         intent.putExtra("starttime",starttime.getText().toString());
                         intent.putExtra("endtime",endtime.getText().toString());
+                        intent.putExtra("latitude",dto.getLatitude());
+                        intent.putExtra("longitude",dto.getLongitude());
 
                         startActivity(intent);
                     }

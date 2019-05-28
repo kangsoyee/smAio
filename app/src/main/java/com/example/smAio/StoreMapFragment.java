@@ -37,6 +37,7 @@ public class StoreMapFragment extends Fragment implements OnMapReadyCallback {
 
     private MapView mapView = null;
     private GoogleMap googleMap;
+    String latitude,longitude;
 
     public StoreMapFragment() {
         // required
@@ -45,12 +46,17 @@ public class StoreMapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_map, container, false);
+
+        Bundle bundle = getArguments();
+//        latitude = bundle.getString("latitude");
+//        longitude = bundle.getString("longitude");
 
         mapView = (MapView) layout.findViewById(R.id.map);
         mapView.getMapAsync(this);

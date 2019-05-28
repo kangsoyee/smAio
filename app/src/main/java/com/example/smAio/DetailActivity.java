@@ -165,6 +165,14 @@ public class DetailActivity extends AppCompatActivity {
         String name_data = get_info.getStringExtra("placename");
         String start_data = get_info.getStringExtra("starttime");
         String end_data = get_info.getStringExtra("endtime");
+        String latitude_data = get_info.getStringExtra("latitude");
+        String longitude_data = get_info.getStringExtra("longitude");
+
+        StoreMapFragment storeMapFragment = new StoreMapFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("latitude",latitude_data);
+        bundle.putString("longitude",longitude_data);
+        storeMapFragment.setArguments(bundle);
 
         info_address.setText(ad_data);
         info_tel.setText(tel_data);
