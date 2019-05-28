@@ -7,15 +7,25 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class FirstActivity extends AppCompatActivity {
+import java.util.HashMap;
 
+public class FirstActivity extends AppCompatActivity {
+    // 2초 간격
+    private static final long EXIT_INTERVAL_TIME = 2000;
+    // 누른 시간
+    private long pressedTime = 0;
+
+    final private static String TAG = "from activity data";
+    private String user_id,user_name;
     private TextView mTextMessage;
+    SessionManager sessionManager;
 
     //바텀 네비게이션바 클릭 이벤트
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -49,6 +59,23 @@ public class FirstActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first);
 
+        sessionManager=new SessionManager(this);
+        sessionManager.checkLoggin();
+
+        HashMap<String,String> user = sessionManager.getUserDetail();
+        user_name =user.get(sessionManager.NAME);
+        user_id = user.get(sessionManager.ID);
+
+        Log.e(TAG,user_id);
+        Log.e(TAG,user_name);
+
+        Bundle info_bundle = new Bundle();
+        info_bundle.putString("id", user_id);
+        info_bundle.putString("name",user_name);
+
+        MyFragment myFragment = new MyFragment();
+        myFragment.setArguments(info_bundle);
+
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -64,7 +91,32 @@ public class FirstActivity extends AppCompatActivity {
         //액션바 숨기기
         //hideActionBar();
 
+        Intent get_intent=getIntent();
+        String logout=get_intent.getStringExtra("Logout");
+        if(logout=="1"){
+            sessionManager.logout();
+        }
     }
+    @Override
+    public void onBackPressed() {
+        if ( pressedTime == 0 ) {
+            Toast.makeText(FirstActivity.this, " 한 번 더 누르면 종료됩니다." , Toast.LENGTH_LONG).show();
+            pressedTime = System.currentTimeMillis();
+        }
+        else {
+            int seconds = (int) (System.currentTimeMillis() - pressedTime);
+
+            if ( seconds > EXIT_INTERVAL_TIME ) {
+                Toast.makeText(FirstActivity.this, " 한 번 더 누르면 종료됩니다." , Toast.LENGTH_LONG).show();
+                pressedTime = 0 ;
+            }
+            else {
+                super.onBackPressed();
+//                finish(); // app 종료 시키기
+            }
+        }
+    }
+
 
     //프래그먼트 화면 변경 함수
     private void callFragment(int fragment_no){
@@ -103,6 +155,14 @@ public class FirstActivity extends AppCompatActivity {
                 MyFragment fragment5 = new MyFragment();
                 transaction.replace(R.id.fragment_container, fragment5);
                 transaction.commit();
+                Log.e(TAG,user_id);
+                Log.e(TAG,user_name);
+
+                Bundle info_bundle = new Bundle();
+                info_bundle.putString("id", user_id);
+                info_bundle.putString("name",user_name);
+
+                fragment5.setArguments(info_bundle);
                 break;
         }
     }
@@ -168,4 +228,11 @@ public class FirstActivity extends AppCompatActivity {
         startActivity(startQRActivity);
     }
 
+    public void sessionout(){
+        sessionManager.logout();
+        Intent i = new Intent(FirstActivity.this,LoginActivity.class);
+        i.putExtra("boolcheck",false);
+        startActivity(i);
+        finish();
+    }
 }
