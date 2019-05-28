@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -53,6 +54,8 @@ public class LoginActivity extends AppCompatActivity {
         auto=(CheckBox)findViewById(R.id.AutoLoginCheck);
         id=(EditText)findViewById(R.id.id);
         password=(EditText)findViewById(R.id.password);
+
+
         loading=(ProgressBar)findViewById(R.id.progress_loading);
         login = (ImageButton)findViewById(R.id.login);
         AutoPref = getSharedPreferences("auto",MODE_PRIVATE);
@@ -74,28 +77,19 @@ public class LoginActivity extends AppCompatActivity {
                 Login(AutoPref.getString("id",null),AutoPref.getString("password",null));
             }
         }
-
-
-
-
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String mId=id.getText().toString().trim();
-                String mPass = password.getText().toString().trim();
-
-                if(!mId.isEmpty() || !mPass.isEmpty()){
-                    Login(mId,mPass);
-
-
-                }else{
-                    id.setError("Please insert id");
-                    password.setError("Please insert password");
-                    loading.setVisibility(View.GONE);
-                }
+    password.setOnKeyListener(new View.OnKeyListener() {
+        @Override
+        public boolean onKey(View view, int i, KeyEvent keyEvent) {
+            switch (i){
+                case KeyEvent.KEYCODE_ENTER:
+                    login.callOnClick();
             }
+            return true;
+        }
+    });
 
-        });
+
+        login.setOnClickListener(new LoginClickListenr());
 
 
         link_signup=(TextView)findViewById(R.id.signupButton);
@@ -109,20 +103,6 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void Auto_Login(){
-
-        if(getIntent().getBooleanExtra("boolcheck",true)==false){
-            auto.setChecked(false);
-        }
-        else{
-            if(AutoPref.getBoolean("true",false)==true){
-                id.setText(AutoPref.getString("id",null));
-                password.setText(AutoPref.getString("password",null));
-                auto.setChecked(AutoPref.getBoolean("checkbox",false));
-                Login(AutoPref.getString("id",null),AutoPref.getString("password",null));
-            }
-        }
-    }
 
     private void Login(final String cid, final String cpassword){
 
@@ -213,4 +193,22 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
+    private class LoginClickListenr implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            String mId=id.getText().toString().trim();
+            String mPass = password.getText().toString().trim();
+
+            if(!mId.isEmpty() || !mPass.isEmpty()){
+                Login(mId,mPass);
+
+
+            }else{
+                id.setError("Please insert id");
+                password.setError("Please insert password");
+                loading.setVisibility(View.GONE);
+            }
+        }
+
+    }
 }
