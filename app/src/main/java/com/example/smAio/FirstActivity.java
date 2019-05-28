@@ -64,22 +64,22 @@ public class FirstActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first);
 
-        sessionManager=new SessionManager(this);
-        sessionManager.checkLoggin();
+        sessionManager=new SessionManager(this); //세션의 SharedPreFerences사용을 위해 SessionManager 생성
+        sessionManager.checkLoggin(); //세션으로 로그인 여부 확인
 
-        HashMap<String,String> user = sessionManager.getUserDetail();
-        user_name =user.get(sessionManager.NAME);
+        HashMap<String,String> user = sessionManager.getUserDetail(); //세션을 통해 값을 받아온다.
+        user_name =user.get(sessionManager.NAME); //받아온 값 변수에 저장
         user_id = user.get(sessionManager.ID);
 
-        Log.e(TAG,user_id);
+        Log.e(TAG,user_id); //확인로그
         Log.e(TAG,user_name);
 
-        Bundle info_bundle = new Bundle();
+        Bundle info_bundle = new Bundle(); //MyFrament로 보내기위해 번들로 이름과 아이디 값 묶어줌
         info_bundle.putString("id", user_id);
         info_bundle.putString("name",user_name);
 
-        MyFragment myFragment = new MyFragment();
-        myFragment.setArguments(info_bundle);
+        MyFragment myFragment = new MyFragment();//MyFragment객체 생성
+        myFragment.setArguments(info_bundle);//생성된 객체에 setArguments를 통해 번들 보내기
 
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
@@ -114,21 +114,21 @@ public class FirstActivity extends AppCompatActivity {
         }
     }
     @Override
-    public void onBackPressed() {
-        if ( pressedTime == 0 ) {
+    public void onBackPressed() { //뒤로가기 버튼 클릭시
+        if ( pressedTime == 0 ) { //처음 눌렀을 때
             Toast.makeText(FirstActivity.this, " 한 번 더 누르면 종료됩니다." , Toast.LENGTH_LONG).show();
-            pressedTime = System.currentTimeMillis();
+            pressedTime = System.currentTimeMillis(); //누른시간을 잰다
         }
-        else {
-            int seconds = (int) (System.currentTimeMillis() - pressedTime);
+        else {//처음 눌르고 시간이 지났다면
+            int seconds = (int) (System.currentTimeMillis() - pressedTime); //현재 시스템 시간에서 처음 눌렀을때 pressedTime값 뺌
 
-            if ( seconds > EXIT_INTERVAL_TIME ) {
+            if ( seconds > EXIT_INTERVAL_TIME ) { //그 값이 위에 선언된 2초보다 크면
                 Toast.makeText(FirstActivity.this, " 한 번 더 누르면 종료됩니다." , Toast.LENGTH_LONG).show();
-                pressedTime = 0 ;
+                pressedTime = 0 ; //다시 반복
             }
             else {
                 super.onBackPressed();
-//                finish(); // app 종료 시키기
+               finish(); // app 종료 시키기
             }
         }
     }
@@ -243,10 +243,11 @@ public class FirstActivity extends AppCompatActivity {
         startActivity(startQRActivity);
     }
 
+    //MyFragment에서 Logout버튼을 눌렀을때 이벤트를 발생시키기위해 생성 (참조를 통해)
     public void sessionout(){
-        sessionManager.logout();
+        sessionManager.logout(); //세션 값지우기
         Intent i = new Intent(FirstActivity.this,LoginActivity.class);
-        i.putExtra("boolcheck",false);
+        i.putExtra("boolcheck",false); //인텐트로 LoginActivity로 이동하고 이때 false라는 값을 보냄
         startActivity(i);
         finish();
     }
