@@ -45,18 +45,7 @@ public class MyFragment extends Fragment {
         //view를 이용 fragment에서 id를 가져올수있도록
         TextView Name = (TextView) view.findViewById(R.id.name_info);
         TextView Id = (TextView) view.findViewById(R.id.id_info);
-        Button logout=(Button)view.findViewById(R.id.logout);
 
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                Intent intent = new Intent(getActivity(),FirstActivity.class);
-//                intent.putExtra("code","1");
-
-
-                ((FirstActivity)getActivity()).sessionout();
-            }
-        });
         //setDATA
         Name.setText(name_text);
         Id.setText(id_text);
@@ -88,7 +77,7 @@ public class MyFragment extends Fragment {
                         break;
                     case 2:
 
-                        ((FirstActivity)getActivity()).sessionManager.logout();
+                        ((FirstActivity)getActivity()).sessionout();
                         break;
                 }
             }

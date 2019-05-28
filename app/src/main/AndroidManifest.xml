@@ -31,6 +31,9 @@
         <activity android:name=".StoreListActivity" />
         <activity android:name=".LoginActivity"/>
         <activity android:name=".SignUpActivity"/>
+        <activity android:name=".MyReviewActivity"/>
+        <activity android:name=".CouponActivity"/>
+        <activity android:name=".NoticeActivity"/>
         <activity
             android:name=".LoadingActivity"
             android:screenOrientation="portrait"
