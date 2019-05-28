@@ -12,64 +12,66 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="200dp"
-        android:textSize="70dp"
+        android:layout_marginTop="100dp"
         android:text="SM Aio"
-        android:textColor="#5289E9"/>
+        android:textColor="#5289E9"
+        android:textSize="70sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:orientation="horizontal"
-        >
+        android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:orientation="vertical"
             android:layout_weight="1"
-            >
+            android:orientation="vertical">
+
             <EditText
+                android:id="@+id/id"
                 android:layout_width="200dp"
                 android:layout_height="30dp"
                 android:layout_gravity="right"
                 android:layout_marginTop="50dp"
                 android:background="@drawable/edit_line"
-                android:hint="ID"
-                android:gravity="center"
-                android:textColor="#FFFFFFFF"
-                android:textColorHint="#FFFFFFFF"
                 android:drawableStart="@drawable/id_icon"
                 android:drawableLeft="@drawable/id_icon"
+                android:gravity="center"
+                android:hint="ID"
+                android:inputType="text"
                 android:paddingStart="10dp"
-                android:id="@+id/id"
-                android:inputType="text"/>
+                android:textColor="#FFFFFFFF"
+                android:textColorHint="#FFFFFFFF"
+                tools:ignore="RtlHardcoded,RtlSymmetry" />
 
             <EditText
+                android:id="@+id/password"
                 android:layout_width="200dp"
                 android:layout_height="30dp"
                 android:layout_gravity="right"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/edit_line"
-                android:hint="PASSWORD"
-                android:gravity="center"
-                android:textColor="#FFFFFFFF"
-                android:textColorHint="#FFFFFFFF"
                 android:drawableStart="@drawable/password_icon"
                 android:drawableLeft="@drawable/password_icon"
+                android:gravity="center"
+                android:hint="PASSWORD"
+                android:inputType="textPassword"
                 android:paddingStart="10dp"
-                android:id="@+id/password"
-                android:inputType="textPassword"/>
+                android:textColor="#FFFFFFFF"
+                android:textColorHint="#FFFFFFFF"
+                tools:ignore="RtlHardcoded,RtlSymmetry" />
         </LinearLayout>
+
         <ImageButton
             android:id="@+id/login"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="40dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="40dp"
-            android:src="@drawable/login_icon"
-            android:background="@drawable/login_button_border"/>
+            android:layout_marginEnd="40dp"
+            android:background="@drawable/login_button_border"
+            android:src="@drawable/login_icon" />
     </LinearLayout>
 
     <LinearLayout
@@ -82,7 +84,7 @@
         android:layout_gravity="center"
         android:text="Auto Login"
         android:layout_weight="1"
-        android:layout_marginLeft="50dp"
+        android:layout_marginStart="50dp"
         android:id="@+id/AutoLoginCheck"/>
     <TextView
         android:layout_width="wrap_content"
@@ -90,17 +92,18 @@
         android:text="Sign Up"
         android:textColor="#5289E9"
         android:layout_gravity="center"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:id="@+id/signupButton"
         android:layout_weight="1"
-        android:layout_marginRight="120dp"/>
+        android:layout_marginEnd="120dp"/>
     </LinearLayout>
+
     <ProgressBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/progress_loading"
+        android:layout_width="19dp"
+        android:layout_height="15dp"
         android:layout_gravity="center"
         android:layout_marginTop="30dp"
-        android:id="@+id/progress_loading"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
 </LinearLayout>
