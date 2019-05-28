@@ -2,6 +2,7 @@ package com.example.smAio;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.net.Uri;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
@@ -47,6 +48,16 @@ public class DetailActivity extends AppCompatActivity {
     ArrayList<ReviewDTO> review_list=new ArrayList<>();
     ListView list;
 
+    TextView placename;
+    TextView starttime;
+    TextView endtime;
+
+    TextView info_address;
+    TextView info_tel;
+    TextView info_menu;
+    TextView info_price;
+
+    private String mnum;
 
     Handler handler = new Handler() {
         @Override
@@ -137,19 +148,57 @@ public class DetailActivity extends AppCompatActivity {
         //초기 Tab 설정
         tabHost.setCurrentTab(0);
 
+        info_address = (TextView) findViewById(R.id.info_address);
+        info_tel = (TextView) findViewById(R.id.info_tel);
+        info_menu = (TextView) findViewById(R.id.info_menu);
+        info_price = (TextView) findViewById(R.id.info_price);
 
-        ListView listView2 = (ListView) findViewById(R.id.detail_info_list);
+        placename = (TextView) findViewById(R.id.place_name);
+        starttime = (TextView) findViewById(R.id.start_time);
+        endtime = (TextView) findViewById(R.id.end_time);
+
+        Intent get_info = getIntent();
+        String ad_data = get_info.getStringExtra("address");
+        String tel_data = get_info.getStringExtra("tel");
+        String menu_data = get_info.getStringExtra("menu");
+        String price_data = get_info.getStringExtra("price");
+        String name_data = get_info.getStringExtra("placename");
+        String start_data = get_info.getStringExtra("starttime");
+        String end_data = get_info.getStringExtra("endtime");
+
+        info_address.setText(ad_data);
+        info_tel.setText(tel_data);
+        info_menu.setText(menu_data);
+        info_price.setText(price_data);
+
+        placename.setText(name_data);
+        starttime.setText(start_data);
+        endtime.setText(end_data);
+
+        info_tel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mnum = info_tel.getText().toString();
+                String tel = "tel:" + mnum;
+                switch (v.getId()){
+                    case R.id.info_tel:
+                        startActivity(new Intent("android.intent.action.DIAL", Uri.parse(tel)));
+                        break;
+                }
+            }
+        });
+
 
         //simpleAdapter 생성
-        SimpleAdapter simpleAdapter = new SimpleAdapter(this,Data1,android.R.layout.simple_list_item_2,
-                new String[]{"name","review"},
-                new int[]{android.R.id.text1,android.R.id.text2});
-
-        //데이터 초기화
-        InputData1.put("name","김수연");
-        InputData1.put("review","너무 맛있어요~");
-        Data1.add(InputData1);
-        listView2.setAdapter(simpleAdapter);
+//        SimpleAdapter simpleAdapter = new SimpleAdapter(this,Data1,android.R.layout.simple_list_item_2,
+//                new String[]{"name","review"},
+//                new int[]{android.R.id.text1,android.R.id.text2});
+//
+//        //데이터 초기화
+//        InputData1.put("name","김수연");
+//        InputData1.put("review","너무 맛있어요~");
+//        Data1.add(InputData1);
+//        listView2.setAdapter(simpleAdapter);
 
 
         txtStartTime=(TextView) findViewById(R.id.start_time);

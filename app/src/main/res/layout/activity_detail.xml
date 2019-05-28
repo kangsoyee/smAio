@@ -149,10 +149,33 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                    <ListView
-                        android:id="@+id/detail_info_list"
+                    <TextView
+                        android:id="@+id/info_address"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="50dp"
+                        android:text="TextView"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/info_tel"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:text="TextView"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/info_menu"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:text="TextView"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/info_price"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:text="TextView"
+                        android:textSize="18sp" />
                 </LinearLayout>
 
                 <LinearLayout

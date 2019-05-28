@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -54,7 +53,6 @@ public class StoreListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_store_list);
-
         list=(ListView)findViewById(R.id.list);
         spnCategory=(Spinner)findViewById(R.id.spnCategory);
         editPlaceName=(EditText)findViewById(R.id.editPlaceName);
@@ -294,8 +292,26 @@ public class StoreListActivity extends AppCompatActivity {
                 v.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
+                        TextView address = (TextView) v.findViewById(R.id.address);
+                        TextView tel = (TextView) v.findViewById(R.id.tel);
+                        TextView menu = (TextView) v.findViewById(R.id.menu);
+                        TextView price = (TextView) v.findViewById(R.id.price);
+                        TextView placename = (TextView) v.findViewById(R.id.place_name);
+                        TextView starttime = (TextView) v.findViewById(R.id.start_time);
+                        TextView endtime = (TextView) v.findViewById(R.id.end_time);
+
                         Intent intent = new Intent(StoreListActivity.this, DetailActivity.class);
                         intent.putExtra("idx", dto.getPlace_idx()); //putExtra 는 값을 전달하는 역할을 한다. 받는곳은 getExtra 가 된다.
+
+                        intent.putExtra("address",address.getText().toString());
+                        intent.putExtra("tel",tel.getText().toString());
+                        intent.putExtra("menu",menu.getText().toString());
+                        intent.putExtra("price",price.getText().toString());
+                        intent.putExtra("placename",placename.getText().toString());
+                        intent.putExtra("starttime",starttime.getText().toString());
+                        intent.putExtra("endtime",endtime.getText().toString());
+
                         startActivity(intent);
                     }
                 });
@@ -307,11 +323,5 @@ public class StoreListActivity extends AppCompatActivity {
             }
             return v;
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.overflow_menu,menu);
-        return true;
     }
 }
