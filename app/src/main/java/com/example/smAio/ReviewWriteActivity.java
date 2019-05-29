@@ -78,7 +78,8 @@ public class ReviewWriteActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                review();
+                match_url(place_url);
+
             }
         });
 
@@ -157,7 +158,7 @@ public class ReviewWriteActivity extends AppCompatActivity {
             public void run() {
                 try {
                     String review_content=txtReview.getText().toString();
-                    match_url(place_url);
+                    Log.e("url에 무슨값??",place_idx+"");
                     String page =
                             Common.SERVER_URL+"/review_insert.php?"+"&userid="+user_Id
                                     +"&place_idx="+place_idx
@@ -203,7 +204,8 @@ public class ReviewWriteActivity extends AppCompatActivity {
                                 for(int i = 0; i<jsonArray.length();i++){ //jsonArray 크기만큼 for문 돌림
                                     JSONObject object=jsonArray.getJSONObject(i);
                                     place_idx=object.getInt("p_id");
-                                    Log.e(TAG,place_idx+"");//jsonArray에 저장된 이름(name)값을 가져온다
+                                    Log.e(TAG,place_idx+"");
+                                    review();//jsonArray에 저장된 이름(name)값을 가져온다
                                 }
                             }
                             else{
