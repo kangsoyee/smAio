@@ -14,6 +14,15 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+        /**빼기 가능**/
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="50dp"
+            android:gravity="center"
+            android:layout_marginTop="20dp"
+            android:text="SM.AIO"
+            android:textColor="@color/Prime"/>
 
         <FrameLayout
             android:id="@+id/fragment_container"

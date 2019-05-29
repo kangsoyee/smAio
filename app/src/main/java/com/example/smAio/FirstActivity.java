@@ -153,9 +153,6 @@ public class FirstActivity extends AppCompatActivity {
                 break;
 
             case 3:
-                // QR 액티비티 호출
-//                Intent startQRActivity = new Intent(FirstActivity.this, QRActivity.class);
-//                startActivity(startQRActivity);
                 break;
 
             case 4:
@@ -212,11 +209,6 @@ public class FirstActivity extends AppCompatActivity {
     public void Clicked_res(View view) {
         Intent startRestaurantActivity = new Intent(FirstActivity.this, StoreListActivity.class);
         startActivity(startRestaurantActivity);
-//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-//        StoreListFragment startStoreListFrag = new StoreListFragment();
-//        transaction.replace(R.id.fragment_container, startStoreListFrag);
-//        transaction.addToBackStack(null); //이전 프래그먼트 백 스택에 추가
-//        transaction.commit();
     }
 
     //카페 버튼 클릭 이벤트

@@ -203,6 +203,5 @@ public class LoginActivity extends AppCompatActivity {
                 loading.setVisibility(View.GONE);
             }
         }
-
     }
 }

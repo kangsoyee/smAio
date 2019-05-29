@@ -5,5 +5,4 @@ public class Common {
             = "http://eileenyoo.cafe24.com";
     public static String userid;
     public static String name;
-    //git test1
 }

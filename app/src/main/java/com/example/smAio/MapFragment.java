@@ -38,13 +38,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private MapView mapView = null;
     private GoogleMap googleMap;
 
-    //    public loginMysql(String id,String pw,String url){
-//        mHandler=new Handler();
-//        userId=id;
-//        userPw=pw;
-//        this.url=url+"?id="+userId;
-//    }
-
     ArrayList<PlaceDTO> items;
     Handler handler = new Handler() {
         @Override
@@ -152,12 +145,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         list();
     }
 
-    /**
-     * 마커 추가
-     *
-     * @param refresh: true-모든 마커 지움, false-기존 마커 유지하고 마커 추가
-     *                 location: 추가할 마커 위치
-     */
     private void addMarker(boolean refresh, LatLng location) {
 
         try {
