@@ -218,6 +218,7 @@ public class FirstActivity extends AppCompatActivity {
         Intent startQRActivity = new Intent(FirstActivity.this, QrScanActivity.class);
         startQRActivity.putExtra("id",user_id);
         startActivity(startQRActivity);
+        finish();
         Log.e("test", "ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
     }
 

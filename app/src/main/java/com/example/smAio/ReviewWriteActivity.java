@@ -78,8 +78,15 @@ public class ReviewWriteActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                match_url(place_url);
-
+                String txtReview_textCheck=txtReview.getText().toString();
+                if(!txtReview_textCheck.isEmpty()) {
+                    match_url(place_url);
+                    Intent intent = new Intent(ReviewWriteActivity.this,endWriteReview.class);
+                    startActivity(intent);
+                    finish();
+                }else{
+                    txtReview.setError("Please insert your Review");
+                }
             }
         });
 
@@ -187,6 +194,13 @@ public class ReviewWriteActivity extends AppCompatActivity {
             }
         });
         th.start();
+    }
+
+    @Override
+    public void onBackPressed() { //뒤로가기 버튼 클릭시
+        Intent intent = new Intent(ReviewWriteActivity.this,QrScanActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void match_url(final String url){ //로그인을 위한 함수 edittext에 입력된 아이디와 비밀번호의 값을 가진다

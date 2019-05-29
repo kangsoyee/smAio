@@ -6,6 +6,7 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.ResultPoint;
@@ -32,7 +33,6 @@ import butterknife.ButterKnife;
 import timber.log.Timber;
 
 public class QrScanActivity extends AppCompatActivity implements DecoratedBarcodeView.TorchListener {
-
 
     private BeepManager beepManager;
     private String lastText;
@@ -80,6 +80,14 @@ public class QrScanActivity extends AppCompatActivity implements DecoratedBarcod
             }
         }
     };
+
+    @Override
+    public void onBackPressed() { //뒤로가기 버튼 클릭시
+        Intent intent = new Intent(QrScanActivity.this,FirstActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
 
     private void initLayout() {
 
