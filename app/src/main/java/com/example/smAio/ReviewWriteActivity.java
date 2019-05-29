@@ -25,7 +25,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ImageButton;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -33,9 +42,13 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ReviewWriteActivity extends AppCompatActivity {
 
+
+    private static String URL_getPlaceID ="http://eileenyoo.cafe24.com/get_placeID.php/";
     int place_idx;
     private static final int REQUEST_CODE = 1234;
     ImageButton Start;
@@ -44,15 +57,24 @@ public class ReviewWriteActivity extends AppCompatActivity {
     ArrayList<String> matches_text;
     EditText txtReview;
     Button button;
-
+    String user_Id,place_url;
+    ArrayList<PlaceDTO>items;
+    int place_id;
+    final private static String TAG = "가져온 값";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review_write);
 
+        Intent i = getIntent();
+        user_Id=i.getStringExtra("id");
+        place_url=i.getStringExtra("url");
+        Log.e(TAG,user_Id);
+        Log.e(TAG,place_url);
+
         Start = (ImageButton)findViewById(R.id.imageButton);
         txtReview=(EditText)findViewById(R.id.review_message);
-        button=(Button)findViewById(R.id.button);
+        button=(Button)findViewById(R.id.button_reviewsend);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -135,9 +157,9 @@ public class ReviewWriteActivity extends AppCompatActivity {
             public void run() {
                 try {
                     String review_content=txtReview.getText().toString();
-//                    String userid="kim";
+                    match_url(place_url);
                     String page =
-                            Common.SERVER_URL+"/review_insert.php?idx="+place_idx+"&userid="+Common.userid
+                            Common.SERVER_URL+"/review_insert.php?"+"&userid="+user_Id
                                     +"&place_idx="+place_idx
                                     +"&review_content="+review_content;
 //                    Common.SERVER_URL+"/review_insert.php?userid="+Common.userid
@@ -164,5 +186,54 @@ public class ReviewWriteActivity extends AppCompatActivity {
             }
         });
         th.start();
+    }
+
+    private void match_url(final String url){ //로그인을 위한 함수 edittext에 입력된 아이디와 비밀번호의 값을 가진다
+        StringRequest stringRequest=new StringRequest(Request.Method.POST, URL_getPlaceID, //순서대로 php문에 POST 형식으로 값 보내기, php문 주소
+                new Response.Listener<String>() { //php문에서 온 응답에 대한 이벤트
+                    @Override
+                    public void onResponse(String response) {
+                        try{
+                            JSONObject jsonObject=new JSONObject(response); //php문에서 json파일에 응답을 줌 그래서 jsonobject를 통해 응답 확인
+                            String success = jsonObject.getString("success"); //php문에서 제이슨 파일에 success라는 키에 1이라는 값을 줌
+
+                            JSONArray jsonArray = jsonObject.getJSONArray("place_id"); //php문에서 array변수에 login 데이터를 담고 jsonArray형식으로 jsonObject에 저장 그래서 그 값을 불러옴
+
+                            if(success.equals("1")){ //만약에 json파일에 success키에 맞는 값이 1면
+                                for(int i = 0; i<jsonArray.length();i++){ //jsonArray 크기만큼 for문 돌림
+                                    JSONObject object=jsonArray.getJSONObject(i);
+                                    place_idx=object.getInt("p_id");
+                                    Log.e(TAG,place_idx+"");//jsonArray에 저장된 이름(name)값을 가져온다
+                                }
+                            }
+                            else{
+                            }
+                        }catch (JSONException e){
+
+                            e.printStackTrace();
+                            //이건 아예 아이디가 다르다는 뜻
+
+                        }
+                    }
+                },
+                new Response.ErrorListener() { //여기로 오류 잡힘 서버 접속 오류
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+
+                })
+        {
+            @Override
+            protected Map<String,String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("url",url);
+                return params; //hashmap을 통해서 값을 php문에 보내는 구문!
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest); //요거는 volley사용을 위한 필수적인 코드 두줄
+
     }
 }

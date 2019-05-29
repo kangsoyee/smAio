@@ -8,8 +8,8 @@
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.DIAL_PHONE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.DIAL_PHONE" />
 
     <application
         android:allowBackup="true"
@@ -30,11 +30,12 @@
         <activity android:name=".PlaceAdd" />
         <activity android:name=".DetailActivity" />
         <activity android:name=".StoreListActivity" />
-        <activity android:name=".LoginActivity"/>
-        <activity android:name=".SignUpActivity"/>
-        <activity android:name=".MyReviewActivity"/>
-        <activity android:name=".CouponActivity"/>
-        <activity android:name=".NoticeActivity"/>
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".SignUpActivity" />
+        <activity android:name=".MyReviewActivity" />
+        <activity android:name=".CouponActivity" />
+        <activity android:name=".NoticeActivity" />
+        <activity android:name=".QrScanActivity" />
         <activity
             android:name=".LoadingActivity"
             android:screenOrientation="portrait"

@@ -13,6 +13,15 @@ public class PlaceDTO {
     private String latitude;
     private String longitude;
     private String image;
+    private String qrcode;
+
+    public String getQrcode() {
+        return qrcode;
+    }
+
+    public void setQrcode(String qrcode) {
+        this.qrcode = qrcode;
+    }
 
     public String getLatitude() {
         return latitude;

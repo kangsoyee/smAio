@@ -216,6 +216,7 @@ public class FirstActivity extends AppCompatActivity {
     public void Click_qr(View view){
 
         Intent startQRActivity = new Intent(FirstActivity.this, QrScanActivity.class);
+        startQRActivity.putExtra("id",user_id);
         startActivity(startQRActivity);
         Log.e("test", "ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
     }
