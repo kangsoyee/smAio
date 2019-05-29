@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -19,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -54,6 +56,7 @@ public class StoreListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_store_list);
+
         list=(ListView)findViewById(R.id.list);
         spnCategory=(Spinner)findViewById(R.id.spnCategory);
         editPlaceName=(EditText)findViewById(R.id.editPlaceName);
@@ -68,14 +71,14 @@ public class StoreListActivity extends AppCompatActivity {
             }
         });
 
-        btnAdd=(Button)findViewById(R.id.btnAdd);
-        btnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(StoreListActivity.this, PlaceAdd.class);
-                startActivity(intent);
-            }
-        });
+//        btnAdd=(Button)findViewById(R.id.btnAdd);
+//        btnAdd.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent=new Intent(StoreListActivity.this, PlaceAdd.class);
+//                startActivity(intent);
+//            }
+//        });
 
         arrPlace=(String[])getResources().getStringArray(R.array.category);
         ArrayAdapter adapter = new ArrayAdapter<String>(this,
@@ -156,8 +159,6 @@ public class StoreListActivity extends AppCompatActivity {
                         dto.setTel(row.getString("tel"));
                         dto.setMenu(row.getString("menu"));
                         dto.setPrice(row.getString("price"));
-                        dto.setLatitude(row.getString("latitude"));
-                        dto.setLongitude(row.getString("longitude"));
 
                         if(!row.isNull("image"))
                             dto.setImage(row.getString("image"));
@@ -228,8 +229,6 @@ public class StoreListActivity extends AppCompatActivity {
                         dto.setPlace_name(row.getString("place_name"));
                         dto.setMenu(row.getString("menu"));
                         dto.setPrice(row.getString("price"));
-                        dto.setLatitude(row.getString("latitude"));
-                        dto.setLongitude(row.getString("longitude"));
 
                         if(!row.isNull("image"))
                             dto.setImage(row.getString("image"));
@@ -268,6 +267,7 @@ public class StoreListActivity extends AppCompatActivity {
 
                 final PlaceDTO dto = items.get(position);
                 if (dto != null) {
+                    TextView place_idx = (TextView) v.findViewById(R.id.place_idx);
                     TextView place_name = (TextView) v.findViewById(R.id.place_name);
                     TextView start_time = (TextView) v.findViewById(R.id.start_time);
                     TextView end_time = (TextView) v.findViewById(R.id.end_time);
@@ -294,7 +294,6 @@ public class StoreListActivity extends AppCompatActivity {
                 v.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
                         TextView address = (TextView) v.findViewById(R.id.address);
                         TextView tel = (TextView) v.findViewById(R.id.tel);
                         TextView menu = (TextView) v.findViewById(R.id.menu);
@@ -316,6 +315,13 @@ public class StoreListActivity extends AppCompatActivity {
                         intent.putExtra("latitude",dto.getLatitude());
                         intent.putExtra("longitude",dto.getLongitude());
 
+                        StoreMapFragment frag = new StoreMapFragment();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("lat", "lat");
+                        bundle.putString("lon", "lon");
+                        frag.setArguments(bundle);
+
+
                         startActivity(intent);
                     }
                 });
@@ -328,9 +334,26 @@ public class StoreListActivity extends AppCompatActivity {
             return v;
         }
     }
+
+    //액션버튼 메뉴 액션바에 집어 넣기
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.overflow_menu,menu);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.overflow_menu, menu);
         return true;
+    }
+
+    //액션버튼을 클릭했을때의 동작
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        int id = item.getItemId();
+
+        if (id == R.id.action_search) {
+            Toast.makeText(this, "검색 클릭", Toast.LENGTH_SHORT).show();
+            String category=arrPlace[spnCategory.getSelectedItemPosition()];
+            String placeName=editPlaceName.getText().toString();
+            search(category, placeName);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

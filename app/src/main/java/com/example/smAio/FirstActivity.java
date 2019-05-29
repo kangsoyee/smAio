@@ -19,6 +19,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.zxing.integration.android.IntentIntegrator;
+
 import java.util.HashMap;
 
 public class FirstActivity extends AppCompatActivity {
@@ -179,25 +181,6 @@ public class FirstActivity extends AppCompatActivity {
         }
     }
 
-    //액션버튼 메뉴 액션바에 집어 넣기
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.action_menu, menu);
-        return true;
-    }
-
-    //액션버튼을 클릭했을때의 동작
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        int id = item.getItemId();
-
-        if (id == R.id.action_search) {
-            Toast.makeText(this, "검색 클릭", Toast.LENGTH_SHORT).show();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
     //액션바 숨기기
     private void hideActionBar() {
         ActionBar actionBar = getSupportActionBar();
@@ -231,8 +214,10 @@ public class FirstActivity extends AppCompatActivity {
 
     //QR 버튼 클릭 이벤트
     public void Click_qr(View view){
-        Intent startQRActivity = new Intent(FirstActivity.this, QRActivity.class);
+
+        Intent startQRActivity = new Intent(FirstActivity.this, QrScanActivity.class);
         startActivity(startQRActivity);
+        Log.e("test", "ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
     }
 
     //MyFragment에서 Logout버튼을 눌렀을때 이벤트를 발생시키기위해 생성 (참조를 통해)
