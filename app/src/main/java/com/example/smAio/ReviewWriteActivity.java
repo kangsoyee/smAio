@@ -56,6 +56,7 @@ public class ReviewWriteActivity extends AppCompatActivity {
     ListView textlist;
     ArrayList<String> matches_text;
     EditText txtReview;
+    EditText txtScore;
     Button button;
     String user_Id,place_url;
     ArrayList<PlaceDTO>items;
@@ -74,11 +75,13 @@ public class ReviewWriteActivity extends AppCompatActivity {
 
         Start = (ImageButton)findViewById(R.id.imageButton);
         txtReview=(EditText)findViewById(R.id.review_message);
+        txtScore=(EditText)findViewById(R.id.score);
         button=(Button)findViewById(R.id.button_reviewsend);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String txtReview_textCheck=txtReview.getText().toString();
+                String txtScore_textCheck = txtScore.getText().toString();
                 if(!txtReview_textCheck.isEmpty()) {
                     match_url(place_url);
                     Intent intent = new Intent(ReviewWriteActivity.this,endWriteReview.class);
@@ -165,11 +168,13 @@ public class ReviewWriteActivity extends AppCompatActivity {
             public void run() {
                 try {
                     String review_content=txtReview.getText().toString();
+                    String score = txtScore.getText().toString();
                     Log.e("url에 무슨값??",place_idx+"");
                     String page =
-                            Common.SERVER_URL+"/review_insert.php?"+"&userid="+user_Id
+                            Common.SERVER_URL+"/review_insertt.php?"+"&userid="+user_Id
                                     +"&place_idx="+place_idx
-                                    +"&review_content="+review_content;
+                                    +"&review_content="+review_content
+                                    +"&score="+score;
 //                    Common.SERVER_URL+"/review_insert.php?userid="+Common.userid
 //                            +"&place_idx="+place_idx
 //                            +"&review_content="+review_content;
