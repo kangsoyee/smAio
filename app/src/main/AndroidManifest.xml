@@ -19,7 +19,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".endWriteReview"></activity>
+        <activity android:name=".StoreListActivity2"></activity>
+        <activity android:name=".endWriteReview" />
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"

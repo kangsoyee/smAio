@@ -202,14 +202,14 @@ public class FirstActivity extends AppCompatActivity {
 
     //노래방 버튼 클릭 이벤트
     public void Clicked_karaoke(View view) {
-        Intent startRestaurantActivity = new Intent(FirstActivity.this, StoreListActivity.class);
-        startActivity(startRestaurantActivity);
+        Intent startPCActivity = new Intent(FirstActivity.this, StoreListActivity2.class);
+        startActivity(startPCActivity);
     }
 
     //피시방 버튼 클릭 이벤트
     public void Clicked_internet(View view) {
-        Intent startRestaurantActivity = new Intent(FirstActivity.this, StoreListActivity.class);
-        startActivity(startRestaurantActivity);
+        Intent startPCActivity = new Intent(FirstActivity.this, StoreListActivity2.class);
+        startActivity(startPCActivity);
     }
 
     //QR 버튼 클릭 이벤트
