@@ -38,12 +38,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private MapView mapView = null;
     private GoogleMap googleMap;
 
+    String check_place_name;
+    String menu;
+
     ArrayList<PlaceDTO> items;
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             for (PlaceDTO dto : items) {
+                check_place_name = dto.getPlace_name();
+                menu = dto.getMenu();
                 addMarker(false, new LatLng(Double.parseDouble(dto.getLatitude()), Double.parseDouble(dto.getLongitude())));
             }
         }
@@ -146,6 +151,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void addMarker(boolean refresh, LatLng location) {
+        PlaceDTO dto = new PlaceDTO();
 
         try {
             if (refresh)
@@ -153,7 +159,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
             MarkerOptions markerOptions = new MarkerOptions();
             markerOptions.position(location);
+            markerOptions.title(check_place_name);
+            markerOptions.snippet(menu);
             googleMap.addMarker(markerOptions);
+
         } catch (Exception e) {
             Log.e("addMarker failTest", e.getMessage());
         }
@@ -214,7 +223,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                         dto.setLongitude(row.getString("longitude"));
 
                         items.add(dto);
-
                     }
                     //핸들러에게 화면 갱신 요청
                     handler.sendEmptyMessage(0);
