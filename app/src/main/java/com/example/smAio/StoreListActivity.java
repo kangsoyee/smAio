@@ -7,6 +7,7 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -159,6 +160,8 @@ public class StoreListActivity extends AppCompatActivity {
                         dto.setTel(row.getString("tel"));
                         dto.setMenu(row.getString("menu"));
                         dto.setPrice(row.getString("price"));
+                        dto.setLatitude(row.getString("latitude"));
+                        dto.setLongitude(row.getString("longitude"));
 
                         if(!row.isNull("image"))
                             dto.setImage(row.getString("image"));
@@ -277,6 +280,8 @@ public class StoreListActivity extends AppCompatActivity {
                     TextView menu = (TextView) v.findViewById(R.id.menu);
                     TextView price = (TextView) v.findViewById(R.id.price);
                     ImageView imgPlace = (ImageView) v.findViewById(R.id.imgPlace);
+                    TextView latitude = (TextView)v.findViewById(R.id.latitude);
+                    TextView longitude = (TextView)v.findViewById(R.id.longitude);
 
                     //place_idx.setText(dto.getPlace_idx()+"");  // 여기 주석처리 안하면 로그인 자체도 안됨
                     place_name.setText(dto.getPlace_name());
@@ -287,6 +292,8 @@ public class StoreListActivity extends AppCompatActivity {
                     tel.setText(dto.getTel());
                     menu.setText(dto.getMenu());
                     price.setText(dto.getPrice());
+                    latitude.setText(dto.getLatitude());
+                    longitude.setText(dto.getLongitude());
 
                     Glide.with(StoreListActivity.this).load(dto.getImage()).into(imgPlace);
                 }
@@ -301,6 +308,8 @@ public class StoreListActivity extends AppCompatActivity {
                         TextView placename = (TextView) v.findViewById(R.id.place_name);
                         TextView starttime = (TextView) v.findViewById(R.id.start_time);
                         TextView endtime = (TextView) v.findViewById(R.id.end_time);
+                        TextView latitude = (TextView)v.findViewById(R.id.latitude);
+                        TextView longitude = (TextView)v.findViewById(R.id.longitude);
 
                         Intent intent = new Intent(StoreListActivity.this, DetailActivity.class);
                         intent.putExtra("idx", dto.getPlace_idx()); //putExtra 는 값을 전달하는 역할을 한다. 받는곳은 getExtra 가 된다.
@@ -312,15 +321,12 @@ public class StoreListActivity extends AppCompatActivity {
                         intent.putExtra("placename",placename.getText().toString());
                         intent.putExtra("starttime",starttime.getText().toString());
                         intent.putExtra("endtime",endtime.getText().toString());
-                        intent.putExtra("latitude",dto.getLatitude());
-                        intent.putExtra("longitude",dto.getLongitude());
+                        intent.putExtra("latitude",latitude.getText().toString());
+                        intent.putExtra("longitude",longitude.getText().toString());
 
-                        StoreMapFragment frag = new StoreMapFragment();
-                        Bundle bundle = new Bundle();
-                        bundle.putString("lat", "lat");
-                        bundle.putString("lon", "lon");
-                        frag.setArguments(bundle);
-
+                        dto.setLat(latitude.getText().toString());
+                        dto.setLng(longitude.getText().toString());
+                        Log.e("test", "ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ"+dto.getLatitude());
 
                         startActivity(intent);
                     }
@@ -349,10 +355,20 @@ public class StoreListActivity extends AppCompatActivity {
 
         if (id == R.id.action_search) {
             Toast.makeText(this, "검색 클릭", Toast.LENGTH_SHORT).show();
-            String category=arrPlace[spnCategory.getSelectedItemPosition()];
-            String placeName=editPlaceName.getText().toString();
-            search(category, placeName);
-            return true;
+
+//            action_search.setOnKeyListener(new View.OnKeyListener() { //login이벤트를 자판의 엔터로 하기위한 코드
+//                @Override
+//                public boolean onKey(View view, int keycode, KeyEvent keyEvent) {
+//                    if (keycode==KeyEvent.KEYCODE_ENTER){ //만약 keycode값이 KEYCOD_ENTER이면
+//                        String category=arrPlace[spnCategory.getSelectedItemPosition()];
+//                        String placeName=editPlaceName.getText().toString();
+//                        search(category, placeName);
+//                        return true;
+//                    }
+//                    return false;
+//                }
+//            });
+//            return true;
         }
         return super.onOptionsItemSelected(item);
     }

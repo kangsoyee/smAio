@@ -19,6 +19,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONArray;
@@ -37,6 +38,7 @@ public class StoreMapFragment extends Fragment implements OnMapReadyCallback {
 
     private MapView mapView = null;
     private GoogleMap googleMap;
+    private String lat, lng;
 
     public StoreMapFragment() {
         // required
@@ -52,8 +54,6 @@ public class StoreMapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_map, container, false);
-
-        Bundle bundle = getArguments();
 
         mapView = (MapView) layout.findViewById(R.id.map);
         mapView.getMapAsync(this);
@@ -116,14 +116,23 @@ public class StoreMapFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(final GoogleMap googleMap) {
+        PlaceDTO placeDTO = new PlaceDTO();
+        lat = placeDTO.getLat();
+        lng = placeDTO.getLng();
+        Log.e("test", ">>>>>>>>>>>>>>>>>"+placeDTO.getLat());
 
         //처음을 현재 위치로 초기화
         SimpleLocation location = new SimpleLocation(getContext());
-        LatLng currentPosition = new LatLng(location.getLatitude(), location.getLongitude());
+        //LatLng currentPosition = new LatLng(location.getLatitude(), location.getLongitude());
+        LatLng currentPosition = new LatLng(Double.valueOf(lat), Double.valueOf(lng));
 
         this.googleMap = googleMap;
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(currentPosition));
-        googleMap.animateCamera(CameraUpdateFactory.zoomTo(13));
+        googleMap.animateCamera(CameraUpdateFactory.zoomTo(17));
+
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(currentPosition);
+        googleMap.addMarker(markerOptions);
 
         //우측 상단에 위치 버튼
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
@@ -132,5 +141,4 @@ public class StoreMapFragment extends Fragment implements OnMapReadyCallback {
             googleMap.getUiSettings().setMyLocationButtonEnabled(true);
         }
     }
-
 }
