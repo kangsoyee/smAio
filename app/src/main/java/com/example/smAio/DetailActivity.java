@@ -1,6 +1,7 @@
 package com.example.smAio;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.content.Intent;
 import android.os.Handler;
@@ -123,24 +124,36 @@ public class DetailActivity extends AppCompatActivity {
         tabHost.setup();
 
         //Tab Spec생성 (Tab Spec:탭을 구성하는 요소들의 집합)
-        TabHost.TabSpec tabSpec1 = tabHost.newTabSpec("tab1");
-        tabSpec1.setIndicator("정보");
-        tabSpec1.setContent(R.id.tabSpec1);
-        TabHost.TabSpec tabSpec2 = tabHost.newTabSpec("tab2");
-        tabSpec2.setIndicator("리뷰");
-        tabSpec2.setContent(R.id.tabSpec2);
-        TabHost.TabSpec tabSpec3 = tabHost.newTabSpec("tab3");
-        tabSpec3.setIndicator("지도");
-        tabSpec3.setContent(R.id.tabSpec3);
+//        TabHost.TabSpec tabSpec1 = tabHost.newTabSpec("tab1");
+//        tabSpec1.setIndicator("정보");
+//        tabSpec1.setContent(R.id.tabSpec1);
+//        TabHost.TabSpec tabSpec2 = tabHost.newTabSpec("tab2");
+//        tabSpec2.setIndicator("리뷰");
+//        tabSpec2.setContent(R.id.tabSpec2);
+//        TabHost.TabSpec tabSpec3 = tabHost.newTabSpec("tab3");
+//        tabSpec3.setIndicator("지도");
+//        tabSpec3.setContent(R.id.tabSpec3);
+//
+//
+//
+//        //Tab 추가
+//        tabHost.addTab(tabSpec1);
+//        tabHost.addTab(tabSpec2);
+//        tabHost.addTab(tabSpec3);
 
-        //Tab 추가
-        tabHost.addTab(tabSpec1);
-        tabHost.addTab(tabSpec2);
-        tabHost.addTab(tabSpec3);
+        setNewTab(tabHost,"정보",R.id.tabSpec1);
+        setNewTab(tabHost,"리뷰",R.id.tabSpec2);
+        setNewTab(tabHost,"지도",R.id.tabSpec3);
 
-        //초기 Tab 설정
+//        초기 Tab 설정
         tabHost.setCurrentTab(0);
 
+        tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+            @Override
+            public void onTabChanged(String tabId) {
+
+            }
+        });
         info_address = (TextView) findViewById(R.id.info_address);
         info_tel = (TextView) findViewById(R.id.info_tel);
         info_menu = (TextView) findViewById(R.id.info_menu);
@@ -201,6 +214,19 @@ public class DetailActivity extends AppCompatActivity {
 
     }
 
+    private void setNewTab(TabHost host, String title, int contentID) {
+        TabHost.TabSpec tabSpec = host.newTabSpec(title);
+        tabSpec.setIndicator(getTabIndicator(title));
+        tabSpec.setContent(contentID);
+        host.addTab(tabSpec);
+    }
+
+    private View getTabIndicator(String title) {
+        View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.tab_menu, null);
+        TextView tv = view.findViewById(R.id.textView);
+        tv.setText(title);
+        return view;
+    }
 
     void review_list(){
         //네트워크 관련 작업은 백그라운드 스레드에서 처리

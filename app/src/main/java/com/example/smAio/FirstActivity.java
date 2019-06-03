@@ -196,19 +196,19 @@ public class FirstActivity extends AppCompatActivity {
 
     //카페 버튼 클릭 이벤트
     public void Clicked_cafe(View view) {
-        Intent startRestaurantActivity = new Intent(FirstActivity.this, StoreListActivity.class);
-        startActivity(startRestaurantActivity);
+        Intent startCafeActivity = new Intent(FirstActivity.this, StoreListActivity2.class);
+        startActivity(startCafeActivity);
     }
 
     //노래방 버튼 클릭 이벤트
     public void Clicked_karaoke(View view) {
-        Intent startPCActivity = new Intent(FirstActivity.this, StoreListActivity2.class);
-        startActivity(startPCActivity);
+        Intent startKaraokeActivity = new Intent(FirstActivity.this, StoreListActivity3.class);
+        startActivity(startKaraokeActivity);
     }
 
     //피시방 버튼 클릭 이벤트
     public void Clicked_internet(View view) {
-        Intent startPCActivity = new Intent(FirstActivity.this, StoreListActivity2.class);
+        Intent startPCActivity = new Intent(FirstActivity.this, StoreListActivity4.class);
         startActivity(startPCActivity);
     }
 

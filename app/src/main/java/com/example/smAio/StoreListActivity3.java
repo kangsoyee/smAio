@@ -33,22 +33,22 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class StoreListActivity2 extends AppCompatActivity {
+public class StoreListActivity3 extends AppCompatActivity {
     ListView list;
     Button btnSearch;
     Spinner spnCategory;
     EditText editPlaceName;
     String[] arrPlace;
 
-    ArrayList<PlaceDTO2> items;
+    ArrayList<PlaceDTO3> items;
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
 
-            StoreListActivity2.PlaceAdapter adapter = new StoreListActivity2.PlaceAdapter(
-                    StoreListActivity2.this,
-                    R.layout.place_row,
+            StoreListActivity3.PlaceAdapter adapter = new StoreListActivity3.PlaceAdapter(
+                    StoreListActivity3.this,
+                    R.layout.place_row2,
                     items);
             list.setAdapter(adapter);
         }
@@ -57,7 +57,7 @@ public class StoreListActivity2 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.setContentView(R.layout.activity_store_list2);
+        this.setContentView(R.layout.activity_store_list3);
 
         list = (ListView) findViewById(R.id.list);
         spnCategory = (Spinner) findViewById(R.id.spnCategory);
@@ -107,9 +107,9 @@ public class StoreListActivity2 extends AppCompatActivity {
         Thread th = new Thread(new Runnable() {
             public void run() {
                 try {
-                    items = new ArrayList<PlaceDTO2>();
+                    items = new ArrayList<PlaceDTO3>();
                     String page = Common.SERVER_URL + "/place_list.php";
-                    Log.e("StoreListActivity2", "여기까지야");
+                    Log.e("StoreListActivity3", "여기까지야");
 
                     URL url = new URL(page);
                     // 커넥션 객체 생성
@@ -143,25 +143,23 @@ public class StoreListActivity2 extends AppCompatActivity {
                     JSONArray jArray = (JSONArray) jsonObj.get("sendData"); // 이 부분 이해 안됨
                     for (int i = 0; i < jArray.length(); i++) {
                         JSONObject row = jArray.getJSONObject(i);
-                        PlaceDTO2 dto2 = new PlaceDTO2();
-                        dto2.setPlace_idx(row.getInt("place_idx2"));
-                        dto2.setCategory(row.getString("category2"));
-                        dto2.setPlace_name(row.getString("place_name2"));
-                        dto2.setStart_time(row.getString("start_time2"));
-                        dto2.setEnd_time(row.getString("end_time2"));
-                        dto2.setAddress(row.getString("address2"));
-                        dto2.setTel(row.getString("tel2"));
-                        dto2.setMenu(row.getString("menu2"));
-                        dto2.setPrice(row.getString("price2"));
-                        dto2.setLatitude(row.getString("latitude2"));
-                        dto2.setLongitude(row.getString("longitude2"));
+                        PlaceDTO3 dto3 = new PlaceDTO3();
+                        dto3.setPlace_idx(row.getInt("place_idx3"));
+                        dto3.setCategory(row.getString("category3"));
+                        dto3.setPlace_name(row.getString("place_name3"));
+                        dto3.setStart_time(row.getString("start_time3"));
+                        dto3.setEnd_time(row.getString("end_time3"));
+                        dto3.setAddress(row.getString("address3"));
+                        dto3.setTel(row.getString("tel3"));
+                        dto3.setLatitude(row.getString("latitude3"));
+                        dto3.setLongitude(row.getString("longitude3"));
 
-                        if (!row.isNull("image2"))
-                            dto2.setImage(row.getString("image2"));
+                        if (!row.isNull("image3"))
+                            dto3.setImage(row.getString("image3"));
 
-                        Log.e("test2", dto2.getImage());
+                        Log.e("test3", dto3.getImage());
 
-                        items.add(dto2);
+                        items.add(dto3);
                     }
                     //핸들러에게 화면 갱신 요청
                     handler.sendEmptyMessage(0);
@@ -179,7 +177,7 @@ public class StoreListActivity2 extends AppCompatActivity {
         Thread th = new Thread(new Runnable() {
             public void run() {
                 try {
-                    items = new ArrayList<PlaceDTO2>();
+                    items = new ArrayList<PlaceDTO3>();
                     String page = Common.SERVER_URL + "/place_search.php?category=" + category + "&place_name=" + place_name;
                     Log.e("Mainactivity", "여기까진 됨");
 
@@ -215,23 +213,21 @@ public class StoreListActivity2 extends AppCompatActivity {
                     JSONArray jArray = (JSONArray) jsonObj.get("sendData");
                     for (int i = 0; i < jArray.length(); i++) {
                         JSONObject row = jArray.getJSONObject(i);
-                        PlaceDTO2 dto2 = new PlaceDTO2();
-                        dto2.setPlace_idx(row.getInt("place_idx2"));
-                        dto2.setAddress(row.getString("address2"));
-                        dto2.setCategory(row.getString("category2"));
-                        dto2.setEnd_time(row.getString("end_time2"));
-                        dto2.setStart_time(row.getString("start_time2"));
-                        dto2.setTel(row.getString("tel2"));
-                        dto2.setPlace_name(row.getString("place_name2"));
-                        dto2.setMenu(row.getString("menu2"));
-                        dto2.setPrice(row.getString("price2"));
-                        dto2.setLatitude(row.getString("latitude2"));
-                        dto2.setLongitude(row.getString("longitude2"));
+                        PlaceDTO3 dto3 = new PlaceDTO3();
+                        dto3.setPlace_idx(row.getInt("place_idx3"));
+                        dto3.setAddress(row.getString("address3"));
+                        dto3.setCategory(row.getString("category3"));
+                        dto3.setEnd_time(row.getString("end_time3"));
+                        dto3.setStart_time(row.getString("start_time3"));
+                        dto3.setTel(row.getString("tel3"));
+                        dto3.setPlace_name(row.getString("place_name3"));
+                        dto3.setLatitude(row.getString("latitude3"));
+                        dto3.setLongitude(row.getString("longitude3"));
 
-                        if (!row.isNull("image2"))
-                            dto2.setImage(row.getString("image2"));
+                        if (!row.isNull("image3"))
+                            dto3.setImage(row.getString("image3"));
 
-                        items.add(dto2);
+                        items.add(dto3);
 
                     }
                     //핸들러에게 화면 갱신 요청
@@ -244,10 +240,10 @@ public class StoreListActivity2 extends AppCompatActivity {
         th.start();
     }
 
-    class PlaceAdapter extends ArrayAdapter<PlaceDTO2> {                 // 여기 class 이해 안됨
+    class PlaceAdapter extends ArrayAdapter<PlaceDTO3> {                 // 여기 class 이해 안됨
         //ArrayList<BookDTO> item;
         public PlaceAdapter(Context context, int textViewResourceId,
-                            ArrayList<PlaceDTO2> objects) {
+                            ArrayList<PlaceDTO3> objects) {
             super(context, textViewResourceId, objects);
 //this.item= objects;
         }
@@ -259,34 +255,30 @@ public class StoreListActivity2 extends AppCompatActivity {
             if (v == null) {
                 LayoutInflater li = (LayoutInflater)
                         getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                v = li.inflate(R.layout.place_row, null);
+                v = li.inflate(R.layout.place_row2, null);
             }
 
             try {
 
-                final PlaceDTO2 dto2 = items.get(position);
-                if (dto2 != null) {
+                final PlaceDTO3 dto3 = items.get(position);
+                if (dto3 != null) {
                     TextView place_name = (TextView) v.findViewById(R.id.place_name);
                     TextView start_time = (TextView) v.findViewById(R.id.start_time);
                     TextView end_time = (TextView) v.findViewById(R.id.end_time);
                     TextView category = (TextView) v.findViewById(R.id.category);
                     TextView address = (TextView) v.findViewById(R.id.address);
                     TextView tel = (TextView) v.findViewById(R.id.tel);
-                    TextView menu = (TextView) v.findViewById(R.id.menu);
-                    TextView price = (TextView) v.findViewById(R.id.price);
                     ImageView imgPlace = (ImageView) v.findViewById(R.id.imgPlace);
 
                     //place_idx.setText(dto.getPlace_idx()+"");  // 여기 주석처리 안하면 로그인 자체도 안됨
-                    place_name.setText(dto2.getPlace_name());
-                    start_time.setText(dto2.getStart_time());
-                    end_time.setText(dto2.getEnd_time());
-                    category.setText(dto2.getCategory());
-                    address.setText(dto2.getAddress());
-                    tel.setText(dto2.getTel());
-                    menu.setText(dto2.getMenu());
-                    price.setText(dto2.getPrice());
+                    place_name.setText(dto3.getPlace_name());
+                    start_time.setText(dto3.getStart_time());
+                    end_time.setText(dto3.getEnd_time());
+                    category.setText(dto3.getCategory());
+                    address.setText(dto3.getAddress());
+                    tel.setText(dto3.getTel());
 
-                    Glide.with(StoreListActivity2.this).load(dto2.getImage()).into(imgPlace);
+                    Glide.with(StoreListActivity3.this).load(dto3.getImage()).into(imgPlace);
                 }
                 //클릭하면 코드를 넘겨서 받아옴
                 v.setOnClickListener(new View.OnClickListener() {
@@ -295,24 +287,20 @@ public class StoreListActivity2 extends AppCompatActivity {
 
                         TextView address = (TextView) v.findViewById(R.id.address);
                         TextView tel = (TextView) v.findViewById(R.id.tel);
-                        TextView menu = (TextView) v.findViewById(R.id.menu);
-                        TextView price = (TextView) v.findViewById(R.id.price);
                         TextView placename = (TextView) v.findViewById(R.id.place_name);
                         TextView starttime = (TextView) v.findViewById(R.id.start_time);
                         TextView endtime = (TextView) v.findViewById(R.id.end_time);
 
-                        Intent intent = new Intent(StoreListActivity2.this, DetailActivity.class);
-                        intent.putExtra("idx2", dto2.getPlace_idx()); //putExtra 는 값을 전달하는 역할을 한다. 받는곳은 getExtra 가 된다.
+                        Intent intent = new Intent(StoreListActivity3.this, DetailActivity.class);
+                        intent.putExtra("idx3", dto3.getPlace_idx()); //putExtra 는 값을 전달하는 역할을 한다. 받는곳은 getExtra 가 된다.
 
-                        intent.putExtra("address2", address.getText().toString());
-                        intent.putExtra("tel2", tel.getText().toString());
-                        intent.putExtra("menu2", menu.getText().toString());
-                        intent.putExtra("price2", price.getText().toString());
-                        intent.putExtra("placename2", placename.getText().toString());
-                        intent.putExtra("starttime2", starttime.getText().toString());
-                        intent.putExtra("endtime2", endtime.getText().toString());
-                        intent.putExtra("latitude2", dto2.getLatitude());
-                        intent.putExtra("longitude2", dto2.getLongitude());
+                        intent.putExtra("address3", address.getText().toString());
+                        intent.putExtra("tel3", tel.getText().toString());
+                        intent.putExtra("placename3", placename.getText().toString());
+                        intent.putExtra("starttime3", starttime.getText().toString());
+                        intent.putExtra("endtime3", endtime.getText().toString());
+                        intent.putExtra("latitude3", dto3.getLatitude());
+                        intent.putExtra("longitude3", dto3.getLongitude());
 
                         startActivity(intent);
                     }
@@ -349,5 +337,4 @@ public class StoreListActivity2 extends AppCompatActivity {
 
         return true;
     }
-
 }
