@@ -108,7 +108,7 @@ public class StoreListActivity2 extends AppCompatActivity {
             public void run() {
                 try {
                     items = new ArrayList<PlaceDTO2>();
-                    String page = Common.SERVER_URL + "/place_list.php";
+                    String page = Common.SERVER_URL + "/cafe_list.php";
                     Log.e("StoreListActivity2", "여기까지야");
 
                     URL url = new URL(page);
@@ -144,20 +144,18 @@ public class StoreListActivity2 extends AppCompatActivity {
                     for (int i = 0; i < jArray.length(); i++) {
                         JSONObject row = jArray.getJSONObject(i);
                         PlaceDTO2 dto2 = new PlaceDTO2();
-                        dto2.setPlace_idx(row.getInt("place_idx2"));
-                        dto2.setCategory(row.getString("category2"));
-                        dto2.setPlace_name(row.getString("place_name2"));
-                        dto2.setStart_time(row.getString("start_time2"));
-                        dto2.setEnd_time(row.getString("end_time2"));
-                        dto2.setAddress(row.getString("address2"));
-                        dto2.setTel(row.getString("tel2"));
-                        dto2.setMenu(row.getString("menu2"));
-                        dto2.setPrice(row.getString("price2"));
-                        dto2.setLatitude(row.getString("latitude2"));
-                        dto2.setLongitude(row.getString("longitude2"));
+                        dto2.setPlace_idx(row.getInt("place_idx"));
+                        dto2.setCategory(row.getString("category"));
+                        dto2.setPlace_name(row.getString("place_name"));
+                        dto2.setStart_time(row.getString("start_time"));
+                        dto2.setEnd_time(row.getString("end_time"));
+                        dto2.setAddress(row.getString("address"));
+                        dto2.setTel(row.getString("tel"));
+                        dto2.setLatitude(row.getString("latitude"));
+                        dto2.setLongitude(row.getString("longitude"));
 
-                        if (!row.isNull("image2"))
-                            dto2.setImage(row.getString("image2"));
+                        if (!row.isNull("image"))
+                            dto2.setImage(row.getString("image"));
 
                         Log.e("test2", dto2.getImage());
 
@@ -216,20 +214,18 @@ public class StoreListActivity2 extends AppCompatActivity {
                     for (int i = 0; i < jArray.length(); i++) {
                         JSONObject row = jArray.getJSONObject(i);
                         PlaceDTO2 dto2 = new PlaceDTO2();
-                        dto2.setPlace_idx(row.getInt("place_idx2"));
-                        dto2.setAddress(row.getString("address2"));
-                        dto2.setCategory(row.getString("category2"));
-                        dto2.setEnd_time(row.getString("end_time2"));
-                        dto2.setStart_time(row.getString("start_time2"));
-                        dto2.setTel(row.getString("tel2"));
-                        dto2.setPlace_name(row.getString("place_name2"));
-                        dto2.setMenu(row.getString("menu2"));
-                        dto2.setPrice(row.getString("price2"));
-                        dto2.setLatitude(row.getString("latitude2"));
-                        dto2.setLongitude(row.getString("longitude2"));
+                        dto2.setPlace_idx(row.getInt("place_idx"));
+                        dto2.setAddress(row.getString("address"));
+                        dto2.setCategory(row.getString("category"));
+                        dto2.setEnd_time(row.getString("end_time"));
+                        dto2.setStart_time(row.getString("start_time"));
+                        dto2.setTel(row.getString("tel"));
+                        dto2.setPlace_name(row.getString("place_name"));
+                        dto2.setLatitude(row.getString("latitude"));
+                        dto2.setLongitude(row.getString("longitude"));
 
-                        if (!row.isNull("image2"))
-                            dto2.setImage(row.getString("image2"));
+                        if (!row.isNull("image"))
+                            dto2.setImage(row.getString("image"));
 
                         items.add(dto2);
 
@@ -272,8 +268,6 @@ public class StoreListActivity2 extends AppCompatActivity {
                     TextView category = (TextView) v.findViewById(R.id.category);
                     TextView address = (TextView) v.findViewById(R.id.address);
                     TextView tel = (TextView) v.findViewById(R.id.tel);
-                    TextView menu = (TextView) v.findViewById(R.id.menu);
-                    TextView price = (TextView) v.findViewById(R.id.price);
                     ImageView imgPlace = (ImageView) v.findViewById(R.id.imgPlace);
 
                     //place_idx.setText(dto.getPlace_idx()+"");  // 여기 주석처리 안하면 로그인 자체도 안됨
@@ -283,8 +277,6 @@ public class StoreListActivity2 extends AppCompatActivity {
                     category.setText(dto2.getCategory());
                     address.setText(dto2.getAddress());
                     tel.setText(dto2.getTel());
-                    menu.setText(dto2.getMenu());
-                    price.setText(dto2.getPrice());
 
                     Glide.with(StoreListActivity2.this).load(dto2.getImage()).into(imgPlace);
                 }
@@ -295,24 +287,20 @@ public class StoreListActivity2 extends AppCompatActivity {
 
                         TextView address = (TextView) v.findViewById(R.id.address);
                         TextView tel = (TextView) v.findViewById(R.id.tel);
-                        TextView menu = (TextView) v.findViewById(R.id.menu);
-                        TextView price = (TextView) v.findViewById(R.id.price);
                         TextView placename = (TextView) v.findViewById(R.id.place_name);
                         TextView starttime = (TextView) v.findViewById(R.id.start_time);
                         TextView endtime = (TextView) v.findViewById(R.id.end_time);
 
                         Intent intent = new Intent(StoreListActivity2.this, DetailActivity.class);
-                        intent.putExtra("idx2", dto2.getPlace_idx()); //putExtra 는 값을 전달하는 역할을 한다. 받는곳은 getExtra 가 된다.
+                        intent.putExtra("idx", dto2.getPlace_idx()); //putExtra 는 값을 전달하는 역할을 한다. 받는곳은 getExtra 가 된다.
 
-                        intent.putExtra("address2", address.getText().toString());
-                        intent.putExtra("tel2", tel.getText().toString());
-                        intent.putExtra("menu2", menu.getText().toString());
-                        intent.putExtra("price2", price.getText().toString());
-                        intent.putExtra("placename2", placename.getText().toString());
-                        intent.putExtra("starttime2", starttime.getText().toString());
-                        intent.putExtra("endtime2", endtime.getText().toString());
-                        intent.putExtra("latitude2", dto2.getLatitude());
-                        intent.putExtra("longitude2", dto2.getLongitude());
+                        intent.putExtra("address", address.getText().toString());
+                        intent.putExtra("tel", tel.getText().toString());
+                        intent.putExtra("placename", placename.getText().toString());
+                        intent.putExtra("starttime", starttime.getText().toString());
+                        intent.putExtra("endtime", endtime.getText().toString());
+                        intent.putExtra("latitude", dto2.getLatitude());
+                        intent.putExtra("longitude", dto2.getLongitude());
 
                         startActivity(intent);
                     }
