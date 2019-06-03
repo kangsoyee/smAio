@@ -93,8 +93,8 @@ public class LoginActivity extends AppCompatActivity {
         link_signup.setOnClickListener(new View.OnClickListener() {//회원가입이 눌렸을 때 클릭 리스너
             @Override
             public void onClick(View v) {
-                Intent signupIntent = new Intent(LoginActivity.this, SignUpActivity.class);
-                LoginActivity.this.startActivity(signupIntent); //인텐트를 사용하여 엑티비티 전환
+                Intent emailIntent = new Intent(LoginActivity.this, EmailActivity.class);
+                LoginActivity.this.startActivity(emailIntent); //인텐트를 사용하여 엑티비티 전환
             }
         });
     }

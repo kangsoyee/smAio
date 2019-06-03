@@ -19,7 +19,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".StoreListActivity4"></activity>
+        <activity android:name=".EmailActivity"></activity>
+        <activity android:name=".StoreListActivity4" />
         <activity android:name=".StoreListActivity3" />
         <activity android:name=".StoreListActivity2" />
         <activity android:name=".endWriteReview" />

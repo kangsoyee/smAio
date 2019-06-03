@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "756732848220",
+    "firebase_url": "https://sendemail-914da.firebaseio.com",
+    "project_id": "sendemail-914da",
+    "storage_bucket": "sendemail-914da.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:756732848220:android:9401bd677141bef3",
+        "android_client_info": {
+          "package_name": "com.example.smAio"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "756732848220-7qc0ff2op0p2iif4g8i0aob80ci2llka.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZpfd-7VNMx8yWyS8OsOXanroYSJcqRDo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "756732848220-7qc0ff2op0p2iif4g8i0aob80ci2llka.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
