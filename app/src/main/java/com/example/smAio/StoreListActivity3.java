@@ -48,7 +48,7 @@ public class StoreListActivity3 extends AppCompatActivity {
 
             StoreListActivity3.PlaceAdapter adapter = new StoreListActivity3.PlaceAdapter(
                     StoreListActivity3.this,
-                    R.layout.place_row,
+                    R.layout.place_row2,
                     items);
             list.setAdapter(adapter);
         }
@@ -255,7 +255,7 @@ public class StoreListActivity3 extends AppCompatActivity {
             if (v == null) {
                 LayoutInflater li = (LayoutInflater)
                         getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                v = li.inflate(R.layout.place_row, null);
+                v = li.inflate(R.layout.place_row2, null);
             }
 
             try {
@@ -276,7 +276,7 @@ public class StoreListActivity3 extends AppCompatActivity {
                     place_name.setText(dto3.getPlace_name());
                     start_time.setText(dto3.getStart_time());
                     end_time.setText(dto3.getEnd_time());
-                    category.setText(dto3.getCategory());
+                    //category.setText(dto3.getCategory());
                     address.setText(dto3.getAddress());
                     tel.setText(dto3.getTel());
                     latitude.setText(dto3.getLatitude());

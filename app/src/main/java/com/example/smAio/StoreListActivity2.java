@@ -276,7 +276,7 @@ public class StoreListActivity2 extends AppCompatActivity {
                     place_name.setText(dto2.getPlace_name());
                     start_time.setText(dto2.getStart_time());
                     end_time.setText(dto2.getEnd_time());
-                    category.setText(dto2.getCategory());
+                    //category.setText(dto2.getCategory());
                     address.setText(dto2.getAddress());
                     tel.setText(dto2.getTel());
                     latitude.setText(dto2.getLatitude());
