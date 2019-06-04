@@ -7,6 +7,7 @@ public class ReviewDTO {
     private String review_date;
     private int place_idx;
     private String review_content;
+    private int score_avg;
 
     @Override
     public String toString() {          // 이 소스코드가 무얼 의미하는지 모르겠음
@@ -66,6 +67,15 @@ public class ReviewDTO {
 
     public void setReview_content(String review_content) {
         this.review_content = review_content;
+    }
+
+    public int getScore_avg() {
+        return score_avg;
+    }
+
+    public int setScore_avg(int score_avg) {
+        this.score_avg = score_avg;
+        return score_avg;
     }
 }
 

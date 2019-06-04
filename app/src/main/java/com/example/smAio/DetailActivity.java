@@ -37,9 +37,12 @@ public class DetailActivity extends AppCompatActivity {
     boolean change=false;
 
     int place_idx;
+    int avg;
+
     TextView txtCategory, txtPlaceName, txtStartTime, txtEndTime, txtAddress, txtTel, txtReview, txtMenu, txtPrice;
     PlaceDTO placeInfo;
     ArrayList<ReviewDTO> review_list=new ArrayList<>();
+    ArrayList<ReviewDTO> score_avg = new ArrayList<>();
     ListView list;
 
     TextView placename;
@@ -64,8 +67,8 @@ public class DetailActivity extends AppCompatActivity {
                 txtEndTime.setText(placeInfo.getEnd_time());
                 txtStartTime.setText(placeInfo.getStart_time());
                 txtTel.setText(placeInfo.getTel());
-                txtPlaceName.setText(placeInfo.getPlace_name());
                 txtMenu.setText(placeInfo.getMenu());
+                txtPlaceName.setText(placeInfo.getPlace_name());
                 txtPrice.setText(placeInfo.getPrice());
             }else if(msg.what == 2){ //수정,삭제
                 finish();
@@ -78,6 +81,24 @@ public class DetailActivity extends AppCompatActivity {
             }else if(msg.what==4){
                 txtReview.setText("");
                 review_list();
+            }else  if(msg.what==5){
+                //별점
+                Log.i("test","check");
+                final TextView tv = (TextView) findViewById(R.id.textView4);
+                RatingBar rb = (RatingBar) findViewById(R.id.ratingBar);
+
+                float rate = avg;
+
+                Log.i("test_rate",String.valueOf(score_avg));
+
+                rb.setRating(rate);
+
+                rb.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                    @Override
+                    public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                        tv.setText(rating+"");
+                    }
+                });
             }
         }
     };
@@ -106,16 +127,6 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
 
-        //별점
-        final TextView tv = (TextView) findViewById(R.id.textView4);
-        RatingBar rb = (RatingBar) findViewById(R.id.ratingBar);
-
-        rb.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                tv.setText("" + rating);
-            }
-        });
 
         //tabHost Widget과 연결
         TabHost tabHost = (TabHost) findViewById(R.id.tabHost);
@@ -211,6 +222,7 @@ public class DetailActivity extends AppCompatActivity {
         place_idx=intent.getIntExtra("idx",0);
         review_list();
         detail();
+        avg();
 
     }
 
@@ -362,5 +374,59 @@ public class DetailActivity extends AppCompatActivity {
         });
         th.start();
     }
+    void avg() {
+        //네트워크 관련 작업은 백그라운드 스레드에서 처리
+        final StringBuilder sb = new StringBuilder();
+        Thread th = new Thread(new Runnable() {
+            public void run() {
+                try {
+                    review_list = new ArrayList<ReviewDTO>();
+                    String page = Common.SERVER_URL + "/score_avg2.php?place_idx=" + place_idx;
+                    Log.i("test_avg()", "여기까지는 이동함");
 
+                    URL url = new URL(page);
+                    // 커넥션 객체 생성
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    // 연결되었으면.
+                    if (conn != null) {
+                        //타임아웃 시간 설정
+                        conn.setConnectTimeout(10000);
+                        //캐쉬 사용 여부
+                        conn.setUseCaches(false);
+                        //url에 접속 성공하면
+                        if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                            //스트림 생성
+                            BufferedReader br =
+                                    new BufferedReader(
+                                            new InputStreamReader(
+                                                    conn.getInputStream(), "utf-8"));
+                            while (true) {
+                                String line = br.readLine(); //한 라인을 읽음
+                                if (line == null) break;//더이상 내용이 없으면 종료
+                                sb.append(line + "\n");
+                            }
+                            br.close(); //버퍼 닫기
+                        }
+                        conn.disconnect();
+                    }
+// 스트링을 json 객체로 변환
+                    JSONObject jsonObj = new JSONObject(sb.toString());
+                    Log.i("test", "score_avg:" + sb);
+// json.get("변수명")
+                    JSONArray jArray = (JSONArray) jsonObj.get("sendData");     //sendData 어떻게 쓰이는지
+                    for (int i = 0; i < jArray.length(); i++) {
+                        JSONObject row = jArray.getJSONObject(i);
+                        ReviewDTO dto = new ReviewDTO();
+                        avg = dto.setScore_avg(row.getInt("score_avg"));
+                        score_avg.add(dto);
+                    }
+                    //핸들러에게 화면 갱신 요청
+                    handler.sendEmptyMessage(5);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        th.start();
+    }
 }
