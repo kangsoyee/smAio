@@ -108,7 +108,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
-            android:background="#FAFAFA"
+            android:background="@drawable/line_fragment"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
             android:text="CREATE ACCOUNT"
