@@ -104,9 +104,26 @@ public class DetailActivity extends AppCompatActivity {
     };
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+
+        Intent get_info = getIntent();
+        String ad_data = get_info.getStringExtra("address");
+        String tel_data = get_info.getStringExtra("tel");
+        String menu_data = get_info.getStringExtra("menu");
+        String price_data = get_info.getStringExtra("price");
+        String name_data = get_info.getStringExtra("placename");
+        String start_data = get_info.getStringExtra("starttime");
+        String end_data = get_info.getStringExtra("endtime");
+        String latitude_data = get_info.getStringExtra("latitude");
+        String longitude_data = get_info.getStringExtra("longitude");
 
         iv = (ImageView) findViewById(R.id.heart_image);
 
@@ -127,6 +144,16 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
 
+//        //별점
+//        final TextView tv = (TextView) findViewById(R.id.textView4);
+//        RatingBar rb = (RatingBar) findViewById(R.id.ratingBar);
+//
+//        rb.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+//            @Override
+//            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+//                tv.setText("" + rating);
+//            }
+//        });
 
         //tabHost Widget과 연결
         TabHost tabHost = (TabHost) findViewById(R.id.tabHost);
@@ -174,22 +201,6 @@ public class DetailActivity extends AppCompatActivity {
         starttime = (TextView) findViewById(R.id.start_time);
         endtime = (TextView) findViewById(R.id.end_time);
 
-        Intent get_info = getIntent();
-        String ad_data = get_info.getStringExtra("address");
-        String tel_data = get_info.getStringExtra("tel");
-        String menu_data = get_info.getStringExtra("menu");
-        String price_data = get_info.getStringExtra("price");
-        String name_data = get_info.getStringExtra("placename");
-        String start_data = get_info.getStringExtra("starttime");
-        String end_data = get_info.getStringExtra("endtime");
-        String latitude_data = get_info.getStringExtra("latitude");
-        String longitude_data = get_info.getStringExtra("longitude");
-
-        StoreMapFragment storeMapFragment = new StoreMapFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString("latitude",latitude_data);
-        bundle.putString("longitude",longitude_data);
-        storeMapFragment.setArguments(bundle);
 
         info_address.setText(ad_data);
         info_tel.setText(tel_data);
@@ -200,7 +211,8 @@ public class DetailActivity extends AppCompatActivity {
         starttime.setText(start_data);
         endtime.setText(end_data);
 
-        info_tel.setOnClickListener(new View.OnClickListener() {
+        //전화번호 클릭 이벤트
+       info_tel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mnum = info_tel.getText().toString();
