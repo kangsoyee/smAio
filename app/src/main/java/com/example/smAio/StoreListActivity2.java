@@ -177,7 +177,6 @@ public class StoreListActivity2 extends AppCompatActivity {
         Thread th = new Thread(new Runnable() {
             public void run() {
                 try {
-//                    category=" + category + "&
                     items = new ArrayList<PlaceDTO>();
                     String page = Common.SERVER_URL + "/place_search_cafe.php?place_name="+place_name;
                     Log.i("test_cafe",place_name);
@@ -222,8 +221,8 @@ public class StoreListActivity2 extends AppCompatActivity {
                         dto2.setStart_time(row.getString("start_time"));
                         dto2.setTel(row.getString("tel"));
                         dto2.setPlace_name(row.getString("place_name"));
-                        //dto2.setLatitude(row.getString("latitude"));
-                        //dto2.setLongitude(row.getString("longitude"));
+                        dto2.setLatitude(row.getString("latitude"));
+                        dto2.setLongitude(row.getString("longitude"));
 
                         if (!row.isNull("image"))
                             dto2.setImage(row.getString("image"));

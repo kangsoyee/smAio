@@ -2,6 +2,7 @@ package com.example.smAio;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -187,7 +188,7 @@ public class StoreListActivity extends AppCompatActivity {
             public void run() {
                 try {
                     items = new ArrayList<PlaceDTO>();
-                    String page = Common.SERVER_URL+"/place_search.php?category="+category+"&place_name="+place_name;
+                    String page = Common.SERVER_URL+"/place_search.php?place_name="+place_name;
                     Log.e("Mainactivity","여기까진 됨");
 
                     URL url = new URL(page);
@@ -232,6 +233,8 @@ public class StoreListActivity extends AppCompatActivity {
                         dto.setPlace_name(row.getString("place_name"));
                         dto.setMenu(row.getString("menu"));
                         dto.setPrice(row.getString("price"));
+                        dto.setLongitude(row.getString("longitude"));
+                        dto.setLatitude(row.getString("latitude"));
 
                         if(!row.isNull("image"))
                             dto.setImage(row.getString("image"));
@@ -329,7 +332,7 @@ public class StoreListActivity extends AppCompatActivity {
                         Log.e("test", "ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ"+dto.getLatitude());
 
                         startActivity(intent);
-                        Log.i("test","check");
+                        Log.i("test_StoreListActivity","onClick 끝");
                     }
                 });
 

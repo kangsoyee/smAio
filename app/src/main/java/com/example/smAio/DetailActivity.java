@@ -113,7 +113,7 @@ public class DetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-
+        Log.i("test_DetailActivity","onCreate 시작");
         Intent get_info = getIntent();
         String ad_data = get_info.getStringExtra("address");
         String tel_data = get_info.getStringExtra("tel");
@@ -122,8 +122,6 @@ public class DetailActivity extends AppCompatActivity {
         String name_data = get_info.getStringExtra("placename");
         String start_data = get_info.getStringExtra("starttime");
         String end_data = get_info.getStringExtra("endtime");
-        String latitude_data = get_info.getStringExtra("latitude");
-        String longitude_data = get_info.getStringExtra("longitude");
 
         iv = (ImageView) findViewById(R.id.heart_image);
 
@@ -210,6 +208,7 @@ public class DetailActivity extends AppCompatActivity {
         placename.setText(name_data);
         starttime.setText(start_data);
         endtime.setText(end_data);
+
 
         //전화번호 클릭 이벤트
        info_tel.setOnClickListener(new View.OnClickListener() {

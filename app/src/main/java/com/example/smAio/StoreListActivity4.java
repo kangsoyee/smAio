@@ -222,8 +222,8 @@ public class StoreListActivity4 extends AppCompatActivity {
                         dto2.setStart_time(row.getString("start_time"));
                         dto2.setTel(row.getString("tel"));
                         dto2.setPlace_name(row.getString("place_name"));
-                        //dto2.setLatitude(row.getString("latitude"));
-                        //dto2.setLongitude(row.getString("longitude"));
+                        dto2.setLatitude(row.getString("latitude"));
+                        dto2.setLongitude(row.getString("longitude"));
 
                         if (!row.isNull("image"))
                             dto2.setImage(row.getString("image"));
