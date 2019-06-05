@@ -33,6 +33,7 @@ public class HeartFragment extends Fragment {
 
     ListView list;
     ArrayList<HeartDTO> items;
+    String id_text;
 
     Handler handler = new Handler() {
         @Override
@@ -58,7 +59,7 @@ public class HeartFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_heart, container, false);
 
         list=(ListView)view.findViewById(R.id.list);
-        String id_text = getArguments().getString("id"); //유저 아이디 받아옴
+        id_text = getArguments().getString("id"); //유저 아이디 받아옴
 
         return view;
     }
@@ -76,7 +77,7 @@ public class HeartFragment extends Fragment {
             public void run() {
                 try {
                     items = new ArrayList<HeartDTO>();
-                    String page = Common.SERVER_URL+"/heart.php";
+                    String page = Common.SERVER_URL+"/heart.php?userid="+id_text;
                     URL url = new URL(page);
                     // 커넥션 객체 생성
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
