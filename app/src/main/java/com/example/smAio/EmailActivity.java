@@ -6,7 +6,9 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.Patterns;
+import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -28,6 +30,7 @@ public class EmailActivity extends AppCompatActivity {
     // 이메일과 비밀번호
     private EditText editTextEmail;
     private EditText editTextPassword;
+    private Button certification;
 
     private String email = "";
     private String password = "";
@@ -40,9 +43,20 @@ public class EmailActivity extends AppCompatActivity {
         // 파이어베이스 인증 객체 선언
         firebaseAuth = FirebaseAuth.getInstance();
 
+        certification = findViewById(R.id.btn_certification);
         editTextEmail = findViewById(R.id.et_eamil);
         editTextPassword = findViewById(R.id.et_password);
         editTextPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        editTextPassword.setOnKeyListener(new View.OnKeyListener() { //login이벤트를 자판의 엔터로 하기위한 코드
+            @Override
+            public boolean onKey(View view, int keycode, KeyEvent keyEvent) {
+                if (keycode==KeyEvent.KEYCODE_ENTER){ //만약 keycode값이 KEYCOD_ENTER이면
+                    certification.callOnClick(); //로그인버튼을 클릭
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     public void singUp(View view) {
@@ -51,15 +65,6 @@ public class EmailActivity extends AppCompatActivity {
 
         if(isValidEmail() && isValidPasswd()) {
             createUser(email, password);
-        }
-    }
-
-    public void signIn(View view) {
-        email = editTextEmail.getText().toString();
-        password = editTextPassword.getText().toString();
-
-        if(isValidEmail() && isValidPasswd()) {
-            loginUser(email, password);
         }
     }
 
@@ -97,30 +102,13 @@ public class EmailActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // 회원가입 성공
-                            Toast.makeText(EmailActivity.this, "SignUp Success", Toast.LENGTH_SHORT).show();
-                        } else {
-                            // 회원가입 실패
-                            Toast.makeText(EmailActivity.this, "SignUp Failed", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-    }
-
-    // 로그인
-    private void loginUser(String email, String password)
-    {
-        firebaseAuth.signInWithEmailAndPassword(email+"@sangmyung.kr", password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // 로그인 성공
-                            Toast.makeText(EmailActivity.this, "Login Success", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(EmailActivity.this, "Certification", Toast.LENGTH_SHORT).show();
                             Intent signupIntent = new Intent(EmailActivity.this, SignUpActivity.class);
                             EmailActivity.this.startActivity(signupIntent); //인텐트를 사용하여 엑티비티 전환
+                            finish();
                         } else {
-                            // 로그인 실패
-                            Toast.makeText(EmailActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
+                            // 회원가입 실패
+                            Toast.makeText(EmailActivity.this, "Certification Failed", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

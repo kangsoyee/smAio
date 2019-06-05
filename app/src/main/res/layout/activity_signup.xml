@@ -10,14 +10,15 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         >
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginTop="150dp"
             android:text="SIGN UP!!"
-            android:textSize="50dp"
-            android:layout_gravity="center"
-            android:textColor="#5289E9"/>
+            android:textColor="#5289E9"
+            android:textSize="50dp" />
         <LinearLayout
             android:layout_width="300dp"
             android:layout_height="150dp"
@@ -101,16 +102,17 @@
         </LinearLayout>
 
         <Button
+            android:id="@+id/createButton"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="CREATE ACCOUNT"
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
-            android:background="@color/colorGray"
+            android:background="@drawable/line_fragment"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
-            android:id="@+id/createButton"
-            />
+            android:text="CREATE ACCOUNT"
+            android:textColor="#5289E9" />
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
