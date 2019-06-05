@@ -3,17 +3,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginTop="20dp">
     <EditText
         android:id="@+id/editPlaceName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="상호" />
-    <Button
+        android:layout_width="310dp"
+        android:layout_height="40dp"
+        android:hint="상호"
+        android:paddingStart="10dp"
+        android:layout_marginLeft="20dp"
+        android:background="@drawable/line_fragment"/>
+    <ImageButton
         android:id="@+id/btnSearch"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="검색" />
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="1dp"
+        android:src="@drawable/ic_search_black_24dp"
+        android:background="#FAFAFA"
+        style="?android:attr/borderlessButtonStyle"/>
+</LinearLayout>
     <!--<Button-->
         <!--android:id="@+id/btnAdd"-->
         <!--android:layout_width="match_parent"-->
@@ -23,5 +36,6 @@
     <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_margin="20dp"/>
 </LinearLayout>

@@ -30,17 +30,17 @@
                 android:id="@+id/noticeImageView"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
-                android:layout_marginStart="30dp"
+                android:layout_marginStart="50dp"
                 android:background="@android:drawable/ic_menu_myplaces" />
 
             <TextView
                 android:layout_width="279dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="5dp"
                 android:gravity="center_vertical"
-                android:text="공지사항"
-                android:textSize="20sp" />
+                android:text="클릭해서 공지사항 확인하기!"
+                android:textSize="24sp" />
 
         </LinearLayout>
 

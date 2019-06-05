@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -36,7 +37,7 @@ import java.util.ArrayList;
 
 public class StoreListActivity2 extends AppCompatActivity {
     ListView list;
-    Button btnSearch;
+    ImageButton btnSearch;
     EditText editPlaceName;
     String[] arrPlace;
     String userid;
@@ -65,7 +66,7 @@ public class StoreListActivity2 extends AppCompatActivity {
         list = (ListView) findViewById(R.id.list);
         editPlaceName = (EditText) findViewById(R.id.editPlaceName);
 
-        btnSearch = (Button) findViewById(R.id.btnSearch);
+        btnSearch = (ImageButton) findViewById(R.id.btnSearch);
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

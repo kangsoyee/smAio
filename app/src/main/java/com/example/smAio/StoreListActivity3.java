@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -36,8 +37,7 @@ import java.util.ArrayList;
 
 public class StoreListActivity3 extends AppCompatActivity {
     ListView list;
-    Button btnSearch;
-    Spinner spnCategory;
+    ImageButton btnSearch;
     EditText editPlaceName;
     String[] arrPlace;
     String userid;
@@ -66,11 +66,10 @@ public class StoreListActivity3 extends AppCompatActivity {
         list = (ListView) findViewById(R.id.list);
         editPlaceName = (EditText) findViewById(R.id.editPlaceName);
 
-        btnSearch = (Button) findViewById(R.id.btnSearch);
+        btnSearch = (ImageButton) findViewById(R.id.btnSearch);
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String category = arrPlace[spnCategory.getSelectedItemPosition()];
                 String placeName = editPlaceName.getText().toString();
                 search(placeName);
                 InputMethodManager im = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -78,25 +77,12 @@ public class StoreListActivity3 extends AppCompatActivity {
             }
         });
 
-
         arrPlace = (String[]) getResources().getStringArray(R.array.category);
         ArrayAdapter adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item,
                 arrPlace);
         adapter.setDropDownViewResource
                 (android.R.layout.simple_spinner_dropdown_item);
-        spnCategory.setAdapter(adapter);
-
-        spnCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
     }
 
     @Override
@@ -114,7 +100,7 @@ public class StoreListActivity3 extends AppCompatActivity {
                 try {
                     items = new ArrayList<PlaceDTO>();
                     String page = Common.SERVER_URL + "/music_list.php";
-                    Log.e("StoreListActivity3", "여기까지야");
+                    Log.e("test", "list()출력 완료");
 
                     URL url = new URL(page);
                     // 커넥션 객체 생성
@@ -185,7 +171,7 @@ public class StoreListActivity3 extends AppCompatActivity {
 //                    category=" + category + "&
                     items = new ArrayList<PlaceDTO>();
                     String page = Common.SERVER_URL + "/place_search_music.php?place_name="+place_name;
-                    Log.i("test_cafe",place_name);
+                    Log.i("test_music",place_name);
 
                     URL url = new URL(page);
                     // 커넥션 객체 생성
@@ -219,21 +205,21 @@ public class StoreListActivity3 extends AppCompatActivity {
                     JSONArray jArray = (JSONArray) jsonObj.get("sendData");
                     for (int i = 0; i < jArray.length(); i++) {
                         JSONObject row = jArray.getJSONObject(i);
-                        PlaceDTO dto2 = new PlaceDTO();
-                        dto2.setPlace_idx(row.getInt("place_idx"));
-                        dto2.setAddress(row.getString("address"));
-                        dto2.setCategory(row.getString("category"));
-                        dto2.setEnd_time(row.getString("end_time"));
-                        dto2.setStart_time(row.getString("start_time"));
-                        dto2.setTel(row.getString("tel"));
-                        dto2.setPlace_name(row.getString("place_name"));
-                        //dto2.setLatitude(row.getString("latitude"));
-                        //dto2.setLongitude(row.getString("longitude"));
+                        PlaceDTO dto3 = new PlaceDTO();
+                        dto3.setPlace_idx(row.getInt("place_idx"));
+                        dto3.setAddress(row.getString("address"));
+                        dto3.setCategory(row.getString("category"));
+                        dto3.setEnd_time(row.getString("end_time"));
+                        dto3.setStart_time(row.getString("start_time"));
+                        dto3.setTel(row.getString("tel"));
+                        dto3.setPlace_name(row.getString("place_name"));
+                        //dto3.setLatitude(row.getString("latitude"));
+                        //dto3.setLongitude(row.getString("longitude"));
 
                         if (!row.isNull("image"))
-                            dto2.setImage(row.getString("image"));
+                            dto3.setImage(row.getString("image"));
 
-                        items.add(dto2);
+                        items.add(dto3);
 
                     }
                     //핸들러에게 화면 갱신 요청
