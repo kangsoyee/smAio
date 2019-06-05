@@ -45,7 +45,6 @@ public class DetailActivity extends AppCompatActivity {
     private ArrayList<HashMap<String,String>> Data1 = new ArrayList<HashMap<String, String>>();
     private HashMap<String,String> InputData1 = new HashMap<>();
     ImageView iv;
-    boolean change=false;
 
     int place_idx;
     int avg;
@@ -66,11 +65,13 @@ public class DetailActivity extends AppCompatActivity {
     TextView info_price;
     String thisuserid;
 
+    Boolean check=false;
     private String mnum;
 
 
     final private static String URL_sendHeart = "http://eileenyoo1.cafe24.com/sendHeart.php/";
     final private static String URL_deleteHeart = "http://eileenyoo1.cafe24.com/deleteHeart.php/";
+    final private static String URL_heartCheck = "http://eileenyoo1.cafe24.com/heartcheck.php/";
 
     Handler handler = new Handler() {
         @Override
@@ -134,6 +135,7 @@ public class DetailActivity extends AppCompatActivity {
         thisuserid=getuserid.getStringExtra("userid");
         Log.e("userid in detail",thisuserid+"");
 
+
         Intent get_info = getIntent();
         String ad_data = get_info.getStringExtra("address");
         String tel_data = get_info.getStringExtra("tel");
@@ -142,11 +144,15 @@ public class DetailActivity extends AppCompatActivity {
         final String name_data = get_info.getStringExtra("placename");
         String start_data = get_info.getStringExtra("starttime");
         String end_data = get_info.getStringExtra("endtime");
+        Log.i("값 테스트",name_data+"");
+        Log.i("값 테스트",thisuserid+"");
+        heartCheck(thisuserid,name_data);
 
         iv = (ImageView) findViewById(R.id.heart_image);
 
-        //drawable에 있는 이미지로 셋팅하기
-        iv.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+
+//        //drawable에 있는 이미지로 셋팅하기
+//        iv.setImageResource(R.drawable.ic_favorite_border_black_24dp);
 
         //하트 버튼 클릭 이벤트
         iv.setOnClickListener(new View.OnClickListener() {
@@ -499,6 +505,55 @@ public class DetailActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {//오류발생
+                    }
+                })
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("userId",userId);
+                params.put("name",place_name);
+                return params;
+
+                //php문에 값을 보냄
+            }
+
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest); //필수코드***********
+
+    }
+
+
+
+    void heartCheck(final String userId, final String place_name){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_heartCheck, //php문에 POST형식으로, URL_SignUp 주소에 저장된 php문에 보냄
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) { //php문 응답에 대한 코드
+                        try{
+                            JSONObject jsonObject = new JSONObject(response);
+                            String success = jsonObject.getString("success"); //php문에서 success라는 키에 값을 저장
+                            if(success.equals("1")){//그 값이 1이면(성공)
+                                Log.e("heartCheck","true다");
+                                iv.setSelected(true);
+                                iv.setImageResource(R.drawable.ic_favorite_black_24dp); //이미지수정
+                            }
+
+
+                        }catch (JSONException e){ //오류발생
+                            e.printStackTrace();
+                            Log.e("heartCheck","false다");
+                            iv.setSelected(false); //클릭했을때 선택이 안된걸로
+                            iv.setImageResource(R.drawable.ic_favorite_border_black_24dp); //이미지도 수정
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {//오류발생
+                        check=false;
+                        Log.e("heartCheck","값이 없다!!");
                     }
                 })
         {
