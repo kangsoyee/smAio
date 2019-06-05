@@ -69,7 +69,7 @@ public class StoreListActivity2 extends AppCompatActivity {
             public void onClick(View v) {
                 String category = arrPlace[spnCategory.getSelectedItemPosition()];
                 String placeName = editPlaceName.getText().toString();
-                search(category, placeName);
+                search(placeName);
             }
         });
 
@@ -109,7 +109,7 @@ public class StoreListActivity2 extends AppCompatActivity {
                 try {
                     items = new ArrayList<PlaceDTO>();
                     String page = Common.SERVER_URL + "/cafe_list.php";
-                    Log.e("StoreListActivity2", "여기까지야");
+                    Log.e("test", "list()출력 완료");
 
                     URL url = new URL(page);
                     // 커넥션 객체 생성
@@ -171,15 +171,16 @@ public class StoreListActivity2 extends AppCompatActivity {
         th.start();
     }
 
-    void search(final String category, final String place_name) {
+    void search(final String place_name) {
         //네트워크 관련 작업은 백그라운드 스레드에서 처리
         final StringBuilder sb = new StringBuilder();
         Thread th = new Thread(new Runnable() {
             public void run() {
                 try {
+//                    category=" + category + "&
                     items = new ArrayList<PlaceDTO>();
-                    String page = Common.SERVER_URL + "/place_search.php?category=" + category + "&place_name=" + place_name;
-                    Log.e("Mainactivity", "여기까진 됨");
+                    String page = Common.SERVER_URL + "/place_search_cafe.php?place_name="+place_name;
+                    Log.i("test_cafe",place_name);
 
                     URL url = new URL(page);
                     // 커넥션 객체 생성
@@ -221,8 +222,8 @@ public class StoreListActivity2 extends AppCompatActivity {
                         dto2.setStart_time(row.getString("start_time"));
                         dto2.setTel(row.getString("tel"));
                         dto2.setPlace_name(row.getString("place_name"));
-                        dto2.setLatitude(row.getString("latitude"));
-                        dto2.setLongitude(row.getString("longitude"));
+                        //dto2.setLatitude(row.getString("latitude"));
+                        //dto2.setLongitude(row.getString("longitude"));
 
                         if (!row.isNull("image"))
                             dto2.setImage(row.getString("image"));

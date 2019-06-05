@@ -329,6 +329,7 @@ public class StoreListActivity extends AppCompatActivity {
                         Log.e("test", "ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ"+dto.getLatitude());
 
                         startActivity(intent);
+                        Log.i("test","check");
                     }
                 });
 

@@ -36,7 +36,7 @@ public class LoginActivity extends AppCompatActivity {
     private ImageButton login;
     private TextView link_signup;
     private ProgressBar loading;
-    private static String URL_LOGIN ="http://eileenyoo.cafe24.com/login.php/";
+    private static String URL_LOGIN ="http://eileenyoo1.cafe24.com/login.php/";
     private CheckBox auto;
     SessionManager sessionManager;
 

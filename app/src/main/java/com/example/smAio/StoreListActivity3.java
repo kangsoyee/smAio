@@ -69,7 +69,7 @@ public class StoreListActivity3 extends AppCompatActivity {
             public void onClick(View v) {
                 String category = arrPlace[spnCategory.getSelectedItemPosition()];
                 String placeName = editPlaceName.getText().toString();
-                search(category, placeName);
+                search(placeName);
             }
         });
 
@@ -171,15 +171,16 @@ public class StoreListActivity3 extends AppCompatActivity {
         th.start();
     }
 
-    void search(final String category, final String place_name) {
+    void search(final String place_name) {
         //네트워크 관련 작업은 백그라운드 스레드에서 처리
         final StringBuilder sb = new StringBuilder();
         Thread th = new Thread(new Runnable() {
             public void run() {
                 try {
+//                    category=" + category + "&
                     items = new ArrayList<PlaceDTO>();
-                    String page = Common.SERVER_URL + "/place_search.php?category=" + category + "&place_name=" + place_name;
-                    Log.e("Mainactivity", "여기까진 됨");
+                    String page = Common.SERVER_URL + "/place_search_music.php?place_name="+place_name;
+                    Log.i("test_cafe",place_name);
 
                     URL url = new URL(page);
                     // 커넥션 객체 생성
@@ -213,21 +214,21 @@ public class StoreListActivity3 extends AppCompatActivity {
                     JSONArray jArray = (JSONArray) jsonObj.get("sendData");
                     for (int i = 0; i < jArray.length(); i++) {
                         JSONObject row = jArray.getJSONObject(i);
-                        PlaceDTO dto3 = new PlaceDTO();
-                        dto3.setPlace_idx(row.getInt("place_idx"));
-                        dto3.setAddress(row.getString("address"));
-                        dto3.setCategory(row.getString("category"));
-                        dto3.setEnd_time(row.getString("end_time"));
-                        dto3.setStart_time(row.getString("start_time"));
-                        dto3.setTel(row.getString("tel"));
-                        dto3.setPlace_name(row.getString("place_name"));
-                        dto3.setLatitude(row.getString("latitude"));
-                        dto3.setLongitude(row.getString("longitude"));
+                        PlaceDTO dto2 = new PlaceDTO();
+                        dto2.setPlace_idx(row.getInt("place_idx"));
+                        dto2.setAddress(row.getString("address"));
+                        dto2.setCategory(row.getString("category"));
+                        dto2.setEnd_time(row.getString("end_time"));
+                        dto2.setStart_time(row.getString("start_time"));
+                        dto2.setTel(row.getString("tel"));
+                        dto2.setPlace_name(row.getString("place_name"));
+                        //dto2.setLatitude(row.getString("latitude"));
+                        //dto2.setLongitude(row.getString("longitude"));
 
                         if (!row.isNull("image"))
-                            dto3.setImage(row.getString("image"));
+                            dto2.setImage(row.getString("image"));
 
-                        items.add(dto3);
+                        items.add(dto2);
 
                     }
                     //핸들러에게 화면 갱신 요청
