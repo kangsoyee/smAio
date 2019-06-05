@@ -174,7 +174,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         Thread th = new Thread(new Runnable() {
             public void run() {
                 try {
-                    String page = Common.SERVER_URL + "/place_list.php";
+                    String page = Common.SERVER_URL + "/place_all_list.php";
                     Log.e("StoreListActivity", "여기까지야");
                     items = new ArrayList<PlaceDTO>();
                     URL url = new URL(page);
