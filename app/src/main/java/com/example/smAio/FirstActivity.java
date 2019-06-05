@@ -163,6 +163,9 @@ public class FirstActivity extends AppCompatActivity {
                 HeartFragment fragment4 = new HeartFragment();
                 transaction.replace(R.id.fragment_container, fragment4);
                 transaction.commit();
+                Bundle Heart_bundle = new Bundle();
+                Heart_bundle.putString("id", user_id);
+                fragment4.setArguments(Heart_bundle);
                 break;
 
             case 5:
