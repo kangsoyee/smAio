@@ -14,15 +14,16 @@
 
         <TextView
             android:id="@+id/textView2"
-            android:layout_width="215dp"
-            android:layout_height="41dp"
+            android:layout_width="364dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="40dp"
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:gravity="bottom"
             android:text="name"
-            android:textSize="18dp" />
+            android:textColor="@color/colorAccent"
+            android:textSize="30dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -37,12 +38,13 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
-                android:isIndicator="false"
 
+                android:isIndicator="false"
                 android:max="5"
                 android:numStars="5"
                 android:rating="0"
-                android:stepSize="0.5" />
+                android:stepSize="0.5"
+                android:theme="@style/RatingBar" />
 
             <TextView
                 android:id="@+id/textView3"
@@ -54,48 +56,64 @@
                 android:layout_marginBottom="8dp"
                 android:gravity="center_vertical"
                 android:text="0.0"
-                android:textSize="18dp" />
+                android:textColor="@color/colorAccent"
+                android:textSize="25dp"
+                android:textStyle="normal" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <EditText
                 android:id="@+id/review_message"
-                android:layout_width="wrap_content"
-                android:layout_height="299dp"
+                android:layout_width="match_parent"
+                android:layout_height="313dp"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:background="@android:color/transparent"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="25dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/line_fragment"
                 android:ems="10"
                 android:gravity="top"
                 android:hint="review"
-                android:inputType="textMultiLine|textPersonName" />
+                android:inputType="textMultiLine|textPersonName"
+                android:paddingStart="10dp"
+                android:paddingTop="10dp"
+                android:textColor="@color/colorAccent" />
 
-            <ImageButton
-                android:id="@+id/imageButton"
-                android:layout_width="42dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                app:srcCompat="@android:drawable/ic_btn_speak_now" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="right"
+                android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/button_reviewsend"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
-                android:text="send" />
+                <ImageButton
+                    android:id="@+id/imageButton"
+                    android:layout_width="43dp"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/line_fragment"
+                    app:srcCompat="@drawable/ic_microphone_black_shape" />
+
+                <Button
+                    android:id="@+id/button_reviewsend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="25dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/line_fragment"
+                    android:text="send"
+                    android:textColor="#5289E9" />
+            </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>
