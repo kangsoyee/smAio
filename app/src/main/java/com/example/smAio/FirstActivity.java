@@ -90,14 +90,8 @@ public class FirstActivity extends AppCompatActivity {
 
         callFragment(1);
 
-        //액션바 설정하기//
-        //액션바 타이틀 변경하기
-        getSupportActionBar().setTitle("SM.Aio");
         //홈버튼 표시
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        //액션바 숨기기
-        //hideActionBar();
 
         Intent get_intent=getIntent();
         String logout=get_intent.getStringExtra("Logout");
@@ -183,13 +177,6 @@ public class FirstActivity extends AppCompatActivity {
                 fragment5.setArguments(info_bundle);
                 break;
         }
-    }
-
-    //액션바 숨기기
-    private void hideActionBar() {
-        ActionBar actionBar = getSupportActionBar();
-        if(actionBar != null)
-            actionBar.hide();
     }
 
     //레스토랑 버튼 클릭 이벤트

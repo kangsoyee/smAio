@@ -57,6 +57,6 @@ public class SessionManager {
     public void logout(){
         editor.clear();
         editor.commit();
-//로그아웃시 모든 세션 지우기
+        //로그아웃시 모든 세션 지우기
     }
 }

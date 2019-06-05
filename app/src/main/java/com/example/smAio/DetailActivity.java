@@ -2,6 +2,7 @@ package com.example.smAio;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.content.Intent;
 import android.os.Handler;
@@ -135,7 +136,6 @@ public class DetailActivity extends AppCompatActivity {
         thisuserid=getuserid.getStringExtra("userid");
         Log.e("userid in detail",thisuserid+"");
 
-
         Intent get_info = getIntent();
         String ad_data = get_info.getStringExtra("address");
         String tel_data = get_info.getStringExtra("tel");
@@ -149,10 +149,6 @@ public class DetailActivity extends AppCompatActivity {
         heartCheck(thisuserid,name_data);
 
         iv = (ImageView) findViewById(R.id.heart_image);
-
-
-//        //drawable에 있는 이미지로 셋팅하기
-//        iv.setImageResource(R.drawable.ic_favorite_border_black_24dp);
 
         //하트 버튼 클릭 이벤트
         iv.setOnClickListener(new View.OnClickListener() {
@@ -212,6 +208,8 @@ public class DetailActivity extends AppCompatActivity {
         placename.setText(name_data);
         starttime.setText(start_data);
         endtime.setText(end_data);
+        setTitle("");
+        info_tel.setPaintFlags(info_tel.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
 
         //전화번호 클릭 이벤트
        info_tel.setOnClickListener(new View.OnClickListener() {
@@ -237,7 +235,6 @@ public class DetailActivity extends AppCompatActivity {
         review_list();
         detail();
         avg();
-
     }
 
     private void setNewTab(TabHost host, String title, int contentID) {
@@ -257,7 +254,6 @@ public class DetailActivity extends AppCompatActivity {
     void review_list(){
         //네트워크 관련 작업은 백그라운드 스레드에서 처리
         final StringBuilder sb=new StringBuilder();
-
 
         Thread th = new Thread(new Runnable() {
             public void run() {
@@ -455,8 +451,6 @@ public class DetailActivity extends AppCompatActivity {
                             if(success.equals("1")){//그 값이 1이면(성공)
                                 Toast.makeText(DetailActivity.this,"찜 성공!",Toast.LENGTH_SHORT).show();//찜성공 메시지
                             }
-
-
                         }catch (JSONException e){ //오류발생
                             e.printStackTrace();
                         }
@@ -521,10 +515,7 @@ public class DetailActivity extends AppCompatActivity {
         };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest); //필수코드***********
-
     }
-
-
 
     void heartCheck(final String userId, final String place_name){
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_heartCheck, //php문에 POST형식으로, URL_SignUp 주소에 저장된 php문에 보냄
@@ -539,8 +530,6 @@ public class DetailActivity extends AppCompatActivity {
                                 iv.setSelected(true);
                                 iv.setImageResource(R.drawable.ic_favorite_black_24dp); //이미지수정
                             }
-
-
                         }catch (JSONException e){ //오류발생
                             e.printStackTrace();
                             Log.e("heartCheck","false다");
@@ -570,6 +559,5 @@ public class DetailActivity extends AppCompatActivity {
         };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest); //필수코드***********
-
     }
 }

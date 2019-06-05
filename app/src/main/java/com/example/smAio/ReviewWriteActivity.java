@@ -113,9 +113,7 @@ public class ReviewWriteActivity extends AppCompatActivity {
                 else{
                     Toast.makeText(getApplicationContext(), "Plese Connect to Internet", Toast.LENGTH_LONG).show();
                 }}
-
         });
-
         //별점 레이팅바
         final TextView tv = (TextView) findViewById(R.id.textView3);
         RatingBar rb = (RatingBar)findViewById(R.id.ratingBar);
@@ -163,7 +161,6 @@ public class ReviewWriteActivity extends AppCompatActivity {
                 }
             });
             match_text_dialog.show();
-
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

@@ -159,18 +159,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         try {
             if (refresh)
                 googleMap.clear();
-
             MarkerOptions markerOptions = new MarkerOptions();
             markerOptions.position(location);
             markerOptions.title(check_place_name);
             markerOptions.snippet(menu);
             googleMap.addMarker(markerOptions);
-
         } catch (Exception e) {
             Log.e("addMarker failTest", e.getMessage());
         }
     }
-
     void list() {
         //네트워크 관련 작업은 백그라운드 스레드에서 처리
         final StringBuilder sb = new StringBuilder(); // final은 지역변수를 상수화 시켜준다. 즉, 한번 실행한 뒤 없어지는 것이 아니라 계속해서 유지 가능하게 해준다.

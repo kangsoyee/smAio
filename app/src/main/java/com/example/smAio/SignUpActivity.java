@@ -32,7 +32,6 @@ private Button btn_check;
 private static String URL_SignUp ="http://eileenyoo.cafe24.com/UserSignUp.php/";
 private static String URL_Check ="http://eileenyoo.cafe24.com/Idcheck.php/";
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +53,6 @@ private static String URL_Check ="http://eileenyoo.cafe24.com/Idcheck.php/";
                 String mPass = password.getText().toString().trim();
                 String mName = name.getText().toString().trim();
 
-
                 if(!mId.isEmpty() || !mPass.isEmpty() || !mName.isEmpty()){//다 입력 되었다면
                     SignUp();
                 }else{//하나라도 입력 X
@@ -62,7 +60,6 @@ private static String URL_Check ="http://eileenyoo.cafe24.com/Idcheck.php/";
                     password.setError("Please insert PASSWORD");
                     name.setError("Please insert NAME");
                 }
-
             }
         });
 
@@ -70,14 +67,12 @@ private static String URL_Check ="http://eileenyoo.cafe24.com/Idcheck.php/";
         btn_check.setOnClickListener(new View.OnClickListener() { //클릭 이벤트
             @Override
             public void onClick(View v) {
-
                 String mId=id.getText().toString().trim();
                 if(!mId.isEmpty()) { //id EditText에 값이 있으면
                     Check(mId); //중복검사 함수 실행
                 }
             }
         });
-
     }
 
     private  void Check(final String cid){ //중복검사 함수
@@ -97,7 +92,6 @@ private static String URL_Check ="http://eileenyoo.cafe24.com/Idcheck.php/";
                                 btn_check.setBackgroundColor(getResources().getColor(R.color.colorGray));//색도 회색으로
                                 btn_create.setClickable(true);//중복체크 완료시 Sign Up (회원가입버튼)은 활성화
                                 btn_create.setBackgroundColor(getResources().getColor(R.color.colorButtonOn)); //색도 파랑색으로!
-
                             }
                             else{ //success키에 1이아닌 0의 값이 들어왔다!(중복된다)
                                 id.setError("Your ID is already in use."); //누가 사용중이다 메시지 띄우기
@@ -141,24 +135,22 @@ private static String URL_Check ="http://eileenyoo.cafe24.com/Idcheck.php/";
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) { //php문 응답에 대한 코드
-                    try{
-                        Log.e(TAG,"try");
-                        JSONObject jsonObject = new JSONObject(response);
-                        String success = jsonObject.getString("success"); //php문에서 success라는 키에 값을 저장
-                        Log.e(TAG,success);
-                        if(success.equals("1")){//그 값이 1이면(성공)
-                            Toast.makeText(SignUpActivity.this,"Reqister Success!",Toast.LENGTH_SHORT).show();
-                            //회원가입 완료(DB에 성공적으로 값 저장)
+                        try{
+                            Log.e(TAG,"try");
+                            JSONObject jsonObject = new JSONObject(response);
+                            String success = jsonObject.getString("success"); //php문에서 success라는 키에 값을 저장
+                            Log.e(TAG,success);
+                            if(success.equals("1")){//그 값이 1이면(성공)
+                                Toast.makeText(SignUpActivity.this,"Reqister Success!",Toast.LENGTH_SHORT).show();
+                                //회원가입 완료(DB에 성공적으로 값 저장)
+                            }
+                        }catch (JSONException e){ //오류발생
+
+                            Log.e(TAG,"catch");
+                            e.printStackTrace();
+                            Toast.makeText(SignUpActivity.this,"Reqister Error!" + e.toString(),Toast.LENGTH_SHORT).show();
+                            btn_create.setVisibility(View.VISIBLE);
                         }
-
-
-                    }catch (JSONException e){ //오류발생
-
-                        Log.e(TAG,"catch");
-                        e.printStackTrace();
-                        Toast.makeText(SignUpActivity.this,"Reqister Error!" + e.toString(),Toast.LENGTH_SHORT).show();
-                        btn_create.setVisibility(View.VISIBLE);
-                    }
                     }
                 },
                 new Response.ErrorListener() {
@@ -182,7 +174,6 @@ private static String URL_Check ="http://eileenyoo.cafe24.com/Idcheck.php/";
 
                 //php문에 값을 보냄
             }
-
         };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest); //필수코드***********

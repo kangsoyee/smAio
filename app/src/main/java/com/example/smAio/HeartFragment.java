@@ -50,7 +50,6 @@ public class HeartFragment extends Fragment {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -60,8 +59,6 @@ public class HeartFragment extends Fragment {
 
         list=(ListView)view.findViewById(R.id.list);
         String id_text = getArguments().getString("id"); //유저 아이디 받아옴
-
-
 
         return view;
     }
@@ -157,6 +154,4 @@ public class HeartFragment extends Fragment {
             return v;
         }
     }
-
-
 }

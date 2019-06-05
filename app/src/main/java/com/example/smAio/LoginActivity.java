@@ -41,14 +41,12 @@ public class LoginActivity extends AppCompatActivity {
     SessionManager sessionManager;
 
     //자동로그인 pref
-
     SharedPreferences AutoPref;
     SharedPreferences.Editor edit;
 @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
 
         sessionManager=new SessionManager(this); //세션관련 SessionManager
         //id 가져오기
@@ -98,7 +96,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-
 
     private void Login(final String cid, final String cpassword){ //로그인을 위한 함수 edittext에 입력된 아이디와 비밀번호의 값을 가진다
 
@@ -186,7 +183,6 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-
     private class LoginClickListenr implements View.OnClickListener {
         @Override
         public void onClick(View v) {
@@ -195,8 +191,6 @@ public class LoginActivity extends AppCompatActivity {
 
             if(!mId.isEmpty() || !mPass.isEmpty()){ //EditText에 입력된 값이 둘다 비어있지 않을시
                 Login(mId,mPass);
-
-
             }else{ //하나라도 비어있으면!
                 id.setError("Please insert id");
                 password.setError("Please insert password");
