@@ -147,6 +147,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             googleMap.getUiSettings().setMyLocationButtonEnabled(true);
         }
 
+        //확대&축소
+        googleMap.getUiSettings().setZoomControlsEnabled(true);
+
         list();
     }
 

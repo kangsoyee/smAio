@@ -56,7 +56,7 @@ public class ReviewWriteActivity extends AppCompatActivity {
     ListView textlist;
     ArrayList<String> matches_text;
     EditText txtReview;
-    EditText txtScore;
+    TextView txtScore;
     Button button;
     String user_Id,place_url;
     ArrayList<PlaceDTO>items;
@@ -66,6 +66,7 @@ public class ReviewWriteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review_write);
+        setTitle("Review Write");
 
         Intent i = getIntent();
         user_Id=i.getStringExtra("id");
@@ -75,7 +76,7 @@ public class ReviewWriteActivity extends AppCompatActivity {
 
         Start = (ImageButton)findViewById(R.id.imageButton);
         txtReview=(EditText)findViewById(R.id.review_message);
-        txtScore=(EditText)findViewById(R.id.score);
+        txtScore=(TextView)findViewById(R.id.textView3);
         button=(Button)findViewById(R.id.button_reviewsend);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
