@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -60,7 +61,6 @@ public class StoreListActivity3 extends AppCompatActivity {
         this.setContentView(R.layout.activity_store_list);
 
         list = (ListView) findViewById(R.id.list);
-        spnCategory = (Spinner) findViewById(R.id.spnCategory);
         editPlaceName = (EditText) findViewById(R.id.editPlaceName);
 
         btnSearch = (Button) findViewById(R.id.btnSearch);
@@ -70,6 +70,8 @@ public class StoreListActivity3 extends AppCompatActivity {
                 String category = arrPlace[spnCategory.getSelectedItemPosition()];
                 String placeName = editPlaceName.getText().toString();
                 search(placeName);
+                InputMethodManager im = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                im.hideSoftInputFromWindow(editPlaceName.getWindowToken(), 0);
             }
         });
 
@@ -306,8 +308,6 @@ public class StoreListActivity3 extends AppCompatActivity {
                         intent.putExtra("placename", placename.getText().toString());
                         intent.putExtra("starttime", starttime.getText().toString());
                         intent.putExtra("endtime", endtime.getText().toString());
-                        intent.putExtra("latitude",latitude.getText().toString());
-                        intent.putExtra("longitude",longitude.getText().toString());
 
                         dto3.setLat(latitude.getText().toString());
                         dto3.setLng(longitude.getText().toString());
@@ -317,34 +317,10 @@ public class StoreListActivity3 extends AppCompatActivity {
                 });
 
             } catch (Exception e) {
-
                 Log.e("Network Exception", e.getMessage());
                 return null;
             }
             return v;
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.overflow_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.sort_Alphabetical:
-                Toast.makeText(this, "가나다순으로 정렬", Toast.LENGTH_SHORT).show();
-                return true;
-
-            case R.id.sort_rating:
-                Toast.makeText(this, "평점순으로 정렬", Toast.LENGTH_SHORT).show();
-                return true;
-
-        }
-
-        return true;
     }
 }

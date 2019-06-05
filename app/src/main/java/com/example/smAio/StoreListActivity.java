@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -37,7 +38,6 @@ import java.util.ArrayList;
 public class StoreListActivity extends AppCompatActivity {
     ListView list;
     Button btnAdd,btnSearch;
-    Spinner spnCategory;
     EditText editPlaceName;
     String[] arrPlace;
 
@@ -59,27 +59,18 @@ public class StoreListActivity extends AppCompatActivity {
         this.setContentView(R.layout.activity_store_list);
 
         list=(ListView)findViewById(R.id.list);
-        spnCategory=(Spinner)findViewById(R.id.spnCategory);
         editPlaceName=(EditText)findViewById(R.id.editPlaceName);
 
         btnSearch=(Button)findViewById(R.id.btnSearch);
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String category=arrPlace[spnCategory.getSelectedItemPosition()];
                 String placeName=editPlaceName.getText().toString();
-                search(category, placeName);
+                search(placeName);
+                InputMethodManager im = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                im.hideSoftInputFromWindow(editPlaceName.getWindowToken(), 0);
             }
         });
-
-//        btnAdd=(Button)findViewById(R.id.btnAdd);
-//        btnAdd.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent=new Intent(StoreListActivity.this, PlaceAdd.class);
-//                startActivity(intent);
-//            }
-//        });
 
         arrPlace=(String[])getResources().getStringArray(R.array.category);
         ArrayAdapter adapter = new ArrayAdapter<String>(this,
@@ -87,18 +78,6 @@ public class StoreListActivity extends AppCompatActivity {
                 arrPlace);
         adapter.setDropDownViewResource
                 (android.R.layout.simple_spinner_dropdown_item);
-        spnCategory.setAdapter(adapter);
-
-        spnCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
     }
 
     @Override
@@ -180,14 +159,14 @@ public class StoreListActivity extends AppCompatActivity {
         th.start();
     }
 
-    void search(final String category, final String place_name){
+    void search(final String place_name){
         //네트워크 관련 작업은 백그라운드 스레드에서 처리
         final StringBuilder sb=new StringBuilder();
         Thread th = new Thread(new Runnable() {
             public void run() {
                 try {
                     items = new ArrayList<PlaceDTO>();
-                    String page = Common.SERVER_URL+"/place_search.php?category="+category+"&place_name="+place_name;
+                    String page = Common.SERVER_URL+"/place_search.php?place_name="+place_name;
                     Log.e("Mainactivity","여기까진 됨");
 
                     URL url = new URL(page);
@@ -321,8 +300,6 @@ public class StoreListActivity extends AppCompatActivity {
                         intent.putExtra("placename",placename.getText().toString());
                         intent.putExtra("starttime",starttime.getText().toString());
                         intent.putExtra("endtime",endtime.getText().toString());
-                        intent.putExtra("latitude",latitude.getText().toString());
-                        intent.putExtra("longitude",longitude.getText().toString());
 
                         dto.setLat(latitude.getText().toString());
                         dto.setLng(longitude.getText().toString());
@@ -334,43 +311,10 @@ public class StoreListActivity extends AppCompatActivity {
                 });
 
             }catch (Exception e){
-
                 Log.e("Network Exception", e.getMessage());
                 return null;
             }
             return v;
         }
-    }
-
-    //액션버튼 메뉴 액션바에 집어 넣기
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.overflow_menu, menu);
-        return true;
-    }
-
-    //액션버튼을 클릭했을때의 동작
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        int id = item.getItemId();
-
-        if (id == R.id.action_search) {
-            Toast.makeText(this, "검색 클릭", Toast.LENGTH_SHORT).show();
-
-//            action_search.setOnKeyListener(new View.OnKeyListener() { //login이벤트를 자판의 엔터로 하기위한 코드
-//                @Override
-//                public boolean onKey(View view, int keycode, KeyEvent keyEvent) {
-//                    if (keycode==KeyEvent.KEYCODE_ENTER){ //만약 keycode값이 KEYCOD_ENTER이면
-//                        String category=arrPlace[spnCategory.getSelectedItemPosition()];
-//                        String placeName=editPlaceName.getText().toString();
-//                        search(category, placeName);
-//                        return true;
-//                    }
-//                    return false;
-//                }
-//            });
-//            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 }

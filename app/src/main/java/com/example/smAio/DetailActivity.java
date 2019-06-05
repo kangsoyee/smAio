@@ -122,8 +122,6 @@ public class DetailActivity extends AppCompatActivity {
         String name_data = get_info.getStringExtra("placename");
         String start_data = get_info.getStringExtra("starttime");
         String end_data = get_info.getStringExtra("endtime");
-        String latitude_data = get_info.getStringExtra("latitude");
-        String longitude_data = get_info.getStringExtra("longitude");
 
         iv = (ImageView) findViewById(R.id.heart_image);
 
@@ -144,46 +142,17 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
 
-//        //별점
-//        final TextView tv = (TextView) findViewById(R.id.textView4);
-//        RatingBar rb = (RatingBar) findViewById(R.id.ratingBar);
-//
-//        rb.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-//            @Override
-//            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-//                tv.setText("" + rating);
-//            }
-//        });
-
         //tabHost Widget과 연결
         TabHost tabHost = (TabHost) findViewById(R.id.tabHost);
 
         //TabHost를 설정할 때 가장 먼저 호출해 주어야함
         tabHost.setup();
 
-        //Tab Spec생성 (Tab Spec:탭을 구성하는 요소들의 집합)
-//        TabHost.TabSpec tabSpec1 = tabHost.newTabSpec("tab1");
-//        tabSpec1.setIndicator("정보");
-//        tabSpec1.setContent(R.id.tabSpec1);
-//        TabHost.TabSpec tabSpec2 = tabHost.newTabSpec("tab2");
-//        tabSpec2.setIndicator("리뷰");
-//        tabSpec2.setContent(R.id.tabSpec2);
-//        TabHost.TabSpec tabSpec3 = tabHost.newTabSpec("tab3");
-//        tabSpec3.setIndicator("지도");
-//        tabSpec3.setContent(R.id.tabSpec3);
-//
-//
-//
-//        //Tab 추가
-//        tabHost.addTab(tabSpec1);
-//        tabHost.addTab(tabSpec2);
-//        tabHost.addTab(tabSpec3);
-
         setNewTab(tabHost,"정보",R.id.tabSpec1);
         setNewTab(tabHost,"리뷰",R.id.tabSpec2);
         setNewTab(tabHost,"지도",R.id.tabSpec3);
 
-//        초기 Tab 설정
+        //초기 Tab 설정
         tabHost.setCurrentTab(0);
 
         tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {

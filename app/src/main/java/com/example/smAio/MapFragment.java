@@ -137,7 +137,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         this.googleMap = googleMap;
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(currentPosition));
-        googleMap.animateCamera(CameraUpdateFactory.zoomTo(13));
+        googleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
         addMarker(true, currentPosition);
 
         //우측 상단에 위치 버튼
