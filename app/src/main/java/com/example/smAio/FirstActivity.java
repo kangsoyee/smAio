@@ -76,6 +76,7 @@ public class FirstActivity extends AppCompatActivity {
         Log.e(TAG,user_id); //확인로그
         Log.e(TAG,user_name);
 
+
         Bundle info_bundle = new Bundle(); //MyFrament로 보내기위해 번들로 이름과 아이디 값 묶어줌
         info_bundle.putString("id", user_id);
         info_bundle.putString("name",user_name);
@@ -191,24 +192,28 @@ public class FirstActivity extends AppCompatActivity {
     //레스토랑 버튼 클릭 이벤트
     public void Clicked_res(View view) {
         Intent startRestaurantActivity = new Intent(FirstActivity.this, StoreListActivity.class);
+        startRestaurantActivity.putExtra("userid",user_id);
         startActivity(startRestaurantActivity);
     }
 
     //카페 버튼 클릭 이벤트
     public void Clicked_cafe(View view) {
         Intent startCafeActivity = new Intent(FirstActivity.this, StoreListActivity2.class);
+        startCafeActivity.putExtra("userid",user_id);
         startActivity(startCafeActivity);
     }
 
     //노래방 버튼 클릭 이벤트
     public void Clicked_karaoke(View view) {
         Intent startKaraokeActivity = new Intent(FirstActivity.this, StoreListActivity3.class);
+        startKaraokeActivity.putExtra("userid",user_id);
         startActivity(startKaraokeActivity);
     }
 
     //피시방 버튼 클릭 이벤트
     public void Clicked_internet(View view) {
         Intent startPCActivity = new Intent(FirstActivity.this, StoreListActivity4.class);
+        startPCActivity.putExtra("userid",user_id);
         startActivity(startPCActivity);
     }
 

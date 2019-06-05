@@ -18,8 +18,18 @@ import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TabHost;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -29,6 +39,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class DetailActivity extends AppCompatActivity {
     private ArrayList<HashMap<String,String>> Data1 = new ArrayList<HashMap<String, String>>();
@@ -53,8 +64,13 @@ public class DetailActivity extends AppCompatActivity {
     TextView info_tel;
     TextView info_menu;
     TextView info_price;
+    String thisuserid;
 
     private String mnum;
+
+
+    final private static String URL_sendHeart = "http://eileenyoo1.cafe24.com/sendHeart.php/";
+    final private static String URL_deleteHeart = "http://eileenyoo1.cafe24.com/deleteHeart.php/";
 
     Handler handler = new Handler() {
         @Override
@@ -114,12 +130,16 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
+        Intent getuserid=getIntent();
+        thisuserid=getuserid.getStringExtra("userid");
+        Log.e("userid in detail",thisuserid+"");
+
         Intent get_info = getIntent();
         String ad_data = get_info.getStringExtra("address");
         String tel_data = get_info.getStringExtra("tel");
         String menu_data = get_info.getStringExtra("menu");
         String price_data = get_info.getStringExtra("price");
-        String name_data = get_info.getStringExtra("placename");
+        final String name_data = get_info.getStringExtra("placename");
         String start_data = get_info.getStringExtra("starttime");
         String end_data = get_info.getStringExtra("endtime");
 
@@ -132,12 +152,19 @@ public class DetailActivity extends AppCompatActivity {
         iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(change) {
-                    iv.setImageResource(R.drawable.ic_favorite_border_black_24dp);
-                    change = false;
-                }else {
-                    iv.setImageResource(R.drawable.ic_favorite_black_24dp);
-                    change = true;
+                if(iv.isSelected()) {//만약 버튼이 선택되어있다면
+                    iv.setSelected(false); //클릭했을때 선택이 안된걸로
+                    iv.setImageResource(R.drawable.ic_favorite_border_black_24dp); //이미지도 수정
+                    Log.i("testheart","deleteheart");
+                    deleteHeart(thisuserid,name_data);
+                    Log.i("testheart","dh Finish");
+                }else { //만약 버튼이 선택되지 않았다면
+                    iv.setImageResource(R.drawable.ic_favorite_black_24dp); //이미지수정
+                    iv.setSelected(true); //선택된걸로
+                    Log.i("testheart","sendheart");
+                    sendHeart(thisuserid,name_data);
+
+                    Log.i("testheart","send Finish");
                 }
             }
         });
@@ -409,5 +436,85 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
         th.start();
+    }
+
+    void sendHeart(final String userId, final String place_name){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_sendHeart, //php문에 POST형식으로, URL_SignUp 주소에 저장된 php문에 보냄
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) { //php문 응답에 대한 코드
+                        try{
+                            JSONObject jsonObject = new JSONObject(response);
+                            String success = jsonObject.getString("success"); //php문에서 success라는 키에 값을 저장
+                            if(success.equals("1")){//그 값이 1이면(성공)
+                                Toast.makeText(DetailActivity.this,"찜 성공!",Toast.LENGTH_SHORT).show();//찜성공 메시지
+                            }
+
+
+                        }catch (JSONException e){ //오류발생
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {//오류발생
+                    }
+                })
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("userId",userId);
+                params.put("name",place_name);
+                return params;
+
+                //php문에 값을 보냄
+            }
+
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest); //필수코드***********
+
+    }
+
+    void deleteHeart(final String userId, final String place_name){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_deleteHeart, //php문에 POST형식으로, URL_SignUp 주소에 저장된 php문에 보냄
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) { //php문 응답에 대한 코드
+                        try{
+                            JSONObject jsonObject = new JSONObject(response);
+                            String success = jsonObject.getString("success"); //php문에서 success라는 키에 값을 저장
+                            if(success.equals("1")){//그 값이 1이면(성공)
+                                Toast.makeText(DetailActivity.this,"찜 삭제!",Toast.LENGTH_SHORT).show();//찜성공 메시지
+                            }
+
+
+                        }catch (JSONException e){ //오류발생
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {//오류발생
+                    }
+                })
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("userId",userId);
+                params.put("name",place_name);
+                return params;
+
+                //php문에 값을 보냄
+            }
+
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest); //필수코드***********
+
     }
 }

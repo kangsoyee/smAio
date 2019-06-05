@@ -40,6 +40,7 @@ public class StoreListActivity extends AppCompatActivity {
     Button btnAdd,btnSearch;
     EditText editPlaceName;
     String[] arrPlace;
+    String userid;
 
     ArrayList<PlaceDTO> items;
     Handler handler = new Handler() {
@@ -57,6 +58,9 @@ public class StoreListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_store_list);
+
+        Intent getId=getIntent();
+        userid=getId.getStringExtra("userid");
 
         list=(ListView)findViewById(R.id.list);
         editPlaceName=(EditText)findViewById(R.id.editPlaceName);
@@ -300,6 +304,7 @@ public class StoreListActivity extends AppCompatActivity {
                         intent.putExtra("placename",placename.getText().toString());
                         intent.putExtra("starttime",starttime.getText().toString());
                         intent.putExtra("endtime",endtime.getText().toString());
+                        intent.putExtra("userid",userid);
 
                         dto.setLat(latitude.getText().toString());
                         dto.setLng(longitude.getText().toString());
