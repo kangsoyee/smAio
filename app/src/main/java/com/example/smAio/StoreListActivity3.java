@@ -213,8 +213,8 @@ public class StoreListActivity3 extends AppCompatActivity {
                         dto3.setStart_time(row.getString("start_time"));
                         dto3.setTel(row.getString("tel"));
                         dto3.setPlace_name(row.getString("place_name"));
-                        //dto3.setLatitude(row.getString("latitude"));
-                        //dto3.setLongitude(row.getString("longitude"));
+                        dto3.setLatitude(row.getString("latitude"));
+                        dto3.setLongitude(row.getString("longitude"));
 
                         if (!row.isNull("image"))
                             dto3.setImage(row.getString("image"));
@@ -316,26 +316,26 @@ public class StoreListActivity3 extends AppCompatActivity {
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.overflow_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.sort_Alphabetical:
-                Toast.makeText(this, "가나다순으로 정렬", Toast.LENGTH_SHORT).show();
-                return true;
-
-            case R.id.sort_rating:
-                Toast.makeText(this, "평점순으로 정렬", Toast.LENGTH_SHORT).show();
-                return true;
-
-        }
-
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.overflow_menu, menu);
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//
+//        switch (item.getItemId()) {
+//            case R.id.sort_Alphabetical:
+//                Toast.makeText(this, "가나다순으로 정렬", Toast.LENGTH_SHORT).show();
+//                return true;
+//
+//            case R.id.sort_rating:
+//                Toast.makeText(this, "평점순으로 정렬", Toast.LENGTH_SHORT).show();
+//                return true;
+//
+//        }
+//
+//        return true;
+//    }
 }
