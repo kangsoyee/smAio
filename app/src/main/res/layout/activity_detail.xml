@@ -8,57 +8,20 @@
 
     <TextView
         android:id="@+id/place_name"
-        android:layout_width="214dp"
-        android:layout_height="61dp"
+        android:layout_width="373dp"
+        android:layout_height="48dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:gravity="bottom|center"
+        android:gravity="bottom"
         android:text="서브밀"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.027"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.059" />
-
-    <TextView
-        android:id="@+id/start_time"
-        android:layout_width="69dp"
-        android:layout_height="34dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:gravity="bottom|center"
-        android:text="11:00"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.671"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.106" />
-
-    <TextView
-        android:id="@+id/end_time"
-        android:layout_width="62dp"
-        android:layout_height="35dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:gravity="bottom|center"
-        android:text="21:00"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.864"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.105" />
+        app:layout_constraintVertical_bias="0.014" />
 
     <RatingBar
         android:id="@+id/ratingBar"
@@ -73,13 +36,13 @@
         android:numStars="5"
         android:rating="0"
         android:stepSize="0.5"
+        android:theme="@style/RatingBar"
         app:layout_constraintBottom_toBottomOf="parent"
-
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.032"
+        app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.183" />
+        app:layout_constraintVertical_bias="0.129" />
 
     <TextView
         android:id="@+id/textView4"
@@ -94,10 +57,10 @@
         android:textSize="36sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.773"
+        app:layout_constraintHorizontal_bias="0.761"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.177" />
+        app:layout_constraintVertical_bias="0.122" />
 
     <ImageView
         android:id="@+id/heart_image"
@@ -109,16 +72,16 @@
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.941"
+        app:layout_constraintHorizontal_bias="0.929"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.181"
+        app:layout_constraintVertical_bias="0.127"
         app:srcCompat="@drawable/ic_favorite_border_black_24dp" />
 
     <TabHost
         android:id="@+id/tabHost"
-        android:layout_width="409dp"
-        android:layout_height="364dp"
+        android:layout_width="412dp"
+        android:layout_height="393dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="95dp"
         android:layout_marginEnd="8dp"
@@ -131,6 +94,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
             android:orientation="vertical">
 
             <TabWidget
@@ -152,30 +117,61 @@
                     <TextView
                         android:id="@+id/info_address"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:text="TextView"
-                        android:textSize="18sp" />
+                        android:layout_height="42dp"
+                        android:layout_marginTop="15dp"
+                        android:text="address"
+                        android:textSize="20sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="43dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/start_time"
+                            android:layout_width="65dp"
+                            android:layout_height="match_parent"
+                            android:text="11:00"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:id="@+id/textView5"
+                            android:layout_width="28dp"
+                            android:layout_height="match_parent"
+                            android:text="~"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:id="@+id/end_time"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="21:00"
+                            android:textSize="20sp" />
+
+                    </LinearLayout>
 
                     <TextView
                         android:id="@+id/info_tel"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:text="TextView"
-                        android:textSize="18sp" />
+                        android:layout_height="87dp"
+                        android:text="tell"
+                        android:textColor="#0000FF"
+                        android:textSize="20sp"
+                        android:textStyle="italic" />
 
                     <TextView
                         android:id="@+id/info_menu"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:text="TextView"
-                        android:textSize="18sp" />
+                        android:layout_height="42dp"
+                        android:text="menu"
+                        android:textSize="20sp" />
 
                     <TextView
                         android:id="@+id/info_price"
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:text="TextView"
-                        android:textSize="18sp" />
+                        android:layout_height="wrap_content"
+                        android:text="price"
+                        android:textSize="20sp" />
                 </LinearLayout>
 
                 <LinearLayout

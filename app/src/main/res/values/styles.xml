@@ -9,5 +9,9 @@
     </style>
     <style name="LoadingTheme" parent="@android:style/Theme.Light.NoTitleBar">
     </style>
+    <style name="RatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">#CFCFCF</item>
+        <item name="colorControlActivated">#FFC600</item>
+    </style>
 
 </resources>

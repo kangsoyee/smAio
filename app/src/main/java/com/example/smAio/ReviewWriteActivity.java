@@ -3,12 +3,15 @@ package com.example.smAio;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.LayerDrawable;
 import android.media.Image;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Handler;
 import android.os.Message;
 import android.speech.RecognizerIntent;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -56,9 +59,10 @@ public class ReviewWriteActivity extends AppCompatActivity {
     ListView textlist;
     ArrayList<String> matches_text;
     EditText txtReview;
-    EditText txtScore;
+    TextView txtScore;
     Button button;
     String user_Id,place_url;
+
     ArrayList<PlaceDTO>items;
     int place_id;
     final private static String TAG = "가져온 값";
@@ -66,16 +70,19 @@ public class ReviewWriteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review_write);
+        setTitle("Review Write");
 
         Intent i = getIntent();
         user_Id=i.getStringExtra("id");
         place_url=i.getStringExtra("url");
         Log.e(TAG,user_Id);
         Log.e(TAG,place_url);
+        ImageButton imageButton = (ImageButton) findViewById(R.id.imageButton);
+        imageButton.setColorFilter(R.color.colorblue);
 
         Start = (ImageButton)findViewById(R.id.imageButton);
         txtReview=(EditText)findViewById(R.id.review_message);
-        txtScore=(EditText)findViewById(R.id.score);
+        txtScore=(TextView)findViewById(R.id.textView3);
         button=(Button)findViewById(R.id.button_reviewsend);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,9 +113,7 @@ public class ReviewWriteActivity extends AppCompatActivity {
                 else{
                     Toast.makeText(getApplicationContext(), "Plese Connect to Internet", Toast.LENGTH_LONG).show();
                 }}
-
         });
-
         //별점 레이팅바
         final TextView tv = (TextView) findViewById(R.id.textView3);
         RatingBar rb = (RatingBar)findViewById(R.id.ratingBar);
@@ -156,7 +161,6 @@ public class ReviewWriteActivity extends AppCompatActivity {
                 }
             });
             match_text_dialog.show();
-
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

@@ -12,10 +12,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -35,11 +37,10 @@ import java.util.ArrayList;
 
 public class StoreListActivity2 extends AppCompatActivity {
     ListView list;
-    Button btnSearch;
-    Spinner spnCategory;
+    ImageButton btnSearch;
     EditText editPlaceName;
     String[] arrPlace;
-
+    String userid;
     ArrayList<PlaceDTO> items;
     Handler handler = new Handler() {
         @Override
@@ -59,20 +60,22 @@ public class StoreListActivity2 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_store_list);
 
+        Intent getId=getIntent();
+        userid=getId.getStringExtra("userid");
+
         list = (ListView) findViewById(R.id.list);
-        spnCategory = (Spinner) findViewById(R.id.spnCategory);
         editPlaceName = (EditText) findViewById(R.id.editPlaceName);
 
-        btnSearch = (Button) findViewById(R.id.btnSearch);
+        btnSearch = (ImageButton) findViewById(R.id.btnSearch);
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String category = arrPlace[spnCategory.getSelectedItemPosition()];
                 String placeName = editPlaceName.getText().toString();
                 search(placeName);
+                InputMethodManager im = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                im.hideSoftInputFromWindow(editPlaceName.getWindowToken(), 0);
             }
         });
-
 
         arrPlace = (String[]) getResources().getStringArray(R.array.category);
         ArrayAdapter adapter = new ArrayAdapter<String>(this,
@@ -80,18 +83,6 @@ public class StoreListActivity2 extends AppCompatActivity {
                 arrPlace);
         adapter.setDropDownViewResource
                 (android.R.layout.simple_spinner_dropdown_item);
-        spnCategory.setAdapter(adapter);
-
-        spnCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
     }
 
     @Override
@@ -307,6 +298,7 @@ public class StoreListActivity2 extends AppCompatActivity {
                         intent.putExtra("endtime", endtime.getText().toString());
                         intent.putExtra("latitude",latitude.getText().toString());
                         intent.putExtra("longitude",longitude.getText().toString());
+                        intent.putExtra("userid",userid);
 
                         dto2.setLat(latitude.getText().toString());
                         dto2.setLng(longitude.getText().toString());
@@ -316,35 +308,10 @@ public class StoreListActivity2 extends AppCompatActivity {
                 });
 
             } catch (Exception e) {
-
                 Log.e("Network Exception", e.getMessage());
                 return null;
             }
             return v;
         }
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.overflow_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.sort_Alphabetical:
-                Toast.makeText(this, "가나다순으로 정렬", Toast.LENGTH_SHORT).show();
-                return true;
-
-            case R.id.sort_rating:
-                Toast.makeText(this, "평점순으로 정렬", Toast.LENGTH_SHORT).show();
-                return true;
-
-        }
-
-        return true;
-    }
-
 }

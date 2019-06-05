@@ -2,6 +2,7 @@ package com.example.smAio;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.content.Intent;
 import android.os.Handler;
@@ -18,8 +19,18 @@ import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TabHost;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -29,12 +40,12 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class DetailActivity extends AppCompatActivity {
     private ArrayList<HashMap<String,String>> Data1 = new ArrayList<HashMap<String, String>>();
     private HashMap<String,String> InputData1 = new HashMap<>();
     ImageView iv;
-    boolean change=false;
 
     int place_idx;
     int avg;
@@ -53,8 +64,15 @@ public class DetailActivity extends AppCompatActivity {
     TextView info_tel;
     TextView info_menu;
     TextView info_price;
+    String thisuserid;
 
+    Boolean check=false;
     private String mnum;
+
+
+    final private static String URL_sendHeart = "http://eileenyoo1.cafe24.com/sendHeart.php/";
+    final private static String URL_deleteHeart = "http://eileenyoo1.cafe24.com/deleteHeart.php/";
+    final private static String URL_heartCheck = "http://eileenyoo1.cafe24.com/heartcheck.php/";
 
     Handler handler = new Handler() {
         @Override
@@ -114,44 +132,45 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         Log.i("test_DetailActivity","onCreate 시작");
+
+        Intent getuserid=getIntent();
+        thisuserid=getuserid.getStringExtra("userid");
+        Log.e("userid in detail",thisuserid+"");
+
         Intent get_info = getIntent();
         String ad_data = get_info.getStringExtra("address");
         String tel_data = get_info.getStringExtra("tel");
         String menu_data = get_info.getStringExtra("menu");
         String price_data = get_info.getStringExtra("price");
-        String name_data = get_info.getStringExtra("placename");
+        final String name_data = get_info.getStringExtra("placename");
         String start_data = get_info.getStringExtra("starttime");
         String end_data = get_info.getStringExtra("endtime");
+        Log.i("값 테스트",name_data+"");
+        Log.i("값 테스트",thisuserid+"");
+        heartCheck(thisuserid,name_data);
 
         iv = (ImageView) findViewById(R.id.heart_image);
-
-        //drawable에 있는 이미지로 셋팅하기
-        iv.setImageResource(R.drawable.ic_favorite_border_black_24dp);
 
         //하트 버튼 클릭 이벤트
         iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(change) {
-                    iv.setImageResource(R.drawable.ic_favorite_border_black_24dp);
-                    change = false;
-                }else {
-                    iv.setImageResource(R.drawable.ic_favorite_black_24dp);
-                    change = true;
+                if(iv.isSelected()) {//만약 버튼이 선택되어있다면
+                    iv.setSelected(false); //클릭했을때 선택이 안된걸로
+                    iv.setImageResource(R.drawable.ic_favorite_border_black_24dp); //이미지도 수정
+                    Log.i("testheart","deleteheart");
+                    deleteHeart(thisuserid,name_data);
+                    Log.i("testheart","dh Finish");
+                }else { //만약 버튼이 선택되지 않았다면
+                    iv.setImageResource(R.drawable.ic_favorite_black_24dp); //이미지수정
+                    iv.setSelected(true); //선택된걸로
+                    Log.i("testheart","sendheart");
+                    sendHeart(thisuserid,name_data);
+
+                    Log.i("testheart","send Finish");
                 }
             }
         });
-
-//        //별점
-//        final TextView tv = (TextView) findViewById(R.id.textView4);
-//        RatingBar rb = (RatingBar) findViewById(R.id.ratingBar);
-//
-//        rb.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-//            @Override
-//            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-//                tv.setText("" + rating);
-//            }
-//        });
 
         //tabHost Widget과 연결
         TabHost tabHost = (TabHost) findViewById(R.id.tabHost);
@@ -159,29 +178,11 @@ public class DetailActivity extends AppCompatActivity {
         //TabHost를 설정할 때 가장 먼저 호출해 주어야함
         tabHost.setup();
 
-        //Tab Spec생성 (Tab Spec:탭을 구성하는 요소들의 집합)
-//        TabHost.TabSpec tabSpec1 = tabHost.newTabSpec("tab1");
-//        tabSpec1.setIndicator("정보");
-//        tabSpec1.setContent(R.id.tabSpec1);
-//        TabHost.TabSpec tabSpec2 = tabHost.newTabSpec("tab2");
-//        tabSpec2.setIndicator("리뷰");
-//        tabSpec2.setContent(R.id.tabSpec2);
-//        TabHost.TabSpec tabSpec3 = tabHost.newTabSpec("tab3");
-//        tabSpec3.setIndicator("지도");
-//        tabSpec3.setContent(R.id.tabSpec3);
-//
-//
-//
-//        //Tab 추가
-//        tabHost.addTab(tabSpec1);
-//        tabHost.addTab(tabSpec2);
-//        tabHost.addTab(tabSpec3);
-
         setNewTab(tabHost,"정보",R.id.tabSpec1);
         setNewTab(tabHost,"리뷰",R.id.tabSpec2);
         setNewTab(tabHost,"지도",R.id.tabSpec3);
 
-//        초기 Tab 설정
+        //초기 Tab 설정
         tabHost.setCurrentTab(0);
 
         tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
@@ -208,7 +209,8 @@ public class DetailActivity extends AppCompatActivity {
         placename.setText(name_data);
         starttime.setText(start_data);
         endtime.setText(end_data);
-
+        setTitle("");
+        info_tel.setPaintFlags(info_tel.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
 
         //전화번호 클릭 이벤트
        info_tel.setOnClickListener(new View.OnClickListener() {
@@ -234,7 +236,6 @@ public class DetailActivity extends AppCompatActivity {
         review_list();
         detail();
         avg();
-
     }
 
     private void setNewTab(TabHost host, String title, int contentID) {
@@ -254,7 +255,6 @@ public class DetailActivity extends AppCompatActivity {
     void review_list(){
         //네트워크 관련 작업은 백그라운드 스레드에서 처리
         final StringBuilder sb=new StringBuilder();
-
 
         Thread th = new Thread(new Runnable() {
             public void run() {
@@ -439,5 +439,126 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
         th.start();
+    }
+
+    void sendHeart(final String userId, final String place_name){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_sendHeart, //php문에 POST형식으로, URL_SignUp 주소에 저장된 php문에 보냄
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) { //php문 응답에 대한 코드
+                        try{
+                            JSONObject jsonObject = new JSONObject(response);
+                            String success = jsonObject.getString("success"); //php문에서 success라는 키에 값을 저장
+                            if(success.equals("1")){//그 값이 1이면(성공)
+                                Toast.makeText(DetailActivity.this,"찜 성공!",Toast.LENGTH_SHORT).show();//찜성공 메시지
+                            }
+                        }catch (JSONException e){ //오류발생
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {//오류발생
+                    }
+                })
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("userId",userId);
+                params.put("name",place_name);
+                return params;
+
+                //php문에 값을 보냄
+            }
+
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest); //필수코드***********
+
+    }
+
+    void deleteHeart(final String userId, final String place_name){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_deleteHeart, //php문에 POST형식으로, URL_SignUp 주소에 저장된 php문에 보냄
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) { //php문 응답에 대한 코드
+                        try{
+                            JSONObject jsonObject = new JSONObject(response);
+                            String success = jsonObject.getString("success"); //php문에서 success라는 키에 값을 저장
+                            if(success.equals("1")){//그 값이 1이면(성공)
+                                Toast.makeText(DetailActivity.this,"찜 삭제!",Toast.LENGTH_SHORT).show();//찜성공 메시지
+                            }
+
+
+                        }catch (JSONException e){ //오류발생
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {//오류발생
+                    }
+                })
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("userId",userId);
+                params.put("name",place_name);
+                return params;
+
+                //php문에 값을 보냄
+            }
+
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest); //필수코드***********
+    }
+
+    void heartCheck(final String userId, final String place_name){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_heartCheck, //php문에 POST형식으로, URL_SignUp 주소에 저장된 php문에 보냄
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) { //php문 응답에 대한 코드
+                        try{
+                            JSONObject jsonObject = new JSONObject(response);
+                            String success = jsonObject.getString("success"); //php문에서 success라는 키에 값을 저장
+                            if(success.equals("1")){//그 값이 1이면(성공)
+                                Log.e("heartCheck","true다");
+                                iv.setSelected(true);
+                                iv.setImageResource(R.drawable.ic_favorite_black_24dp); //이미지수정
+                            }
+                        }catch (JSONException e){ //오류발생
+                            e.printStackTrace();
+                            Log.e("heartCheck","false다");
+                            iv.setSelected(false); //클릭했을때 선택이 안된걸로
+                            iv.setImageResource(R.drawable.ic_favorite_border_black_24dp); //이미지도 수정
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {//오류발생
+                        check=false;
+                        Log.e("heartCheck","값이 없다!!");
+                    }
+                })
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("userId",userId);
+                params.put("name",place_name);
+                return params;
+
+                //php문에 값을 보냄
+            }
+
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest); //필수코드***********
     }
 }

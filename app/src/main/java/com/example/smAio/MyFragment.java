@@ -1,9 +1,6 @@
 package com.example.smAio;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -12,28 +9,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import java.util.ArrayList;
-
 
 public class MyFragment extends Fragment {
 
     final private static String TAG = "from activity to fragment data";
 
     public MyFragment() {
-
         // Required empty public constructor
     }
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_my, container, false); //fragment에 아이디 값을 받아오기 위해
         //FirstActivity에서 이름과 id 정보 Arguments를 통해 받음
         String id_text = getArguments().getString("id"); //getArguments를 이용해 부모 액티비티(FirstActivity에서 setArguments로 보낸 번들 값 가져오기
@@ -63,7 +52,6 @@ public class MyFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-
                 switch (position) {
                     case 0:
                         Intent intent = new Intent(getActivity(), CouponActivity.class);

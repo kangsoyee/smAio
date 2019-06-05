@@ -9,14 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-
 public class HomeFragment extends Fragment {
-
-
-
-
-
-
 
     public HomeFragment() {
         // Required empty public constructor
@@ -26,12 +19,8 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
-
-
         View v = inflater.inflate(R.layout.fragment_home, container, false);
         ViewGroup linearLayout2 = (ViewGroup) v.findViewById(R.id.linearLayout2);
-
 
         linearLayout2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,17 +30,6 @@ public class HomeFragment extends Fragment {
                 startActivity(i);
             }
         });
-
-
-
-
-
-
-
-
-
         return v;
-
     }
-
 }

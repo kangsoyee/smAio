@@ -48,7 +48,6 @@ public class QrScanActivity extends AppCompatActivity implements DecoratedBarcod
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qr_scan);
 
-
         Intent intent=getIntent();
         id= intent.getStringExtra("id");
 
@@ -88,16 +87,13 @@ public class QrScanActivity extends AppCompatActivity implements DecoratedBarcod
         finish();
     }
 
-
     private void initLayout() {
 
         barcodeScannerView.setTorchListener(this);
-
         Collection<BarcodeFormat> formats = Arrays.asList(BarcodeFormat.QR_CODE, BarcodeFormat.CODE_128);
         barcodeScannerView.getBarcodeView().setDecoderFactory(new DefaultDecoderFactory(formats));
         barcodeScannerView.initializeFromIntent(getIntent());
         barcodeScannerView.decodeContinuous(callback);
-
         beepManager = new BeepManager(this);
     }
 
@@ -110,13 +106,10 @@ public class QrScanActivity extends AppCompatActivity implements DecoratedBarcod
                 // Prevent duplicate scans
                 return;
             }
-
             lastText = result.getText();
             Log.i("test", "lastText="+lastText);
 
             barcodeScannerView.setStatusText(result.getText());
-
-            //beepManager.playBeepSoundAndVibrate();
 
             //여기서 서버와 통신하는 함수를 실행하시면 됩니다.
             list();
@@ -193,15 +186,12 @@ public class QrScanActivity extends AppCompatActivity implements DecoratedBarcod
         th.start();
     }
 
-
     @Override
     public void onTorchOn() {
-
     }
 
     @Override
     public void onTorchOff() {
-
     }
 
     @Override
@@ -215,6 +205,4 @@ public class QrScanActivity extends AppCompatActivity implements DecoratedBarcod
         super.onPause();
         barcodeScannerView.pause();
     }
-
-
 }

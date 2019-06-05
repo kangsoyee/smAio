@@ -19,7 +19,6 @@ public class NoticeListAdapter extends BaseAdapter {
         this.noticeList = noticeList;
     }
 
-
     @Override
     public int getCount() {
         return noticeList.size();
@@ -49,7 +48,5 @@ public class NoticeListAdapter extends BaseAdapter {
 
         v.setTag(noticeList.get(position).getNotice());
         return v;
-
-
-}
+    }
 }
