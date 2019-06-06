@@ -51,7 +51,7 @@ import java.util.Map;
 public class ReviewWriteActivity extends AppCompatActivity {
 
 
-    private static String URL_getPlaceID ="http://eileenyoo.cafe24.com/get_placeID.php/";
+    private static String URL_getPlaceID ="http://eileenyoo1.cafe24.com/get_placeID.php/";
     int place_idx;
     private static final int REQUEST_CODE = 1234;
     ImageButton Start;
@@ -59,7 +59,7 @@ public class ReviewWriteActivity extends AppCompatActivity {
     ListView textlist;
     ArrayList<String> matches_text;
     EditText txtReview;
-    TextView txtScore;
+    TextView txtScore,name;
     Button button;
     String user_Id,place_url;
 
@@ -77,6 +77,9 @@ public class ReviewWriteActivity extends AppCompatActivity {
         place_url=i.getStringExtra("url");
         Log.e(TAG,user_Id);
         Log.e(TAG,place_url);
+
+        name=(TextView)findViewById(R.id.textView2);
+
         ImageButton imageButton = (ImageButton) findViewById(R.id.imageButton);
         imageButton.setColorFilter(R.color.colorblue);
 
@@ -92,6 +95,7 @@ public class ReviewWriteActivity extends AppCompatActivity {
                 if(!txtReview_textCheck.isEmpty()) {
                     match_url(place_url);
                     Intent intent = new Intent(ReviewWriteActivity.this,endWriteReview.class);
+                    intent.putExtra("id",user_Id);
                     startActivity(intent);
                     finish();
                 }else{
