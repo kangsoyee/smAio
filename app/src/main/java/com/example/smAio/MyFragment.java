@@ -25,7 +25,7 @@ public class MyFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_my, container, false); //fragment에 아이디 값을 받아오기 위해
         //FirstActivity에서 이름과 id 정보 Arguments를 통해 받음
-        String id_text = getArguments().getString("id"); //getArguments를 이용해 부모 액티비티(FirstActivity에서 setArguments로 보낸 번들 값 가져오기
+        final String id_text = getArguments().getString("id"); //getArguments를 이용해 부모 액티비티(FirstActivity에서 setArguments로 보낸 번들 값 가져오기
         String name_text = getArguments().getString("name");
 
         //확인을 위한 로그
@@ -59,6 +59,7 @@ public class MyFragment extends Fragment {
                         break;
                     case 1:
                         Intent intent1 = new Intent(getActivity(), MyReviewActivity.class);
+                        intent1.putExtra("id",id_text);
                         startActivity(intent1);
                         break;
                     case 2:
@@ -71,4 +72,3 @@ public class MyFragment extends Fragment {
         return view;
     }
 }
-

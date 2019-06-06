@@ -17,6 +17,8 @@ public class endWriteReview extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_end_write_review);
 
+        Intent intent= getIntent();
+        final String userid=intent.getStringExtra("id");
         ImageView iv = (ImageView)findViewById(R.id.gif_image);
         //iv.setImageResource(R.drawable.img);
         Glide.with(this).load(R.raw.check2).into(iv);
@@ -37,6 +39,7 @@ public class endWriteReview extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(endWriteReview.this,MyReviewActivity.class);
+                intent.putExtra("id",userid);
                 startActivity(intent);
                 finish();
             }

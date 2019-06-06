@@ -29,8 +29,8 @@ public static final String TAG = "sucess";
 private EditText id,password,name;
 private Button btn_create;
 private Button btn_check;
-private static String URL_SignUp ="http://eileenyoo.cafe24.com/UserSignUp.php/";
-private static String URL_Check ="http://eileenyoo.cafe24.com/Idcheck.php/";
+private static String URL_SignUp ="http://eileenyoo1.cafe24.com/UserSignUp.php/";
+private static String URL_Check ="http://eileenyoo1.cafe24.com/Idcheck.php/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
