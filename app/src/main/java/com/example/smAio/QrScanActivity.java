@@ -32,16 +32,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 
+// 구글에서 제공하는 오픈 소스 라이브러리인 zxing을 사용해 QR코드 스캐너를 구현하였습니다.
+// QR 코드를 인식하게 되면 리뷰를 작성할 수 있는 페이지로 전환되게 하는 액티비티입니다.
+
 public class QrScanActivity extends AppCompatActivity implements DecoratedBarcodeView.TorchListener {
 
     private BeepManager beepManager;
     private String lastText;
     ArrayList<PlaceDTO> items;
     String url,id;
-    /**
-     * view
-     **/
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,16 +63,13 @@ public class QrScanActivity extends AppCompatActivity implements DecoratedBarcod
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            Log.i("test3", "여기까지 넘어온다");
             for(PlaceDTO dto:items) {
-                if (lastText.equals(dto.getQrcode())) {
+                if (lastText.equals(dto.getQrcode())) { // 데이터베이스에 등록된 QR코드 값과 현재 인식했던 QR코드의 값이 일치한다면 해당 상점의 리뷰 페이지로 전환되는 코드입니다.
                     url=lastText;
                     Intent intent = new Intent(QrScanActivity.this, ReviewWriteActivity.class);
 
-                    Log.i("test4", id);
                     intent.putExtra("url",url);
                     intent.putExtra("id",id);
-                    Log.i("test4", "여기까지 넘어온다");
                     startActivity(intent);
                 }
             }
@@ -81,13 +77,13 @@ public class QrScanActivity extends AppCompatActivity implements DecoratedBarcod
     };
 
     @Override
-    public void onBackPressed() { //뒤로가기 버튼 클릭시
+    public void onBackPressed() { //뒤로가기 버튼을 클릭하면 초기화면으로 전환됩니다.
         Intent intent = new Intent(QrScanActivity.this,FirstActivity.class);
         startActivity(intent);
         finish();
     }
 
-    private void initLayout() {
+    private void initLayout() { // zxing 라이브러리를 사용할 때 필요한 메소드 입니다.
 
         barcodeScannerView.setTorchListener(this);
         Collection<BarcodeFormat> formats = Arrays.asList(BarcodeFormat.QR_CODE, BarcodeFormat.CODE_128);
@@ -101,20 +97,19 @@ public class QrScanActivity extends AppCompatActivity implements DecoratedBarcod
         @Override
         public void barcodeResult(BarcodeResult result) {
 
-//            방금 읽은 qr코드와 같은 qr코드를 읽었을 경우 무시하고 싶으시면 주석을 풀어주세요.
+            //Line 100 ~ 104. 한번 인식했던 QR코드를 중복해서 인식할 수 없게 해줍니다.
             if (result.getText() == null || result.getText().equals(lastText)) {
                 // Prevent duplicate scans
                 return;
             }
-            lastText = result.getText();
+            lastText = result.getText(); // QR 인식을 통해 얻은 URL 을 lastText 변수에 저장합니다.
             Log.i("test", "lastText="+lastText);
 
             barcodeScannerView.setStatusText(result.getText());
 
-            //여기서 서버와 통신하는 함수를 실행하시면 됩니다.
-            list();
+            list(); // 서버와 통신하기 위한 함수를 호출합니다.
 
-            Timber.e("test: " + lastText);
+            //Timber.e("test: " + lastText);
         }
         @Override
         public void possibleResultPoints(List<ResultPoint> resultPoints) {
@@ -127,7 +122,7 @@ public class QrScanActivity extends AppCompatActivity implements DecoratedBarcod
             public void run() {
                 try {
                     items = new ArrayList<PlaceDTO>();
-                    String page = Common.SERVER_URL + "/place_list.php";
+                    String page = Common.SERVER_URL + "/place_list.php"; // php 파일에 접근하여 가게별 QR 코드를 가져올 수 있도록 합니다.
                     Log.i("test", "php연결 완료");
 
                     URL url = new URL(page);
@@ -176,7 +171,7 @@ public class QrScanActivity extends AppCompatActivity implements DecoratedBarcod
                         items.add(dto);
 
                     }
-                    //핸들러에게 화면 갱신 요청
+                    //핸들러에게 화면 갱신을 요청합니다.
                     handler.sendEmptyMessage(0);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -185,6 +180,8 @@ public class QrScanActivity extends AppCompatActivity implements DecoratedBarcod
         });
         th.start();
     }
+
+    // Line 186 ~ 204. zxing 라이브러리를 사용할 때 필요한 메소드 입니다.
 
     @Override
     public void onTorchOn() {
