@@ -70,10 +70,17 @@ public class StoreListActivity2 extends AppCompatActivity {
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String placeName = editPlaceName.getText().toString();
-                search(placeName);
+
                 InputMethodManager im = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                 im.hideSoftInputFromWindow(editPlaceName.getWindowToken(), 0);
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        String placeName=editPlaceName.getText().toString();
+                        search(placeName);
+                    }
+                }, 100);
             }
         });
 

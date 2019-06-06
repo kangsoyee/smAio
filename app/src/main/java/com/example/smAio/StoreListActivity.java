@@ -71,12 +71,22 @@ public class StoreListActivity extends AppCompatActivity {
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String placeName=editPlaceName.getText().toString();
-                search(placeName);
                 InputMethodManager im = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                 im.hideSoftInputFromWindow(editPlaceName.getWindowToken(), 0);
+
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        String placeName=editPlaceName.getText().toString();
+                        search(placeName);
+                    }
+                }, 100);
+
             }
+
         });
+
 
         arrPlace=(String[])getResources().getStringArray(R.array.category);
         ArrayAdapter adapter = new ArrayAdapter<String>(this,
@@ -85,6 +95,8 @@ public class StoreListActivity extends AppCompatActivity {
         adapter.setDropDownViewResource
                 (android.R.layout.simple_spinner_dropdown_item);
     }
+
+
 
     @Override
     protected void onResume() {

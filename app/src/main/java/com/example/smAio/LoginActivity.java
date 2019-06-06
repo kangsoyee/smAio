@@ -86,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
             return false;
         }
     });
-        login.setOnClickListener(new LoginClickListenr()); //login 버튼이 눌렸을때 로그인 이벤트
+        login.setOnClickListener(new LoginClickListener()); //login 버튼이 눌렸을때 로그인 이벤트
         link_signup=(TextView)findViewById(R.id.signupButton); //회원가입 Text id
         link_signup.setOnClickListener(new View.OnClickListener() {//회원가입이 눌렸을 때 클릭 리스너
             @Override
@@ -183,7 +183,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private class LoginClickListenr implements View.OnClickListener {
+    private class LoginClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
             String mId=id.getText().toString().trim(); //trim()이거는 빈 공백이 있을때 오류 잡기위해 넣었음

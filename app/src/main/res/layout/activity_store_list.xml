@@ -15,7 +15,8 @@
         android:hint="상호"
         android:paddingStart="10dp"
         android:layout_marginLeft="20dp"
-        android:background="@drawable/line_fragment"/>
+        android:background="@drawable/line_fragment"
+        android:inputType="text"/>
     <ImageButton
         android:id="@+id/btnSearch"
         android:layout_width="wrap_content"
