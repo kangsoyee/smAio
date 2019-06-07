@@ -51,7 +51,7 @@
 
 * 데이터베이스
 
-* 서버
+* 서버  
 
 * PHP
 
@@ -80,7 +80,8 @@
         
 ```<?php
  //파일명 connect.php
-  $conn = mysqli_connect("localhost","eileenyoo1","@@@@@@","eileenyoo1"); // ("localhost,db아이디,dbPW,db이름")
+  $conn = mysqli_connect("localhost","eileenyoo1","@@@@@@","eileenyoo1");   
+  // ("localhost,DB아이디,DB의 비밀번호,DB이름") 순으로 입력해줍니다.
  ?>
  ``` 
 
@@ -112,11 +113,11 @@
 
 3. 모든 상점 정보 가져오기
 ```<?php
-require_once ('connect.php');
-$sql = "select * from place";
+require_once ('connect.php'); // DB를 연동할 수 있는 PHP 소스를 가져옵니다.
+$sql = "select * from place"; // 모든 상점의 정보를 불러옵니다.
 
-$rs = mysqli_query($conn, $sql);
-while ($data = mysqli_fetch_array($rs)) {
+$rs = mysqli_query($conn, $sql); // mysqli_connect 를 통해 연결된 객체를 이용하여 MySQL 쿼리를 실행시키는 함수입니다.
+while ($data = mysqli_fetch_array($rs)) { // mysqli_query 를 통해 얻은 리절트 셋(result set)에서 레코드를 1개씩 리턴해주는 함수입니다.
     //로그인 성공
     $row = array('place_idx' => $data[place_idx], 
 	'category' => $data[category], 
@@ -134,7 +135,7 @@ while ($data = mysqli_fetch_array($rs)) {
     $items[] = $row;
 }
 $arr = array('sendData' => $items);
-echo json_encode($arr);
+echo json_encode($arr); // 전달받은 값을 JSON 형식의 문자열로 변환하여 반환합니다.
 mysqli_close($conn);
 ?>
 ```
@@ -145,9 +146,11 @@ require_once ('connect.php');
 
 $place_idx = $_REQUEST['place_idx'];
 
-$sql = "select r.idx,m.userid,r.review_date, r.place_idx, r.review_content\r\n
-		from review r, member m, place p\r\n
-		where r.userid = m.userid and r.place_idx = p.place_idx and r.place_idx={$place_idx}\r\norder by r.review_date"; 
+// sql 쿼리를 이용하여 입력된 상점의 일치하는 값을 가져오고, 가장 최근의 리뷰부터 가져옵니다.
+$sql = "select r.idx,m.userid,r.review_date, r.place_idx, r.review_content
+		from review r, member m, place p  
+		where r.userid = m.userid and r.place_idx = p.place_idx and r.place_idx={$place_idx}  
+        order by r.review_date"; 
 		
 		
 $rs = mysqli_query($conn, $sql);
@@ -168,33 +171,34 @@ mysqli_close($conn);
 ?>
 ```
 
-5. 리뷰 작성, 평점 전달하기
+5. 리뷰 작성, 점수 전달하기
 ```<?php
 require_once ('connect.php');
 
+// 안드로이드에서 리뷰를 작성한 후 PHP 를 이용하여 DB로 정보를 전달하는 것이므로  
+// DB가 인식할 수 있는 데이터 명을 선언해줍니다.
 $userid = $_REQUEST['userid'];
 $place_idx = $_REQUEST['place_idx'];
 $review_content = $_REQUEST['review_content'];
 $score = $_REQUEST['score'];
-/* $sql = "insert into review (userid,place_idx,review_date,review_content) 
-		values ('{$userid}','{$place_idx}',now(),'{$review_content}')";
- */
+
+// 입력된 리뷰를 실시간으로 확인할 수 있게끔 쿼리문으로 insert를 이용하였고, now()를 통해 리뷰를  
+// 올린 시간을 파악할 수 있습니다.
 $sql = "insert into review (userid,place_idx,review_date,review_content,score) 
 		values ('{$userid}','{$place_idx}',now(),'{$review_content}','{$score}')";
 		
-echo "sql:{$sql}<br>";
+echo "sql:{$sql}<br>"; // 안드로이드 스튜디오의 Log 와 같은 방법을 표현하고자 사용했습니다.
 mysqli_query($conn, $sql);
-//mysqli_close($conn);
-//mysqli_query($sql);
 ?>
 ```
 
 6. 상점별 평균 점수 가져오기
 ```<?php
 require_once ('connect.php');
-$place_idx = $_REQUEST['place_idx'];
+$place_idx = $_REQUEST['place_idx']; // 상점이 갖고있는 고유한 번호를 알기위해 선언을 해줍니다.
 
 $sql= "select avg(score) as 'score_avg' from review where place_idx='{$place_idx}'";
+// 쿼리를 통해 해당 상점의 평균값을 계산합니다.
 
 $rs = mysqli_query($conn, $sql);
 while ($data = mysqli_fetch_array($rs)) {
@@ -209,8 +213,70 @@ mysqli_close($conn);
 ?>
 ```
 
+7. 카테고리 별 상점 검색
 
-  
+    * 분류별 (식당/카페/노래방/피시방) category 의 값이 변경 됩니다. 
+
+```<?php
+require_once ('connect.php');
+
+$category=$_REQUEST['category'];
+$place_name=$_REQUEST['place_name'];
+
+$sql = "select * from place where place_name like '%{$place_name}%'" and category='1'";
+// cafe='2' / music='3' / pc='4' 
+
+$rs = mysqli_query($conn, $sql);
+
+while($data = mysqli_fetch_array($rs)) { //로그인 성공
+	$row = array (
+		'place_idx' => $data[place_idx],
+		'category' => $data[category],
+		'place_name' => $data[place_name],
+		'start_time' => $data[start_time],
+		'end_time' => $data[end_time],
+		'address' => $data[address],
+		'tel' => $data[tel],
+		'menu' => $data[menu],
+		'price' => $data[price],
+		'image' => $data[image],
+		'latitude' => $data[latitude], 
+		'longitude' => $data[longitude]
+	);
+	$items[]=$row;
+}
+$arr = array('sendData' => $items);
+echo json_encode($arr);
+mysqli_close($conn);
+?>
+```
+
+8. 회원가입 코드
+9. 찜 기능
+10. 내 리뷰 가져오기
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -243,7 +309,7 @@ mysqli_close($conn);
 
 ### 7. 각 액티비티의 기능별 설명
 
-| 클래스  | 기능  | 설명  |   |   |
+| 클래스  | 기능  | layout  | manifest 추가 사항  | gradle 추가 사항|
 |---|---|---|---|---|
 | Common  |  URL 주소 불러오기 |   |   |   |
 | Detail  | 상점 클릭시 발생하는 화면  |   |   |   |
@@ -263,7 +329,7 @@ mysqli_close($conn);
 | PlaceDTO  | DB에서 가져온 상점 정보를 넘겨받음  |   |   |   |
 | QrScan  | QR코드를 인식하여 리뷰쓰기로 전환   |   |   |   |
 | ReviewDTO  | DB의 리뷰관련 내용을 가져옴   |   |   |   |​
-| ReviewWrite  | 리뷰작성시 필요한 STT(Speech TO Text), DB정보 가져오기   |   |   |   |
+| ReviewWrite  | 리뷰작성시 필요한 STT(Speech TO Text), DB정보 가져오기    |   |   |   |
 | SessionManager  | 로그인 유지   |   |   |   |
 | SignUp  | 회원 가입   |   |   |   |
 | StoreList  | 음식점에 해당하는 정보 가져오기   |   |   |   |
