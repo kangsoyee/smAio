@@ -84,7 +84,7 @@ public class DetailActivity extends AppCompatActivity {
             if(msg.what == 1) { //상세
                 txtAddress.setText(placeInfo.getAddress());
                 txtCategory.setText(placeInfo.getCategory());
-                txtEndTime.setText(placeInfo.getEnd_time());
+                txtEndTime.setText(placeInfo.getEnd_time());  //placeInfo.setEnd_time(row.getString("end_time"));
                 txtStartTime.setText(placeInfo.getStart_time());
                 txtTel.setText(placeInfo.getTel());
                 txtMenu.setText(placeInfo.getMenu());

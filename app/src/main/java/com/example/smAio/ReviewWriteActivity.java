@@ -170,7 +170,7 @@ public class ReviewWriteActivity extends AppCompatActivity {
     }
 
     void review(){
-//네트워크 관련 작업은 백그라운드 스레드에서 처리
+//네트워크 관련 작업은 백그라운드 스레드에서 처리합니다.
         final StringBuilder sb=new StringBuilder();
         Thread th = new Thread(new Runnable() {
             public void run() {

@@ -37,7 +37,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class StoreListActivity extends AppCompatActivity {
+public class StoreListActivity extends AppCompatActivity  {
     ListView list;
     ImageButton btnSearch;
     EditText editPlaceName;
@@ -184,7 +184,7 @@ public class StoreListActivity extends AppCompatActivity {
             public void run() {
                 try {
                     items = new ArrayList<PlaceDTO>();
-                    String page = Common.SERVER_URL+"/place_search.php?place_name="+place_name;
+                    String page = Common.SERVER_URL+"/place_search_food.php?place_name="+place_name;
                     Log.e("Mainactivity","여기까진 됨");
 
                     URL url = new URL(page);
