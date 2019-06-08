@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/place_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="30dp"
-            android:text="가게이름"
-            android:layout_marginLeft="20dp"
-            android:drawableStart="@drawable/ic_favorite_black_24dp"
-            android:drawableLeft="@drawable/ic_favorite_black_24dp"
-            />
+    <TextView
+        android:id="@+id/noticeText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="#FFFFFF"
+        android:drawableStart="@drawable/ic_favorite_black_24dp"
+        android:drawableLeft="@drawable/ic_favorite_black_24dp"
+        android:padding="30dp"
+        android:text="찜 한 식당"
+        android:textColor="#ff000000"
+        android:textStyle="bold" />
 
- </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

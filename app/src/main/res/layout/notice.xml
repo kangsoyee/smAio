@@ -8,7 +8,7 @@
     <!--> 공지사항을 띄워줄 리스트의 디자인 파일입니다
           ConstraintLayout에 공지사항이 들어갈 텍스트를 놓았고 그 위에
           LinearLayout으로 이름과 날짜 텍스트를 묶어 하나의 레이아웃으로 만들었습니다!-->
-   <TextView
+    <TextView
         android:id="@+id/noticeText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
