@@ -173,6 +173,7 @@ public class FirstActivity extends AppCompatActivity {
 
     //레스토랑 버튼 클릭 이벤트
     public void Clicked_res(View view) {
+        //레스토랑 버튼 클릭하면 StoreListActivity로 액티비티 전환
         Intent startRestaurantActivity = new Intent(FirstActivity.this, StoreListActivity.class);
         startRestaurantActivity.putExtra("userid",user_id);
         startActivity(startRestaurantActivity);
@@ -180,6 +181,7 @@ public class FirstActivity extends AppCompatActivity {
 
     //카페 버튼 클릭 이벤트
     public void Clicked_cafe(View view) {
+        //카페 버튼 클릭하면 StoreListActivity2로 액티비티 전환
         Intent startCafeActivity = new Intent(FirstActivity.this, StoreListActivity2.class);
         startCafeActivity.putExtra("userid",user_id);
         startActivity(startCafeActivity);
@@ -187,6 +189,7 @@ public class FirstActivity extends AppCompatActivity {
 
     //노래방 버튼 클릭 이벤트
     public void Clicked_karaoke(View view) {
+        //노래방 버튼 클릭하면 StoreListActivity3로 액티비티 전환
         Intent startKaraokeActivity = new Intent(FirstActivity.this, StoreListActivity3.class);
         startKaraokeActivity.putExtra("userid",user_id);
         startActivity(startKaraokeActivity);
@@ -194,6 +197,7 @@ public class FirstActivity extends AppCompatActivity {
 
     //피시방 버튼 클릭 이벤트
     public void Clicked_internet(View view) {
+        //피시방 버튼 클릭하면 StoreListActivity4로 액티비티 전환
         Intent startPCActivity = new Intent(FirstActivity.this, StoreListActivity4.class);
         startPCActivity.putExtra("userid",user_id);
         startActivity(startPCActivity);

@@ -30,6 +30,12 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
+
+            <!--isIndicator가 false일때 사용자가 직접 레이팅을 터치하여 설정할 수 있다.-->
+            <!--max는 레이팅 할 수 있는 최고수치이다.-->
+            <!--numStars는 전체 표시할 별의 개수이다.-->
+            <!--rating은 초기에 설정할 별(레이팅)의 개수이다.-->
+            <!--stepSize는 레이팅 변화의 폭이다.(움직이는 단위)-->
             <RatingBar
                 android:id="@+id/ratingBar"
                 android:layout_width="wrap_content"
@@ -46,6 +52,7 @@
                 android:stepSize="0.5"
                 android:theme="@style/RatingBar" />
 
+            <!--내가 정해준 레이팅이 얼마인지를 숫자로 보여주는 텍스트뷰이다.-->
             <TextView
                 android:id="@+id/textView3"
                 android:layout_width="53dp"

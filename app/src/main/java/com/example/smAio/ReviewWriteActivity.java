@@ -129,6 +129,8 @@ public class ReviewWriteActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Plese Connect to Internet", Toast.LENGTH_LONG).show();
                 }}
         });
+
+
         //별점 레이팅바
         final TextView tv = (TextView) findViewById(R.id.textView3);
         RatingBar rb = (RatingBar)findViewById(R.id.ratingBar);
@@ -136,6 +138,7 @@ public class ReviewWriteActivity extends AppCompatActivity {
         rb.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                //Ratingbar(별)을 드래그하거나 클릭해서 값이 변하면 텍스트뷰 tv에 별점이 몇인지 표시해준다.
                 tv.setText(" " + rating);
             }
         });

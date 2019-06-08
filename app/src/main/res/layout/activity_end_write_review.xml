@@ -21,7 +21,7 @@
         android:layout_gravity="center"
         android:text="SUCESS!!"
         android:textSize="30dp"
-        android:textColor="@color/Prime" />
+        android:textColor="@color/colorblue" />
     <Button
         android:layout_marginTop="50dp"
         android:layout_width="150dp"

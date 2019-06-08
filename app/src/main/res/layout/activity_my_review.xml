@@ -24,6 +24,7 @@
             android:layout_marginTop="30dp"
             /></LinearLayout>
 
+    <!--내가 쓴 리뷰를 모아서 보여주는 리스트뷰이다.-->
     <ListView
         android:id="@+id/MyReviewList"
         android:layout_width="match_parent"

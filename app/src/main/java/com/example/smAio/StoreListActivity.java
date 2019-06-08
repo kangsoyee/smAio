@@ -59,6 +59,8 @@ public class StoreListActivity extends AppCompatActivity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //activity_store_list1~4까지 모두 같은 내용의 xml이라서 하나로 통일하였다.
         this.setContentView(R.layout.activity_store_list);
 
         Intent getId=getIntent();
@@ -305,9 +307,12 @@ public class StoreListActivity extends AppCompatActivity  {
                         TextView latitude = (TextView)v.findViewById(R.id.latitude);
                         TextView longitude = (TextView)v.findViewById(R.id.longitude);
 
+                        //StoreListActivity와 DetailActivity 간에 정보를 주고받기 위해 인텐트에 데이터를 넣어 보낸다.
                         Intent intent = new Intent(StoreListActivity.this, DetailActivity.class);
                         intent.putExtra("idx", dto.getPlace_idx()); //putExtra 는 값을 전달하는 역할을 한다. 받는곳은 getExtra 가 된다.
 
+                        //intent에 putExtra 메서드를 사용하여 데이터를 넣는다.
+                        //첫번째 인자는 나중에 데이터를 꺼내기 위한 키 값이고 두번째 인자는 전달할 데이터이다.
                         intent.putExtra("address",address.getText().toString());
                         intent.putExtra("tel",tel.getText().toString());
                         intent.putExtra("menu",menu.getText().toString());
@@ -321,6 +326,7 @@ public class StoreListActivity extends AppCompatActivity  {
                         dto.setLng(longitude.getText().toString());
                         Log.e("test", "ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ"+dto.getLatitude());
 
+                        //startActivity 메서드 사용하여 데이터를 DetailActivity로 보낸다.
                         startActivity(intent);
                         Log.i("test_StoreListActivity","onClick 끝");
                     }

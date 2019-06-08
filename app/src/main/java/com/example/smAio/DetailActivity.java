@@ -58,6 +58,8 @@ public class DetailActivity extends AppCompatActivity {
     ArrayList<ReviewDTO> score_avg = new ArrayList<>();
     ListView list;
 
+
+    //StoreListActivity에서 불러온 정보를 담는 Textview
     TextView placename;
     TextView startendtime;
 
@@ -138,7 +140,12 @@ public class DetailActivity extends AppCompatActivity {
         thisuserid=getuserid.getStringExtra("userid");
         Log.e("userid in detail",thisuserid+"");
 
+        //getIntent 메서드를 이용해 StoreListActivity에서 보낸 데이터를 받는다.
         Intent get_info = getIntent();
+
+        //intent의 get타입명Extra 메서드를 호출한다.
+        // 이때 StoreListActivity에서 putExtra로 지정했던 데이터의 키 값을 지정하면 해당하는 데이터 값이 나오게 된다.
+        //만약 지정한 키 값에 맞는 데이터가 없으면 nul이 반환된다.
         String ad_data = get_info.getStringExtra("address");
         String tel_data = get_info.getStringExtra("tel");
         String menu_data = get_info.getStringExtra("menu");
