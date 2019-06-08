@@ -2,11 +2,11 @@ package com.example.smAio;
 
 public class Notice {
 
-    String notice;
-    String name;
-    String date;
+    String notice; // 공지사항 내용이 담길 문자열
+    String name; // 공지사항을 작성한 사람의 이름이 들어갈 문자열
+    String date; // 공지사항을 작성한 날짜가 들어갈 문자열
 
-    public Notice(String notice, String name, String date) {
+    public Notice(String notice, String name, String date) { // 클래스의 생성자를 선언해줌
         this.notice = notice;
         this.name = name;
         this.date = date;
@@ -14,7 +14,8 @@ public class Notice {
 
     public String getNotice() {
         return notice;
-    }
+    } //각 문자열들의 getter and setter 함수
+                                                    // 공지사항을 띄울 NoticeActivity에서 값을 불러오기 위하여 만들어줍니다
 
     public void setNotice(String notice) {
         this.notice = notice;

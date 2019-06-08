@@ -19,17 +19,17 @@ import java.util.List;
 
 public class NoticeActivity extends AppCompatActivity {
 
-    ListView noticeListView;
-    NoticeListAdapter adapter;
-    List<Notice> noticeList;
+    ListView noticeListView; // 공지사항을 띄워줄 리스트뷰 선언
+    NoticeListAdapter adapter; //NoticeListAdapter 클래스를 선언
+    List<Notice> noticeList; // 리스트에 Notice를 넣은 리스트 선언
 
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
 
-            adapter = new NoticeListAdapter(getApplicationContext(), noticeList);
-            noticeListView.setAdapter(adapter);
+            adapter = new NoticeListAdapter(getApplicationContext(), noticeList); // NoticeListAdapter를 달아줌으로써
+            noticeListView.setAdapter(adapter);                                   // 화면에 공지사항을 뿌려주는 역할을 합니다.
         }
     };
 
@@ -45,13 +45,13 @@ public class NoticeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notice);
 
-        noticeListView = (ListView) findViewById(R.id.noticeListView);
-        noticeList = new ArrayList<Notice>();
+        noticeListView = (ListView) findViewById(R.id.noticeListView); //리스트뷰 findViewById
+        noticeList = new ArrayList<Notice>(); //리스트 초기화 부분
 
         notice();
     }
 
-    void notice(){
+    void notice(){ // notice 함수를 선언하여 데이터베이스의 공지사항 부분과 연결하는 부분입니다.
         //네트워크 관련 작업은 백그라운드 스레드에서 처리
         final StringBuilder sb=new StringBuilder();
 
