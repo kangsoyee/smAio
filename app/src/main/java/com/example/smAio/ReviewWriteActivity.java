@@ -49,56 +49,67 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ReviewWriteActivity extends AppCompatActivity {
+    /**
+     * QR인식 후 리뷰 작성하는 Activity입니다.
+     * 별점, 음성인식 등의 기능이 있습니다.
+     */
 
-
+    //가게의 id값을 가져오기위한 서버에 등록된 php문 주소
     private static String URL_getPlaceID ="http://eileenyoo1.cafe24.com/get_placeID.php/";
+    //DB에서 가져온 가게의 id값을 저장하는 변수
     int place_idx;
+
     private static final int REQUEST_CODE = 1234;
     ImageButton Start;
     Dialog match_text_dialog;
     ListView textlist;
     ArrayList<String> matches_text;
     EditText txtReview;
-    TextView txtScore,name;
+    TextView txtScore;
     Button button;
+
+    //QrScanActivity에서 가져온 값들
     String user_Id,place_url;
 
-    ArrayList<PlaceDTO>items;
-    int place_id;
-    final private static String TAG = "가져온 값";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review_write);
         setTitle("Review Write");
 
+        //QrScanActivity에서 값 가져오는 Intent
         Intent i = getIntent();
         user_Id=i.getStringExtra("id");
         place_url=i.getStringExtra("url");
-        Log.e(TAG,user_Id);
-        Log.e(TAG,place_url);
 
-        name=(TextView)findViewById(R.id.textView2);
-
+        //layout items ID 가져오기
         ImageButton imageButton = (ImageButton) findViewById(R.id.imageButton);
         imageButton.setColorFilter(R.color.colorblue);
-
         Start = (ImageButton)findViewById(R.id.imageButton);
         txtReview=(EditText)findViewById(R.id.review_message);
         txtScore=(TextView)findViewById(R.id.textView3);
         button=(Button)findViewById(R.id.button_reviewsend);
+
+        //reviewsend button Click Event
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //txtReview에 저장된 리뷰내용 변수에 저장
                 String txtReview_textCheck=txtReview.getText().toString();
-                String txtScore_textCheck = txtScore.getText().toString();
+
+                //txtReview에 값이 있을 때
                 if(!txtReview_textCheck.isEmpty()) {
+                    //match_url 함수를 통해 DB에서 가게 id값 가져오기
                     match_url(place_url);
+
+                    //Intent에 아이디 값을 실어 액티비티 전환
                     Intent intent = new Intent(ReviewWriteActivity.this,endWriteReview.class);
                     intent.putExtra("id",user_Id);
                     startActivity(intent);
                     finish();
-                }else{
+                }
+                //txtReview에 값이 없을 때
+                else{
                     txtReview.setError("Please insert your Review");
                 }
             }
@@ -177,16 +188,11 @@ public class ReviewWriteActivity extends AppCompatActivity {
                 try {
                     String review_content=txtReview.getText().toString();
                     String score = txtScore.getText().toString();
-                    Log.e("url에 무슨값??",place_idx+"");
                     String page =
                             Common.SERVER_URL+"/review_insertt.php?"+"&userid="+user_Id
                                     +"&place_idx="+place_idx
                                     +"&review_content="+review_content
                                     +"&score="+score;
-//                    Common.SERVER_URL+"/review_insert.php?userid="+Common.userid
-//                            +"&place_idx="+place_idx
-//                            +"&review_content="+review_content;
-
                     URL url = new URL(page);
                     // 커넥션 객체 생성
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -216,53 +222,59 @@ public class ReviewWriteActivity extends AppCompatActivity {
         finish();
     }
 
-    private void match_url(final String url){ //로그인을 위한 함수 edittext에 입력된 아이디와 비밀번호의 값을 가진다
-        StringRequest stringRequest=new StringRequest(Request.Method.POST, URL_getPlaceID, //순서대로 php문에 POST 형식으로 값 보내기, php문 주소
-                new Response.Listener<String>() { //php문에서 온 응답에 대한 이벤트
+    //QR 주소를 통해 DB에 저장된 해당 가게의 id를 가져오는 코드
+    private void match_url(final String url){
+        StringRequest stringRequest=new StringRequest(Request.Method.POST, URL_getPlaceID,
+                //php문에서 온 응답에 대한 이벤트
+                new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        //성공적인 응답일 경우
                         try{
-                            JSONObject jsonObject=new JSONObject(response); //php문에서 json파일에 응답을 줌 그래서 jsonobject를 통해 응답 확인
-                            String success = jsonObject.getString("success"); //php문에서 제이슨 파일에 success라는 키에 1이라는 값을 줌
+                            //php문에서의 응답을 기록한 json파일 확인을 위한 JSONObject 객체 생성
+                            JSONObject jsonObject=new JSONObject(response);
+                            //success라는 키에 들어있는 string값 변수에 저장
+                            String success = jsonObject.getString("success");
+                            //JSONObject에 저장된 Array파일 객체 생성
+                            JSONArray jsonArray = jsonObject.getJSONArray("place_id");
 
-                            JSONArray jsonArray = jsonObject.getJSONArray("place_id"); //php문에서 array변수에 login 데이터를 담고 jsonArray형식으로 jsonObject에 저장 그래서 그 값을 불러옴
-
-                            if(success.equals("1")){ //만약에 json파일에 success키에 맞는 값이 1면
-                                for(int i = 0; i<jsonArray.length();i++){ //jsonArray 크기만큼 for문 돌림
+                            //success라는 키에 들어있는 값이 "1" 일 때
+                            if(success.equals("1")){
+                                //jsonArray에 들어있는 데이터 확인 및 저장을 위한 for문
+                                for(int i = 0; i<jsonArray.length();i++){
                                     JSONObject object=jsonArray.getJSONObject(i);
+                                    //jsonArray에 "p_id"이라는 키값으로 저장된 데이터 가져오기
                                     place_idx=object.getInt("p_id");
-                                    Log.e(TAG,place_idx+"");
-                                    review();//jsonArray에 저장된 이름(name)값을 가져온다
+                                    //review()함수 실행
+                                    review();
                                 }
                             }
-                            else{
-                            }
                         }catch (JSONException e){
-
                             e.printStackTrace();
-                            //이건 아예 아이디가 다르다는 뜻
-
                         }
                     }
                 },
-                new Response.ErrorListener() { //여기로 오류 잡힘 서버 접속 오류
+                new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
                     }
 
                 })
         {
+            //php문에 값을 보내는 코드
             @Override
             protected Map<String,String> getParams() throws AuthFailureError {
+                //HashMap 사용
                 Map<String,String> params = new HashMap<>();
+                //QR의 url
                 params.put("url",url);
-                return params; //hashmap을 통해서 값을 php문에 보내는 구문!
+                //php문으로 return
+                return params;
             }
         };
-
+        //Volley 사용을 위한 코드
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest); //요거는 volley사용을 위한 필수적인 코드 두줄
+        requestQueue.add(stringRequest);
 
     }
 }

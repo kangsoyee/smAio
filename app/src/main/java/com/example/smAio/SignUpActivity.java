@@ -22,29 +22,36 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * 회원가입을 하기위한 Activity
+ * 아이디 중복체크 기능과 회원가입 기능
+ */
 public class SignUpActivity extends AppCompatActivity {
+    //회원가입과 중복체크를 위한 php문이 저장된 서버의 주소
+    private static String URL_SignUp ="http://eileenyoo1.cafe24.com/UserSignUp.php/";
+    private static String URL_Check ="http://eileenyoo1.cafe24.com/Idcheck.php/";
 
-public static final String TAG = "sucess";
-
-private EditText id,password,name;
-private Button btn_create;
-private Button btn_check;
-private static String URL_SignUp ="http://eileenyoo1.cafe24.com/UserSignUp.php/";
-private static String URL_Check ="http://eileenyoo1.cafe24.com/Idcheck.php/";
+    //layout items 변수
+    private EditText id,password,name;
+    private Button btn_create;
+    private Button btn_check;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-        //id값 가져오기
+        //layout items id값 가져오기
         id=(EditText)findViewById(R.id.idText);
         password=(EditText)findViewById(R.id.passwordText);
         name=(EditText)findViewById(R.id.nameText);
-
-        //Sign Up 버튼 눌렀을때
         btn_create=(Button)findViewById(R.id.createButton);
+        btn_check=(Button)findViewById(R.id.check_id);
+
+        //onCreate시 btn_create Button 비활성화
         btn_create.setClickable(false);
+
+        //btn_create Button Click Event
         btn_create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,130 +60,175 @@ private static String URL_Check ="http://eileenyoo1.cafe24.com/Idcheck.php/";
                 String mPass = password.getText().toString().trim();
                 String mName = name.getText().toString().trim();
 
-                if(!mId.isEmpty() || !mPass.isEmpty() || !mName.isEmpty()){//다 입력 되었다면
+                //이름, 아이디, 비밀번호의 EditText에 값이 모두 입력되었을 때
+                if(!mId.isEmpty() || !mPass.isEmpty() || !mName.isEmpty()){
+                    //SignUp 함수 실행
                     SignUp();
-                }else{//하나라도 입력 X
-                    id.setError("Please insert ID"); //에러 메시지 발생
+                }
+                //하나라도 입력이 안된 EditText가 있을 때
+                else{
+                    //에러 메시지 발생
+                    id.setError("Please insert ID");
                     password.setError("Please insert PASSWORD");
                     name.setError("Please insert NAME");
                 }
             }
         });
 
-        btn_check=(Button)findViewById(R.id.check_id); //아이디 중복체크 버튼 id 가져오기
-        btn_check.setOnClickListener(new View.OnClickListener() { //클릭 이벤트
+        //btn_check Button Click Event
+        btn_check.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //아이디 EditText에 입력된 값 변수에 저장
                 String mId=id.getText().toString().trim();
-                if(!mId.isEmpty()) { //id EditText에 값이 있으면
-                    Check(mId); //중복검사 함수 실행
+                //값이 있을 때
+                if(!mId.isEmpty()) {
+                    //Check 함수 실행
+                    Check(mId);
                 }
             }
         });
     }
 
-    private  void Check(final String cid){ //중복검사 함수
-        StringRequest stringRequest=new StringRequest(Request.Method.POST, URL_Check, //php문에 Post형식으로 보내고, 보내는 URL= URL_CHECK
-                new Response.Listener<String>() { //php문의 응답에 대한 이벤트
+    //ID Check를 위한 Server연동 함수 (Volley이용)
+    private  void Check(final String cid){
+        //Volley를 이용한 Server연동 - POST방식으로 php에 값 전달
+        StringRequest stringRequest=new StringRequest(Request.Method.POST, URL_Check,
+                //php문에서 온 응답에 대한 이벤트
+                new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response){
+                        //성공적인 응답일 경우
                         try{
-                            JSONObject jsonObject=new JSONObject(response); //json파일에 응답이 저장
-                            String success = jsonObject.getString("success"); //php문에서 success란 키값에 중복이 없다면 1을 반환하도록 설정
-                            if(success.equals("1")) { //반환값이 1이면 (중복이 없으면)
-                                Toast.makeText(SignUpActivity.this,"You can use this ID",Toast.LENGTH_SHORT).show(); //이 아이디를 사용할 수 있다라는 toast메시지 띄우기
+                            //php문에서의 응답을 기록한 json파일 확인을 위한 JSONObject 객체 생성
+                            JSONObject jsonObject=new JSONObject(response);
+                            //success라는 키에 들어있는 string값 변수에 저장
+                            String success = jsonObject.getString("success");
+
+                            //success라는 키에 들어있는 값이 "1" 일 때
+                            if(success.equals("1")) {
+                                //아이디를 사용할 수 있다라는 toast Message 띄우기
+                                Toast.makeText(SignUpActivity.this,"You can use this ID",Toast.LENGTH_SHORT).show();
+
+                                //id EditText 비활성화
                                 id.setClickable(false);
-                                id.setFocusable(false);//중복체크가 되는 즉시 id EditText의 클릭이벤트 비활성화
-                                id.setBackground(getDrawable(R.drawable.edit_line_false)); //색도 회색으로 변하게
-                                btn_check.setClickable(false); //중복체크 버튼 역시 비활성화
-                                btn_check.setBackgroundColor(getResources().getColor(R.color.colorGray));//색도 회색으로
-                                btn_create.setClickable(true);//중복체크 완료시 Sign Up (회원가입버튼)은 활성화
-                                btn_create.setBackgroundColor(getResources().getColor(R.color.colorButtonOn)); //색도 파랑색으로!
+                                id.setFocusable(false);
+                                //id EditText 색 회색으로 변경
+                                id.setBackground(getDrawable(R.drawable.edit_line_false));
+
+                                //btn_check Button 비활성화
+                                btn_check.setClickable(false);
+                                //btn_check Button 색 회색으로 변경
+                                btn_check.setBackgroundColor(getResources().getColor(R.color.colorGray));
+
+                                //btn_create Button 활성화
+                                btn_create.setClickable(true);
+                                //btn_create 색 파랑색으로 변경
+                                btn_create.setBackgroundColor(getResources().getColor(R.color.colorButtonOn));
                             }
-                            else{ //success키에 1이아닌 0의 값이 들어왔다!(중복된다)
-                                id.setError("Your ID is already in use."); //누가 사용중이다 메시지 띄우기
+                            //success라는 키에 들어있는 값이 "0" 일 때
+                            else{
+                                //id가 사용중이다라는 Error Message 띄우기
+                                id.setError("Your ID is already in use.");
                             }
                         }
                         catch (JSONException e){
-                            e.printStackTrace(); //php에 연결된 db에 체크할 아이디가 없을 수 있기에 빈공간으로 둠
+                            e.printStackTrace();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.e(TAG,"error");  //여기는 아예 코드상의 오류가 뜨는 부분
-                        Toast.makeText(SignUpActivity.this,"Id Check Error!" + error.toString(),Toast.LENGTH_SHORT).show();
+                        //서버 접속오류시
                     }
                 })
         {
+            //php문에 값을 보내는 코드
             @Override
             protected Map<String,String> getParams() throws AuthFailureError {
+                //HashMap 사용
                 Map<String,String> params = new HashMap<>();
-                Log.e(TAG,cid);
+                //입력된 id
                 params.put("id",cid);
+                //php문으로 return
                 return params;
-                //php문에 값을 보내는 부분
+
             }
         };
+        //Volley 사용을 위한 코드
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest); //필수코드***********
+        requestQueue.add(stringRequest);
     }
 
 
-    private void SignUp(){ //회원가입 함수
+    //회원가입을 위한 Server연동 함수 (Volley이용)
+    private void SignUp(){
 
-        btn_create.setVisibility(View.GONE); //회원가입 버튼 안보이게!
-        final String id = this.id.getText().toString().trim(); //각 EditText에 입력된 값 변수에 저장
+        //btn_create Button GONE으로 변경
+        btn_create.setVisibility(View.GONE);
+
+        //각 EditText에 입력된 값 변수에 저장
+        final String id = this.id.getText().toString().trim();
         final String password = this.password.getText().toString().trim();
         final String name = this.name.getText().toString().trim();
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_SignUp, //php문에 POST형식으로, URL_SignUp 주소에 저장된 php문에 보냄
+        //Volley를 이용한 Server연동 - POST방식으로 php에 값 전달
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_SignUp,
+                //php문에서 온 응답에 대한 이벤트
                 new Response.Listener<String>() {
                     @Override
-                    public void onResponse(String response) { //php문 응답에 대한 코드
+                    public void onResponse(String response) {
+                        //성공적인 응답일 경우
                         try{
-                            Log.e(TAG,"try");
+                            //php문에서의 응답을 기록한 json파일 확인을 위한 JSONObject 객체 생성
                             JSONObject jsonObject = new JSONObject(response);
-                            String success = jsonObject.getString("success"); //php문에서 success라는 키에 값을 저장
-                            Log.e(TAG,success);
-                            if(success.equals("1")){//그 값이 1이면(성공)
-                                Toast.makeText(SignUpActivity.this,"Reqister Success!",Toast.LENGTH_SHORT).show();
-                                //회원가입 완료(DB에 성공적으로 값 저장)
-                            }
-                        }catch (JSONException e){ //오류발생
+                            //success라는 키에 들어있는 string값 변수에 저장
+                            String success = jsonObject.getString("success");
 
-                            Log.e(TAG,"catch");
+                            //success라는 키에 들어있는 값이 "1" 일 때
+                            if(success.equals("1")){
+                                //회원가입 완료(DB에 성공적으로 값 저장) Toast Message 출력
+                                Toast.makeText(SignUpActivity.this,"Reqister Success!",Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        //try문에서 오류발생 시
+                        catch (JSONException e){
                             e.printStackTrace();
-                            Toast.makeText(SignUpActivity.this,"Reqister Error!" + e.toString(),Toast.LENGTH_SHORT).show();
+                            //btn_create Button VISIBLE으로 변경
                             btn_create.setVisibility(View.VISIBLE);
                         }
                     }
                 },
                 new Response.ErrorListener() {
+                    //서버 접속 오류시
                     @Override
-                    public void onErrorResponse(VolleyError error) {//오류발생
-
-                        Log.e(TAG,"error");
-
-                        Toast.makeText(SignUpActivity.this,"Reqister Error!" + error.toString(),Toast.LENGTH_SHORT).show();
+                    public void onErrorResponse(VolleyError error) {
+                        //btn_create Button VISIBLE으로 변경
                         btn_create.setVisibility(View.VISIBLE);
                     }
                 })
         {
+            //php문에 값을 보내는 코드
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
+                //HashMap 사용
                 Map<String,String> params = new HashMap<>();
+                //입력된 id
                 params.put("id",id);
+                //입력된 name
                 params.put("name",name);
+                //입력된 password
                 params.put("password",password);
+                //php문으로 return
                 return params;
 
                 //php문에 값을 보냄
             }
         };
+        //Volley 사용을 위한 코드
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest); //필수코드***********
+        requestQueue.add(stringRequest);
         finish();
     }
 }

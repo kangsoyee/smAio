@@ -71,9 +71,9 @@ public class StoreListActivity extends AppCompatActivity  {
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 InputMethodManager im = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                 im.hideSoftInputFromWindow(editPlaceName.getWindowToken(), 0);
-
                 final Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override

@@ -29,173 +29,236 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LoginActivity extends AppCompatActivity {
-    public static final String TAG = "sucess";
+/**
+ * 로그인을 하기위한 activity입니다.
+ * Volley를 이용하여 Server와 연동시켰습니다.
+ * SheardPreference를 이용하여 자동로그인 기능을 구현했습니다. (SessionManager Acticity 참고)
+ */
 
+public class LoginActivity extends AppCompatActivity {
+
+    //layout의 items 변수선언
     private EditText id,password;
     private ImageButton login;
     private TextView link_signup;
     private ProgressBar loading;
-    private static String URL_LOGIN ="http://eileenyoo1.cafe24.com/login.php/";
     private CheckBox auto;
+
+    //SessionManager 사용을 위한 선언
     SessionManager sessionManager;
 
-    //자동로그인 pref
+    //자동로그인을 위한 SharedPreferences
     SharedPreferences AutoPref;
     SharedPreferences.Editor edit;
+
+    //Server에 저장된 login.php 주소
+    private final static String URL_LOGIN ="http://eileenyoo1.cafe24.com/login.php/";
+
 @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        sessionManager=new SessionManager(this); //세션관련 SessionManager
-        //id 가져오기
+        //SessionManager 객체생성
+        sessionManager=new SessionManager(this);
+
+        //layout items id 가져오기
         auto=(CheckBox)findViewById(R.id.AutoLoginCheck);
         id=(EditText)findViewById(R.id.id);
         password=(EditText)findViewById(R.id.password);
-        loading=(ProgressBar)findViewById(R.id.progress_loading); //로그인 실행시 원모양으로 도는 로딩item
+        loading=(ProgressBar)findViewById(R.id.progress_loading);
         login = (ImageButton)findViewById(R.id.login);
+        link_signup=(TextView)findViewById(R.id.signupButton);
+
+        //SharedPreferences 객체생성
         AutoPref = getSharedPreferences("auto",MODE_PRIVATE);
 
-        edit = AutoPref.edit(); //sharedpreferences 사용을 위한 에디터 //필수**
+        //AutoPref(SharedPreferences) 사용을 위한 editor 객체 생성
+        edit = AutoPref.edit();
 
-        Log.e(TAG,getIntent().getBooleanExtra("boolcheck",true)+""); //로그아웃 버튼이 눌렀을때 MyFragment에서 boolean 값이 전해지는지 확인을 위한 TAG
-        Boolean boolc=getIntent().getBooleanExtra("boolcheck",true); //MyFragment에서 받은 boolean값 변수에 저장
+        //MyFragment에서 logout버튼 클릭시 세션초기화를 알려주는 Boolean변수
+        Boolean boolc=getIntent().getBooleanExtra("boolcheck",true);
 
-        if(boolc==false){ //만약에 MyFragment에서 받은 값이 false이면 (원래 false값이 오는게 맞음)
-            auto.setChecked(false); //auto CheckBox의 체크를 false로 만듬. 이러면 자동로그인 안됨
-            edit.clear(); //SharedPreferences 값 초기화
-            edit.commit(); //초기화 한걸 실행// SharedPreferences의 값 변동이 생기면 무조건 해야한다***
+
+        if(boolc==false){ //MyFragment에서 받은 값이 false일 때 (세션초기화 성공)
+            //자동로그인 CheckBox 체크 false
+            auto.setChecked(false);
+            //AutoPref에 저장된 CheckBox의 체크여부 초기화
+            edit.clear();
+            //commit을 통해 AutoPref에 변경사항 저장
+            edit.commit();
         }
-        else{ //MyFragement에서 온 값이 아니다! 즉 로그아웃 버튼을 눌르지 않았다.
-            if(AutoPref.getBoolean("checkbox",false)==true){ //그리고 sharedPreferences의 checkBox 체크가 됬는지 알아보는 boolean 값이 true 즉 체크 되었다면
-                auto.setChecked(true); //checkbox의 체크를 계속 유지
-                id.setText(AutoPref.getString("id","error")); //아이디칸에 아이디 띄우기
-                password.setText(AutoPref.getString("password","error")); //비밀번호칸에 비밀번호 띄우기
+        else{ //MyFragement에서 logout버튼을 클릭하지 않아 true(defaltValue값)이 왔을 때
+            if(AutoPref.getBoolean("checkbox",false)==true){ //AutoPref에 저장 된 값이 true(체크됨)일 때
+                //checkbox의 체크를 계속 유지
+                auto.setChecked(true);
+                //아이디칸에 AutoPref에 저장된 id값 저장
+                id.setText(AutoPref.getString("id","error"));
+                //비밀번호칸에 AutoPref에 저장된 password값 저장
+                password.setText(AutoPref.getString("password","error"));
+                //Login함수를 실행( AutoPref에 저장된 id, AutoPref에 저장된 password)
                 Login(AutoPref.getString("id",null),AutoPref.getString("password",null)); //로그인 실행
             }
         }
 
-    password.setOnKeyListener(new View.OnKeyListener() { //login이벤트를 자판의 엔터로 하기위한 코드
+    //login이벤트를 자판의 엔터로 하기위한 코드
+    password.setOnKeyListener(new View.OnKeyListener() {
         @Override
         public boolean onKey(View view, int keycode, KeyEvent keyEvent) {
-            if (keycode==KeyEvent.KEYCODE_ENTER){ //만약 keycode값이 KEYCOD_ENTER이면
-                login.callOnClick(); //로그인버튼을 클릭
+            if (keycode==KeyEvent.KEYCODE_ENTER){ //만약 keycode값이 KEYCOD_ENTER 일 때
+                //login의 click 이벤트 불러옴
+                login.callOnClick();
                 return true;
             }
             return false;
         }
     });
-        login.setOnClickListener(new LoginClickListener()); //login 버튼이 눌렸을때 로그인 이벤트
-        link_signup=(TextView)findViewById(R.id.signupButton); //회원가입 Text id
-        link_signup.setOnClickListener(new View.OnClickListener() {//회원가입이 눌렸을 때 클릭 리스너
-            @Override
-            public void onClick(View v) {
-                Intent emailIntent = new Intent(LoginActivity.this, EmailActivity.class);
-                LoginActivity.this.startActivity(emailIntent); //인텐트를 사용하여 엑티비티 전환
-            }
-        });
+        //login 버튼 Click Event
+        login.setOnClickListener(new LoginClickListener());
+        //signup TextView Click Event
+        link_signup.setOnClickListener(new SignUpClickListener());
     }
 
-    private void Login(final String cid, final String cpassword){ //로그인을 위한 함수 edittext에 입력된 아이디와 비밀번호의 값을 가진다
+    //로그인을 위한 Server연동 함수 (Volley이용)
+    private void Login(final String cid, final String cpassword){
+        //loading ProgressBar VISIBLE로 변경
+        loading.setVisibility(View.VISIBLE);
 
-        loading.setVisibility(View.VISIBLE); //원모양의 로딩 아이템 보이게하기!
-        StringRequest stringRequest=new StringRequest(Request.Method.POST, URL_LOGIN, //순서대로 php문에 POST 형식으로 값 보내기, php문 주소
-                new Response.Listener<String>() { //php문에서 온 응답에 대한 이벤트
+        //Volley를 이용한 Server연동 - POST방식으로 php에 값 전달
+        StringRequest stringRequest=new StringRequest(Request.Method.POST, URL_LOGIN,
+                //php문에서 온 응답에 대한 이벤트
+                new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        try{Log.e(TAG,"try");
-                            JSONObject jsonObject=new JSONObject(response); //php문에서 json파일에 응답을 줌 그래서 jsonobject를 통해 응답 확인
-                            String success = jsonObject.getString("success"); //php문에서 제이슨 파일에 success라는 키에 1이라는 값을 줌
-                            Log.e(TAG,success);
-                            JSONArray jsonArray = jsonObject.getJSONArray("login"); //php문에서 array변수에 login 데이터를 담고 jsonArray형식으로 jsonObject에 저장 그래서 그 값을 불러옴
+                        //성공적인 응답일 경우
+                        try{
+                            //php문에서의 응답을 기록한 json파일 확인을 위한 JSONObject 객체 생성
+                            JSONObject jsonObject=new JSONObject(response);
+                            //success라는 키에 들어있는 string값 변수에 저장
+                            String success = jsonObject.getString("success");
+                            //JSONObject에 저장된 Array파일 객체 생성
+                            JSONArray jsonArray = jsonObject.getJSONArray("login");
 
-                            if(success.equals("1")){ //만약에 json파일에 success키에 맞는 값이 1면
-                                for(int i = 0; i<jsonArray.length();i++){ //jsonArray 크기만큼 for문 돌림
+                            //success라는 키에 들어있는 값이 "1" 일 때
+                            if(success.equals("1")){
+                                //jsonArray에 들어있는 데이터 확인 및 저장을 위한 for문
+                                for(int i = 0; i<jsonArray.length();i++){
                                     JSONObject object=jsonArray.getJSONObject(i);
-                                   String name=object.getString("name").trim(); //jsonArray에 저장된 이름(name)값을 가져온다
-                                   Toast.makeText(LoginActivity.this,
+                                    //jsonArray에 "name"이라는 키값으로 저장된 데이터 가져오기
+                                    String name=object.getString("name").trim();
+                                    //Toast 메시지로 성공 메시지와 이름 값을 띄운다
+                                    Toast.makeText(LoginActivity.this,
                                             "Success Login. \nYour NAME : "
-                                                    +name,Toast.LENGTH_SHORT) //토스트 메시지로 성공 메시지와 이름 값을 띄운다
+                                                    +name,Toast.LENGTH_SHORT)
                                             .show();
-                                    loading.setVisibility(View.GONE); //로그인이 성공했으니 로딩아이템 안보이게!
-                                    sessionManager.createSession(name,cid); //이름과 아이디로 구성된 세션 생성
-                                    Intent loginIntent = new Intent(LoginActivity.this, FirstActivity.class); //이제 인텐트를 통해서 FirstActivity로 이동
-                                    //만약 자동로그인 체크가 됬으면
+                                    //loading ProgressBar GONE으로 변경
+                                    loading.setVisibility(View.GONE);
+                                    //SessionManager에 유저 이름과 아이디 저장
+                                    sessionManager.createSession(name,cid);
+
+                                    //자동로그인 CheckBox가 체크 됬을 때
                                     if(auto.isChecked()){
+                                        //아이디, 비밀번호, 체크 여부를 AutoPref에 저장
                                         edit.putString("id",cid);
                                         edit.putString("password",cpassword);
                                         edit.putBoolean("checkbox",true);
-                                        edit.commit(); //입력된 아이디와 비밀번호 그리고 체크 여부를 SharedPreferences에 저장
+                                        edit.commit();
                                     }
-                                    else{ //아니면
+                                    //자동로그인 CheckBox가 체크가 안 됬을 때
+                                    else{
+                                        //아이디와 비밀번호값을 ""로 초기화하고 체크박스 여부도 false로
                                         edit.putString("id","");
                                         edit.putString("password","");
                                         edit.putBoolean("checkbox",false);
-                                        edit.commit(); //아이디와 비밀번호값을 ""로 아무것도 안주고 체크박스 여부도 false로
+                                        edit.commit();
                                     }
+
+                                    //인텐트를 통해서 FirstActivity로 이동
+                                    Intent loginIntent = new Intent(LoginActivity.this, FirstActivity.class);
                                     LoginActivity.this.startActivity(loginIntent);
-                                    finish(); //다음 엑티비티로~
+                                    finish();
                                 }
                             }
+                            //success값이 1이 아닐 때 (아이디에 맞는 비밀번호가 틀리다는 뜻)
                             else{
+                                //password Error Massage 띄우기
                                 password.setError("Please check your PASSWORD!!");
-                                loading.setVisibility(View.GONE); //만약에 success값이 1이아니면 아이디에 맞는 비밀번호가 틀리다는 뜻
+                                //loading ProgressBar GONE으로 변경
+                                loading.setVisibility(View.GONE);
                             }
-                        }catch (JSONException e){
-                            Log.e(TAG,"catch");
+                        }
+                        //try에서 오류 발생시 (php문에 전달한 id가 서버에 없다는 뜻)
+                        catch (JSONException e){
+                            //id Error Massage 띄우기
+                            id.setError("Please check your ID!!");
+                            //loading ProgressBar GONE으로 변경
                             loading.setVisibility(View.GONE);
+                            //login Button VISIBLE로 변경
                             login.setVisibility(View.VISIBLE);
-                            e.printStackTrace();
-                            id.setError("Please check your ID!!"); //이건 아예 아이디가 다르다는 뜻
 
+                            e.printStackTrace();
                         }
                     }
                 },
-                new Response.ErrorListener() { //여기로 오류 잡힘 서버 접속 오류
+                //서버 접속 오류
+                new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        //loading ProgressBar GONE으로 변경
                         loading.setVisibility(View.GONE);
+                        //login Button VISIBLE로 변경
                         login.setVisibility(View.VISIBLE);
-                        Log.e(TAG,"error");
-                        Toast.makeText(LoginActivity.this,
-                                "Error "
-                                        +error.toString(),
-                                Toast.LENGTH_SHORT).show(); //이건 그냥 코드 에러 났을때 보이는 부분 Volley 어쩌구 뜨는게 여기다
-
                     }
 
                 })
         {
+            //php문에 값을 보내는 코드
             @Override
             protected Map<String,String> getParams() throws AuthFailureError {
+                //HashMap 사용
                 Map<String,String> params = new HashMap<>();
-                Log.e(TAG,cid);
-                Log.e(TAG,cpassword);
+                //입력된 id
                 params.put("id",cid);
+                //입력된 password
                 params.put("password",cpassword);
-                return params; //hashmap을 통해서 값을 php문에 보내는 구문!
+                //php문으로 return
+                return params;
             }
         };
-
+        //Volley 사용을 위한 코드
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest); //요거는 volley사용을 위한 필수적인 코드 두줄
-
+        requestQueue.add(stringRequest);
     }
 
+    //Login Button Click Event
     private class LoginClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            String mId=id.getText().toString().trim(); //trim()이거는 빈 공백이 있을때 오류 잡기위해 넣었음
-            String mPass = password.getText().toString().trim(); // 이하동문
+            //변수에 id, password EditText에 입력된 값 저장
+            String mId=id.getText().toString().trim();
+            String mPass = password.getText().toString().trim();
 
-            if(!mId.isEmpty() || !mPass.isEmpty()){ //EditText에 입력된 값이 둘다 비어있지 않을시
+            //EditText에 id, password가 모두 입력됬을 때
+            if(!mId.isEmpty() || !mPass.isEmpty()){
+                //Login 함수 실행
                 Login(mId,mPass);
-            }else{ //하나라도 비어있으면!
+            }
+            //하나라도 비어있을 시
+            else{
                 id.setError("Please insert id");
                 password.setError("Please insert password");
                 loading.setVisibility(View.GONE);
             }
+        }
+    }
+
+    //SingUp TextView Click Event
+    private class SignUpClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            //인텐트를 사용하여 엑티비티 전환
+            Intent emailIntent = new Intent(LoginActivity.this, EmailActivity.class);
+            LoginActivity.this.startActivity(emailIntent);
         }
     }
 }

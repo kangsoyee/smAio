@@ -11,10 +11,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-
+/**
+ * 내 정보를 보여주는 Fragment
+ * FirstActivity에 속한 Fragment
+ * 이름, ID 정보를 보여주고 CouponActivity, MyReviewActivity로의 액티비티 전환과 LOGOUT을 할 수 있다
+ */
 public class MyFragment extends Fragment {
-
-    final private static String TAG = "from activity to fragment data";
 
     public MyFragment() {
         // Required empty public constructor
@@ -23,19 +25,18 @@ public class MyFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_my, container, false); //fragment에 아이디 값을 받아오기 위해
-        //FirstActivity에서 이름과 id 정보 Arguments를 통해 받음
-        final String id_text = getArguments().getString("id"); //getArguments를 이용해 부모 액티비티(FirstActivity에서 setArguments로 보낸 번들 값 가져오기
+        //fragment에 아이디 값을 받아오기 위한 View 객체 선언
+        View view = inflater.inflate(R.layout.fragment_my, container, false);
+
+        //FirstActivity에서 보낸 name과 id 정보가 담긴 Bundle을 getArguments를 통해 받음
+        final String id_text = getArguments().getString("id");
         String name_text = getArguments().getString("name");
 
-        //확인을 위한 로그
-        Log.e(TAG, id_text);
-        Log.e(TAG, name_text);
-        //view를 이용 fragment에서 id를 가져올수있도록
+        //View를 이용하여 layout의 name,id TextView id값 가져오기
         TextView Name = (TextView) view.findViewById(R.id.name_info);
         TextView Id = (TextView) view.findViewById(R.id.id_info);
 
-        //setDATA
+        //name,id TextView에 값 띄우기
         Name.setText(name_text);
         Id.setText(id_text);
 
@@ -47,6 +48,7 @@ public class MyFragment extends Fragment {
                 android.R.layout.simple_list_item_1,
                 list_menu
         );
+
         //리스트 아이템 선택시 이벤트 생성
         listView.setAdapter(listViewAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -59,6 +61,7 @@ public class MyFragment extends Fragment {
                         break;
                     case 1:
                         Intent intent1 = new Intent(getActivity(), MyReviewActivity.class);
+                        //인텐트를 통해 id값 전달
                         intent1.putExtra("id",id_text);
                         startActivity(intent1);
                         break;
