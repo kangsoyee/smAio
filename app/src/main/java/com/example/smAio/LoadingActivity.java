@@ -17,10 +17,10 @@ public class LoadingActivity extends Activity {
         Glide.with(this).load(R.raw.loading_aio).into(iv);
         
         thread_sleep sleep = new thread_sleep(this);
-
-        sleep.start();
+        sleep.start(); //쓰레드 실행
     }
 
+    //쓰레드 클래스
     private class thread_sleep extends Thread{
         Activity thisAct;
         thread_sleep(Activity theAct){
@@ -28,11 +28,11 @@ public class LoadingActivity extends Activity {
         }
         public void run() {
             try{
-                Thread.sleep(3000);
+                Thread.sleep(3000); //쓰레드 지연 시간 = 로딩 화면 표시 시간 설정(3초)
             }catch (InterruptedException e){
                 e.printStackTrace();
             }
-            startActivity(new Intent(thisAct, LoginActivity.class));
+            startActivity(new Intent(thisAct, LoginActivity.class)); //로딩이 끝난 후 로그인 화면으로 전환
             finish();
         }
     }

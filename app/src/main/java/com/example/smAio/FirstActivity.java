@@ -85,10 +85,7 @@ public class FirstActivity extends AppCompatActivity {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        callFragment(1);
-
-        //홈버튼 표시
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        callFragment(1); //맨 처음에 HomeFragment 호출
 
         Intent get_intent=getIntent();
         String logout=get_intent.getStringExtra("Logout");
@@ -96,13 +93,12 @@ public class FirstActivity extends AppCompatActivity {
             sessionManager.logout();
         }
 
-        //카메라, 위치 권한 허용 팝업
+        //권한 종류 선택 후 배열에 저장(카메라, 위치 권한 선택)
         int PERMISSION_ALL = 1;
         String[] PERMISSIONS = {Manifest.permission.CAMERA,
                 Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE};
-
+                Manifest.permission.ACCESS_FINE_LOCATION};
+        //선택한 권한 허용 팝업 띄우기
         if(!hasPermissions(this, PERMISSIONS)){
             ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
         }
@@ -170,7 +166,6 @@ public class FirstActivity extends AppCompatActivity {
                 Bundle info_bundle = new Bundle();
                 info_bundle.putString("id", user_id);
                 info_bundle.putString("name",user_name);
-
                 fragment5.setArguments(info_bundle);
                 break;
         }
@@ -206,7 +201,6 @@ public class FirstActivity extends AppCompatActivity {
 
     //QR 버튼 클릭 이벤트
     public void Click_qr(View view){
-
         Intent startQRActivity = new Intent(FirstActivity.this, QrScanActivity.class);
         startQRActivity.putExtra("id",user_id);
         startActivity(startQRActivity);
@@ -223,7 +217,7 @@ public class FirstActivity extends AppCompatActivity {
         finish();
     }
 
-    //카메라 권한 허용 함수
+    //권한 허용 함수
     public static boolean hasPermissions(Context context, String... permissions) {
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null) {
             for (String permission : permissions) {
