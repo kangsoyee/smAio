@@ -218,10 +218,11 @@ public class DetailActivity extends AppCompatActivity {
         setTitle("");
         info_tel.setPaintFlags(info_tel.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
 
-        //전화번호 클릭 이벤트
+        //전화번호가 적혀있는 info_tel 텍스트뷰의 클릭 이벤트
        info_tel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //전화번호가 적혀있는 텍스트뷰(info_tel)를 클릭할때만 그 텍스트뷰 값을 받아와 저장한 후 다이얼로 화면 전환하여 번호를 띄워준다.
                 mnum = info_tel.getText().toString();
                 String tel = "tel:" + mnum;
                 switch (v.getId()){
