@@ -59,8 +59,7 @@ public class DetailActivity extends AppCompatActivity {
     ListView list;
 
     TextView placename;
-    TextView starttime;
-    TextView endtime;
+    TextView startendtime;
 
     TextView info_address;
     TextView info_tel;
@@ -199,8 +198,7 @@ public class DetailActivity extends AppCompatActivity {
         info_price = (TextView) findViewById(R.id.info_price);
 
         placename = (TextView) findViewById(R.id.place_name);
-        starttime = (TextView) findViewById(R.id.start_time);
-        endtime = (TextView) findViewById(R.id.end_time);
+        startendtime = (TextView) findViewById(R.id.start_end_time);
 
 
         info_address.setText(ad_data);
@@ -209,8 +207,7 @@ public class DetailActivity extends AppCompatActivity {
         info_price.setText(price_data);
 
         placename.setText(name_data);
-        starttime.setText(start_data);
-        endtime.setText(end_data);
+        startendtime.setText(start_data+" ~ "+end_data);
         setTitle("");
         info_tel.setPaintFlags(info_tel.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
 
