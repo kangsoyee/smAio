@@ -59,6 +59,7 @@ public class EmailActivity extends AppCompatActivity {
         });
     }
 
+    //작성한값 불러서 이메일,비밀번호 유효성 검사하기
     public void singUp(View view) {
         email = editTextEmail.getText().toString();
         password = editTextPassword.getText().toString();
@@ -68,7 +69,7 @@ public class EmailActivity extends AppCompatActivity {
         }
     }
 
-    // 이메일 유효성 검사
+    // 이메일 유효성 검사 메소드
     private boolean isValidEmail() {
         if (email.isEmpty()) {
             // 이메일 공백
@@ -81,7 +82,7 @@ public class EmailActivity extends AppCompatActivity {
         }
     }
 
-    // 비밀번호 유효성 검사
+    // 비밀번호 유효성 검사 메소드
     private boolean isValidPasswd() {
         if (password.isEmpty()) {
             // 비밀번호 공백
@@ -96,19 +97,21 @@ public class EmailActivity extends AppCompatActivity {
 
     // 회원가입
     private void createUser(String email, String password) {
+        //firebase에 이메일 생성
         firebaseAuth.createUserWithEmailAndPassword(email+"@sangmyung.kr", password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
+                        if (task.isSuccessful()&&task.isComplete()) {
                             // 회원가입 성공
-                            Toast.makeText(EmailActivity.this, "Certification", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(EmailActivity.this, "Certification", Toast.LENGTH_LONG).show();
+                            //인텐트를 사용하여 엑티비티 전환
                             Intent signupIntent = new Intent(EmailActivity.this, SignUpActivity.class);
-                            EmailActivity.this.startActivity(signupIntent); //인텐트를 사용하여 엑티비티 전환
+                            EmailActivity.this.startActivity(signupIntent);
                             finish();
                         } else {
                             // 회원가입 실패
-                            Toast.makeText(EmailActivity.this, "Certification Failed", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(EmailActivity.this, "Certification Failed", Toast.LENGTH_LONG).show();
                         }
                     }
                 });

@@ -80,8 +80,8 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         public boolean onKey(View view, int keycode, KeyEvent keyEvent) {
             if (keycode==KeyEvent.KEYCODE_ENTER){ //만약 keycode값이 KEYCOD_ENTER이면
-                    login.callOnClick(); //로그인버튼을 클릭
-                    return true;
+                login.callOnClick(); //로그인버튼을 클릭
+                return true;
             }
             return false;
         }

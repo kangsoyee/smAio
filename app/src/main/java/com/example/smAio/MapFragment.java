@@ -40,16 +40,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     String check_place_name;
     String menu;
-
     ArrayList<PlaceDTO> items;
+
+    //마커 추가 핸들러
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             for (PlaceDTO dto : items) {
-                check_place_name = dto.getPlace_name();
-                menu = dto.getMenu();
-                addMarker(false, new LatLng(Double.parseDouble(dto.getLatitude()), Double.parseDouble(dto.getLongitude())));
+                check_place_name = dto.getPlace_name(); //가게이름
+                menu = dto.getMenu();   //대표메뉴이름
+                addMarker(false, new LatLng(Double.parseDouble(dto.getLatitude()), Double.parseDouble(dto.getLongitude())));    //가게좌표찍기
             }
         }
     };
@@ -57,7 +58,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public MapFragment() {
         // required
     }
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -122,7 +122,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         super.onActivityCreated(savedInstanceState);
 
         //액티비티가 처음 생성될 때 실행되는 함수
-
         if (mapView != null) {
             mapView.onCreate(savedInstanceState);
         }
@@ -134,13 +133,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         //처음을 현재 위치로 초기화
         SimpleLocation location = new SimpleLocation(getContext());
         LatLng currentPosition = new LatLng(location.getLatitude(), location.getLongitude());
-
         this.googleMap = googleMap;
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(currentPosition));
         googleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
         addMarker(true, currentPosition);
 
-        //우측 상단에 위치 버튼
+        //우측 상단에 현재위치 버튼
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             googleMap.setMyLocationEnabled(true);
@@ -150,12 +148,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         //확대&축소
         googleMap.getUiSettings().setZoomControlsEnabled(true);
 
+        //thread실행
         list();
     }
 
+    //마커찍기
     private void addMarker(boolean refresh, LatLng location) {
-        PlaceDTO dto = new PlaceDTO();
-
         try {
             if (refresh)
                 googleMap.clear();
@@ -168,8 +166,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             Log.e("addMarker failTest", e.getMessage());
         }
     }
+
     void list() {
-        //네트워크 관련 작업은 백그라운드 스레드에서 처리
+        //네트워크 관련 작업은 백그라운드 thread에서 처리
         final StringBuilder sb = new StringBuilder(); // final은 지역변수를 상수화 시켜준다. 즉, 한번 실행한 뒤 없어지는 것이 아니라 계속해서 유지 가능하게 해준다.
         Thread th = new Thread(new Runnable() {
             public void run() {
@@ -182,31 +181,28 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                     // 연결되었으면.
                     if (conn != null) {
-                        //타임아웃 시간 설정
-                        conn.setConnectTimeout(10000);
-                        //캐쉬 사용 여부
-                        conn.setUseCaches(false);
+                        conn.setConnectTimeout(10000);  //타임아웃 시간 설정
+                        conn.setUseCaches(false);   //캐쉬 사용 여부
                         //url에 접속 성공하면
                         if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                            //스트림 생성
-                            BufferedReader br =
+                            BufferedReader br = //스트림 생성
                                     new BufferedReader(
                                             new InputStreamReader(
                                                     conn.getInputStream(), "utf-8"));
                             while (true) {
-                                String line = br.readLine(); //한 라인을 읽음
-                                if (line == null) break;//더이상 내용이 없으면 종료
+                                String line = br.readLine();    //한 라인을 읽음
+                                if (line == null) break;    //더이상 내용이 없으면 종료
                                 sb.append(line + "\n");
                             }
                             br.close(); //버퍼 닫기
                         }
                         conn.disconnect();
                     }
-// 스트링을 json 객체로 변환
+                    // 스트링을 json 객체로 변환
                     JSONObject jsonObj = new JSONObject(sb.toString());
 
-// json.get("변수명")
-                    JSONArray jArray = (JSONArray) jsonObj.get("sendData"); // 이 부분 이해 안됨
+                    // json.get("변수명")
+                    JSONArray jArray = (JSONArray) jsonObj.get("sendData");
                     for (int i = 0; i < jArray.length(); i++) {
                         JSONObject row = jArray.getJSONObject(i);
                         final PlaceDTO dto = new PlaceDTO();
