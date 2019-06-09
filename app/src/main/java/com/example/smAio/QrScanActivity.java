@@ -122,7 +122,7 @@ public class QrScanActivity extends AppCompatActivity implements DecoratedBarcod
             public void run() {
                 try {
                     items = new ArrayList<PlaceDTO>();
-                    String page = Common.SERVER_URL + "/place_list.php"; // php 파일에 접근하여 가게별 QR 코드를 가져올 수 있도록 합니다.
+                    String page = Common.SERVER_URL + "/place_all_list.php"; // php 파일에 접근하여 가게별 QR 코드를 가져올 수 있도록 합니다.
                     Log.i("test", "php연결 완료");
 
                     URL url = new URL(page);
