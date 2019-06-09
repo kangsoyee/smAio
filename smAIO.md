@@ -1337,5 +1337,331 @@ public class SessionManager {
 <br><br><br><br>
 ​
 
+7. EmailActivity.java 설명
+* 상명대학교 학생임을 인증하기 위한 클래스입니다.
+* Firebase에 연동하여 학교이메일 유무를 확인합니다.
+* 인증후 SignUpActivity로 넘어가면서 회원가입을 진행합니다.
+
+``` q
+public class EmailActivity extends AppCompatActivity {
+
+    // 비밀번호 정규식
+    private static final Pattern PASSWORD_PATTERN = Pattern.compile("^[a-zA-Z0-9!@.#$%^&*?_~]{4,16}$");
+
+    // 파이어베이스 인증 객체 생성
+    private FirebaseAuth firebaseAuth;
+
+    // 이메일과 비밀번호
+    private EditText editTextEmail;
+    private EditText editTextPassword;
+    private Button certification;
+
+    private String email = "";
+    private String password = "";
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_email);
+
+        // 파이어베이스 인증 객체 선언
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        certification = findViewById(R.id.btn_certification);
+        editTextEmail = findViewById(R.id.et_eamil);
+        editTextPassword = findViewById(R.id.et_password);
+        editTextPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        editTextPassword.setOnKeyListener(new View.OnKeyListener() { //login이벤트를 자판의 엔터로 하기위한 코드
+            @Override
+            public boolean onKey(View view, int keycode, KeyEvent keyEvent) {
+                if (keycode==KeyEvent.KEYCODE_ENTER){ //만약 keycode값이 KEYCOD_ENTER이면
+                    certification.callOnClick(); //로그인버튼을 클릭
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
+    //작성한값 불러서 이메일,비밀번호 유효성 검사하기
+    public void singUp(View view) {
+        email = editTextEmail.getText().toString();
+        password = editTextPassword.getText().toString();
+
+        if(isValidEmail() && isValidPasswd()) {
+            createUser(email, password);
+        }
+    }
+
+    // 이메일 유효성 검사 메소드
+    private boolean isValidEmail() {
+        if (email.isEmpty()) {
+            // 이메일 공백
+            return false;
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(email+"@sangmyung.kr").matches()) {
+            // 이메일 형식 불일치
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    // 비밀번호 유효성 검사 메소드
+    private boolean isValidPasswd() {
+        if (password.isEmpty()) {
+            // 비밀번호 공백
+            return false;
+        } else if (!PASSWORD_PATTERN.matcher(password).matches()) {
+            // 비밀번호 형식 불일치
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    // 회원가입
+    private void createUser(String email, String password) {
+        //firebase에 이메일 생성
+        firebaseAuth.createUserWithEmailAndPassword(email+"@sangmyung.kr", password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()&&task.isComplete()) {
+                            // 회원가입 성공
+                            Toast.makeText(EmailActivity.this, "Certification", Toast.LENGTH_LONG).show();
+                            //인텐트를 사용하여 엑티비티 전환
+                            Intent signupIntent = new Intent(EmailActivity.this, SignUpActivity.class);
+                            EmailActivity.this.startActivity(signupIntent);
+                            finish();
+                        } else {
+                            // 회원가입 실패
+                            Toast.makeText(EmailActivity.this, "Certification Failed", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+    }
+}
+```
+```
+dependencies {
+    
+    ...
+
+    //firebase
+    implementation 'com.google.firebase:firebase-auth:17.0.0'
+    implementation 'com.google.android.gms:play-services-auth:16.0.1'
+
+    ...
+
+}
+apply plugin: 'com.google.gms.google-services'
+```
+<br/><br/><br/><br/>
 
 
+8. MapFragment.java 설명
+* 홈화면의 NavigationBar에 포함되어 있는 지도입니다.
+* 구글지도를 이용하여 Map을 띄웁니다.
+* Map에 현재위치와 가게들의 위치와 정보를 표시해줍니다.
+
+``` q
+public class MapFragment extends Fragment implements OnMapReadyCallback {
+
+    private MapView mapView = null;
+    private GoogleMap googleMap;
+
+    String check_place_name;
+    String menu;
+    ArrayList<PlaceDTO> items;
+
+    //마커 추가 핸들러
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            for (PlaceDTO dto : items) {
+                check_place_name = dto.getPlace_name(); //가게이름
+                menu = dto.getMenu();   //대표메뉴이름
+                addMarker(false, new LatLng(Double.parseDouble(dto.getLatitude()), Double.parseDouble(dto.getLongitude())));    //가게좌표찍기
+            }
+        }
+    };
+
+    public MapFragment() {
+        // required
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View layout = inflater.inflate(R.layout.fragment_map, container, false);
+
+        mapView = (MapView) layout.findViewById(R.id.map);
+        mapView.getMapAsync(this);
+
+        return layout;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mapView.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mapView.onStop();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mapView.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mapView.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mapView.onPause();
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapView.onLowMemory();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mapView.onLowMemory();
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        //액티비티가 처음 생성될 때 실행되는 함수
+        if (mapView != null) {
+            mapView.onCreate(savedInstanceState);
+        }
+    }
+
+    @Override
+    public void onMapReady(final GoogleMap googleMap) {
+
+        //처음을 현재 위치로 초기화
+        SimpleLocation location = new SimpleLocation(getContext());
+        LatLng currentPosition = new LatLng(location.getLatitude(), location.getLongitude());
+        this.googleMap = googleMap;
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(currentPosition));
+        googleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+        addMarker(true, currentPosition);
+
+        //우측 상단에 현재위치 버튼
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            googleMap.setMyLocationEnabled(true);
+            googleMap.getUiSettings().setMyLocationButtonEnabled(true);
+        }
+
+        //확대&축소
+        googleMap.getUiSettings().setZoomControlsEnabled(true);
+
+        //thread실행
+        list();
+    }
+
+    //마커찍기
+    private void addMarker(boolean refresh, LatLng location) {
+        try {
+            if (refresh)
+                googleMap.clear();
+            MarkerOptions markerOptions = new MarkerOptions();
+            markerOptions.position(location);
+            markerOptions.title(check_place_name);
+            markerOptions.snippet(menu);
+            googleMap.addMarker(markerOptions);
+        } catch (Exception e) {
+            Log.e("addMarker failTest", e.getMessage());
+        }
+    }
+
+    void list() {
+        //네트워크 관련 작업은 백그라운드 thread에서 처리
+        final StringBuilder sb = new StringBuilder(); // final은 지역변수를 상수화 시켜준다. 즉, 한번 실행한 뒤 없어지는 것이 아니라 계속해서 유지 가능하게 해준다.
+        Thread th = new Thread(new Runnable() {
+            public void run() {
+                try {
+                    String page = Common.SERVER_URL + "/place_all_list.php";
+                    Log.e("StoreListActivity", "여기까지야");
+                    items = new ArrayList<PlaceDTO>();
+                    URL url = new URL(page);
+                    // 커넥션 객체 생성
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    // 연결되었으면.
+                    if (conn != null) {
+                        conn.setConnectTimeout(10000);  //타임아웃 시간 설정
+                        conn.setUseCaches(false);   //캐쉬 사용 여부
+                        //url에 접속 성공하면
+                        if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                            BufferedReader br = //스트림 생성
+                                    new BufferedReader(
+                                            new InputStreamReader(
+                                                    conn.getInputStream(), "utf-8"));
+                            while (true) {
+                                String line = br.readLine();    //한 라인을 읽음
+                                if (line == null) break;    //더이상 내용이 없으면 종료
+                                sb.append(line + "\n");
+                            }
+                            br.close(); //버퍼 닫기
+                        }
+                        conn.disconnect();
+                    }
+                    // 스트링을 json 객체로 변환
+                    JSONObject jsonObj = new JSONObject(sb.toString());
+
+                    // json.get("변수명")
+                    JSONArray jArray = (JSONArray) jsonObj.get("sendData");
+                    for (int i = 0; i < jArray.length(); i++) {
+                        JSONObject row = jArray.getJSONObject(i);
+                        final PlaceDTO dto = new PlaceDTO();
+                        dto.setPlace_idx(row.getInt("place_idx"));
+                        dto.setCategory(row.getString("category"));
+                        dto.setPlace_name(row.getString("place_name"));
+                        dto.setStart_time(row.getString("start_time"));
+                        dto.setEnd_time(row.getString("end_time"));
+                        dto.setAddress(row.getString("address"));
+                        dto.setTel(row.getString("tel"));
+                        dto.setMenu(row.getString("menu"));
+                        dto.setPrice(row.getString("price"));
+                        dto.setLatitude(row.getString("latitude"));
+                        dto.setLongitude(row.getString("longitude"));
+
+                        items.add(dto);
+                    }
+                    //핸들러에게 화면 갱신 요청
+                    handler.sendEmptyMessage(0);
+
+                } catch (Exception e) {
+                    Log.e("list failTest", e.getMessage());
+                }
+            }
+        });
+        th.start();
+    }
+}
+```
+<br/><br/><br/><br/>
