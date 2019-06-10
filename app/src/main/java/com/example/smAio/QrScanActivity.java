@@ -68,8 +68,8 @@ public class QrScanActivity extends AppCompatActivity implements DecoratedBarcod
                     url=lastText;
                     Intent intent = new Intent(QrScanActivity.this, ReviewWriteActivity.class);
 
-                    intent.putExtra("url",url);
-                    intent.putExtra("id",id);
+                    intent.putExtra("url",url); // reviewWrite 로 url 값을 전달해준다.
+                    intent.putExtra("id",id);  // reviewWrite 로 id 값을 전달해준다.
                     startActivity(intent);
                 }
             }
