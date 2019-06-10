@@ -41,7 +41,7 @@ public class MyFragment extends Fragment {
         Id.setText(id_text);
 
         //리스트뷰 띄우기
-        String[] list_menu = {"내 쿠폰함", "내가 쓴 리뷰함","LOGOUT"};
+        String[] list_menu = {"내가 쓴 리뷰함","LOGOUT"};
         ListView listView = (ListView) view.findViewById(R.id.info_menu);
         ArrayAdapter<String> listViewAdapter = new ArrayAdapter<String>(
                 getActivity(),
@@ -56,16 +56,12 @@ public class MyFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
                 switch (position) {
                     case 0:
-                        Intent intent = new Intent(getActivity(), CouponActivity.class);
-                        startActivity(intent);
-                        break;
-                    case 1:
                         Intent intent1 = new Intent(getActivity(), MyReviewActivity.class);
                         //인텐트를 통해 id값 전달
                         intent1.putExtra("id",id_text);
                         startActivity(intent1);
                         break;
-                    case 2:
+                    case 1:
                         //로그아웃 버튼. FirstActivity를 참조해 sessionout()함수 실행
                         ((FirstActivity)getActivity()).sessionout();
                         break;

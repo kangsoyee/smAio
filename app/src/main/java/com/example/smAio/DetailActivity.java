@@ -131,20 +131,10 @@ public class DetailActivity extends AppCompatActivity {
     };
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finish();
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         Log.i("test_DetailActivity","onCreate 시작");
-
-        Intent getuserid=getIntent();
-        thisuserid=getuserid.getStringExtra("userid");
-        Log.e("userid in detail",thisuserid+"");
 
         //getIntent 메서드를 이용해 StoreListActivity에서 보낸 데이터를 받는다.
         Intent get_info = getIntent();
@@ -159,10 +149,46 @@ public class DetailActivity extends AppCompatActivity {
         final String name_data = get_info.getStringExtra("placename");
         String start_data = get_info.getStringExtra("starttime");
         String end_data = get_info.getStringExtra("endtime");
+        place_idx=get_info.getIntExtra("idx",0);
         Log.i("값 테스트",name_data+"");
         Log.i("값 테스트",thisuserid+"");
-        heartCheck(thisuserid,name_data);
 
+        info_address = (TextView) findViewById(R.id.info_address);
+        info_tel = (TextView) findViewById(R.id.info_tel);
+        info_menu = (TextView) findViewById(R.id.info_menu);
+        info_price = (TextView) findViewById(R.id.info_price);
+        placename = (TextView) findViewById(R.id.place_name);
+        startendtime = (TextView) findViewById(R.id.start_end_time);
+        txtStartTime=(TextView) findViewById(R.id.start_time);
+        txtEndTime=(TextView) findViewById(R.id.end_time);
+        txtPlaceName=(TextView) findViewById(R.id.place_name);
+        list=(ListView)findViewById(R.id.detail_review_list);
+
+        //StoreListActivity에서 가져온 값을 텍스트뷰에 보여준다.
+        info_address.setText(ad_data);
+        info_tel.setText(tel_data);
+        info_menu.setText(menu_data);
+        info_price.setText(price_data);
+        placename.setText(name_data);
+        startendtime.setText(start_data+" ~ "+end_data);
+        info_tel.setPaintFlags(info_tel.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
+
+        //전화번호가 적혀있는 info_tel 텍스트뷰의 클릭 이벤트
+        info_tel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //전화번호가 적혀있는 텍스트뷰(info_tel)를 클릭할때만 그 텍스트뷰 값을 받아와 저장한 후 다이얼로 화면 전환하여 번호를 띄워준다.
+                mnum = info_tel.getText().toString();
+                String tel = "tel:" + mnum;
+                switch (v.getId()){
+                    case R.id.info_tel:
+                        startActivity(new Intent("android.intent.action.DIAL", Uri.parse(tel)));
+                        break;
+                }
+            }
+        });
+
+        heartCheck(thisuserid,name_data);
         iv = (ImageView) findViewById(R.id.heart_image);
 
         //하트 버튼 클릭 이벤트
@@ -201,57 +227,15 @@ public class DetailActivity extends AppCompatActivity {
 
         //초기 Tab 설정
         tabHost.setCurrentTab(0);
-
         tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
             @Override
             public void onTabChanged(String tabId) {
 
             }
         });
-        info_address = (TextView) findViewById(R.id.info_address);
-        info_tel = (TextView) findViewById(R.id.info_tel);
-        info_menu = (TextView) findViewById(R.id.info_menu);
-        info_price = (TextView) findViewById(R.id.info_price);
 
-        placename = (TextView) findViewById(R.id.place_name);
-        startendtime = (TextView) findViewById(R.id.start_end_time);
-
-
-        //StoreListActivity에서 가져온 값을 텍스트뷰에 보여준다.
-        info_address.setText(ad_data);
-        info_tel.setText(tel_data);
-        info_menu.setText(menu_data);
-        info_price.setText(price_data);
-
-        placename.setText(name_data);
-        startendtime.setText(start_data+" ~ "+end_data);
         setTitle("");
-        info_tel.setPaintFlags(info_tel.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
-
-        //전화번호가 적혀있는 info_tel 텍스트뷰의 클릭 이벤트
-       info_tel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //전화번호가 적혀있는 텍스트뷰(info_tel)를 클릭할때만 그 텍스트뷰 값을 받아와 저장한 후 다이얼로 화면 전환하여 번호를 띄워준다.
-                mnum = info_tel.getText().toString();
-                String tel = "tel:" + mnum;
-                switch (v.getId()){
-                    case R.id.info_tel:
-                        startActivity(new Intent("android.intent.action.DIAL", Uri.parse(tel)));
-                        break;
-                }
-            }
-        });
-
-        txtStartTime=(TextView) findViewById(R.id.start_time);
-        txtEndTime=(TextView) findViewById(R.id.end_time);
-        txtPlaceName=(TextView) findViewById(R.id.place_name);
-        list=(ListView)findViewById(R.id.detail_review_list);
-
-        Intent intent=getIntent();
-        place_idx=intent.getIntExtra("idx",0);
         review_list();
-        detail();
         avg();
     }
 
@@ -327,6 +311,7 @@ public class DetailActivity extends AppCompatActivity {
         });
         th.start();
     }
+
     class ReviewAdapter extends ArrayAdapter<ReviewDTO> {
         public ReviewAdapter(Context context, int textViewResourceId,
                              ArrayList<ReviewDTO> objects) {
@@ -352,58 +337,7 @@ public class DetailActivity extends AppCompatActivity {
             return v;
         }
     }
-    void detail(){
-        //네트워크 관련 작업은 백그라운드 스레드에서 처리
-        final StringBuilder sb=new StringBuilder();
-        Thread th = new Thread(new Runnable() {
-            public void run() {
-                try {
-                    String page = Common.SERVER_URL+"/place_detail.php?place_idx="+place_idx;
 
-                    URL url = new URL(page);
-                    // 커넥션 객체 생성
-                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                    // 연결되었으면.
-                    if (conn != null) {
-                        //타임아웃 시간 설정
-                        conn.setConnectTimeout(10000);
-                        //캐쉬 사용 여부
-                        conn.setUseCaches(false);
-                        //url에 접속 성공하면
-                        if(conn.getResponseCode() == HttpURLConnection.HTTP_OK){
-                            //스트림 생성
-                            BufferedReader br=
-                                    new BufferedReader(
-                                            new InputStreamReader(
-                                                    conn.getInputStream(), StandardCharsets.UTF_8));
-                            while(true){
-                                String line=br.readLine(); //한 라인을 읽음
-                                if(line == null) break;//더이상 내용이 없으면 종료
-                                sb.append(line+"\n");
-                            }
-                            br.close(); //버퍼 닫기
-                        }
-                        conn.disconnect();
-                    }
-// 스트링을 json 객체로 변환
-                    JSONObject jsonObj = new JSONObject(sb.toString());
-
-// json.get("변수명")
-                    JSONObject row = (JSONObject)jsonObj.get("sendData");
-                    placeInfo = new PlaceDTO();
-                    placeInfo.setPlace_idx(row.getInt("place_idx"));
-                    placeInfo.setEnd_time(row.getString("end_time"));
-                    placeInfo.setStart_time(row.getString("start_time"));
-                    placeInfo.setPlace_name(row.getString("place_name"));
-                    //핸들러에게 화면 갱신 요청
-                    handler.sendEmptyMessage(1);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        th.start();
-    }
     void avg() {
         //네트워크 관련 작업은 백그라운드 스레드에서 처리
         final StringBuilder sb = new StringBuilder();
@@ -469,7 +403,7 @@ public class DetailActivity extends AppCompatActivity {
                             JSONObject jsonObject = new JSONObject(response);
                             String success = jsonObject.getString("success"); //php문에서 success라는 키에 값을 저장
                             if(success.equals("1")){//그 값이 1이면(성공)
-                                Toast.makeText(DetailActivity.this,"찜 성공!",Toast.LENGTH_SHORT).show();//찜성공 메시지
+                                Toast.makeText(DetailActivity.this,"찜목록에 추가되었습니다.",Toast.LENGTH_SHORT).show();//찜성공 메시지
                             }
                         }catch (JSONException e){ //오류발생
                             e.printStackTrace();
@@ -491,11 +425,9 @@ public class DetailActivity extends AppCompatActivity {
 
                 //php문에 값을 보냄
             }
-
         };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest); //필수코드***********
-
     }
 
     void deleteHeart(final String userId, final String place_name){
@@ -507,10 +439,8 @@ public class DetailActivity extends AppCompatActivity {
                             JSONObject jsonObject = new JSONObject(response);
                             String success = jsonObject.getString("success"); //php문에서 success라는 키에 값을 저장
                             if(success.equals("1")){//그 값이 1이면(성공)
-                                Toast.makeText(DetailActivity.this,"찜 삭제!",Toast.LENGTH_SHORT).show();//찜성공 메시지
+                                Toast.makeText(DetailActivity.this,"찜목록에서 삭제되었습니다.",Toast.LENGTH_SHORT).show();//찜성공 메시지
                             }
-
-
                         }catch (JSONException e){ //오류발생
                             e.printStackTrace();
                         }
@@ -531,7 +461,6 @@ public class DetailActivity extends AppCompatActivity {
 
                 //php문에 값을 보냄
             }
-
         };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest); //필수코드***********
