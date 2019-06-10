@@ -192,7 +192,7 @@ public class ReviewWriteActivity extends AppCompatActivity {
                     String review_content=txtReview.getText().toString();
                     String score = txtScore.getText().toString();
                     String page =
-                            Common.SERVER_URL+"/review_insertt.php?"+"&userid="+user_Id
+                            Common.SERVER_URL+"/review_insert.php?"+"&userid="+user_Id
                                     +"&place_idx="+place_idx
                                     +"&review_content="+review_content
                                     +"&score="+score;
