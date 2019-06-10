@@ -21,7 +21,7 @@ public class NoticeActivity extends AppCompatActivity {
 
     ListView noticeListView; // 공지사항을 띄워줄 리스트뷰 선언
     NoticeListAdapter adapter; //NoticeListAdapter 클래스를 선언
-    List<Notice> noticeList; // 리스트에 Notice를 넣은 리스트 선언
+    List<NoticeDTO> noticeList; // 리스트에 Notice를 넣은 리스트 선언
 
     Handler handler = new Handler() {
         @Override
@@ -46,7 +46,7 @@ public class NoticeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_notice);
 
         noticeListView = (ListView) findViewById(R.id.noticeListView); //리스트뷰 findViewById
-        noticeList = new ArrayList<Notice>(); //리스트 초기화 부분
+        noticeList = new ArrayList<NoticeDTO>(); //리스트 초기화 부분
 
         notice();
     }
@@ -97,8 +97,8 @@ public class NoticeActivity extends AppCompatActivity {
                         noticeContent = object.getString("noticeContent");
                         noticeName = object.getString("noticeName");
                         noticeDate = object.getString("noticeDate");
-                        Notice notice = new Notice(noticeContent, noticeName, noticeDate);
-                        noticeList.add(notice);
+                        NoticeDTO noticeDTO = new NoticeDTO(noticeContent, noticeName, noticeDate);
+                        noticeList.add(noticeDTO);
                         count++;
                     }
                     //핸들러에게 화면 갱신 요청

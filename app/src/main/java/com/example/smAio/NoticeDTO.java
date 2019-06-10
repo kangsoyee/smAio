@@ -1,12 +1,12 @@
 package com.example.smAio;
 
-public class Notice {
+public class NoticeDTO {
 
     String notice; // 공지사항 내용이 담길 문자열
     String name; // 공지사항을 작성한 사람의 이름이 들어갈 문자열
     String date; // 공지사항을 작성한 날짜가 들어갈 문자열
 
-    public Notice(String notice, String name, String date) { // 클래스의 생성자를 선언해줌
+    public NoticeDTO(String notice, String name, String date) { // 클래스의 생성자를 선언해줌
         this.notice = notice;
         this.name = name;
         this.date = date;

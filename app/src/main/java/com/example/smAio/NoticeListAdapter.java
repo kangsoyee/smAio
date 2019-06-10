@@ -6,15 +6,14 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import java.net.ContentHandler;
 import java.util.List;
 
 public class NoticeListAdapter extends BaseAdapter  { //BaseAdapter를 상속받아 사용해줌
 
     Context context;
-    List<Notice> noticeList; //Notice 클래스가 들어갈 리스트 선언
+    List<NoticeDTO> noticeList; //NoticeDTO 클래스가 들어갈 리스트 선언
 
-    public NoticeListAdapter(Context context, List<Notice> noticeList) { //NoticeListAdapter에 생성자 선언
+    public NoticeListAdapter(Context context, List<NoticeDTO> noticeList) { //NoticeListAdapter에 생성자 선언
         this.context = context;
         this.noticeList = noticeList;
     }
@@ -32,7 +31,7 @@ public class NoticeListAdapter extends BaseAdapter  { //BaseAdapter를 상속받
 
     @Override
     public long getItemId(int position) {
-        return position; //해당 위치의 Notice ID를 찾기위하여 position으로 반환
+        return position; //해당 위치의 NoticeDTO ID를 찾기위하여 position으로 반환
     }
 
     @Override
@@ -51,7 +50,7 @@ public class NoticeListAdapter extends BaseAdapter  { //BaseAdapter를 상속받
         return v;
 
         //View v라는 하나의 뷰를 만들어 Notice들을 notice.xml에 맞춰 띄워주는 역할의 getView 함수입니다.
-        //공지사항, 이름, 날짜를 띄워줄 각각의 텍스트뷰를 선언하여 Notice 클래스의 getter 함수로 값을 받아와서
+        //공지사항, 이름, 날짜를 띄워줄 각각의 텍스트뷰를 선언하여 NoticeDTO 클래스의 getter 함수로 값을 받아와서
         //띄워주는 역할을 합니다. 마지막에 만든 뷰를 반환함으로써 화면에 띄워주게 됩니다.
     }
 }
