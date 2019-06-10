@@ -85,12 +85,6 @@ public class StoreListActivity4 extends AppCompatActivity {
             }
         });
 
-        arrPlace = (String[]) getResources().getStringArray(R.array.category);
-        ArrayAdapter adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item,
-                arrPlace);
-        adapter.setDropDownViewResource
-                (android.R.layout.simple_spinner_dropdown_item);
     }
 
     @Override
@@ -329,26 +323,4 @@ public class StoreListActivity4 extends AppCompatActivity {
         }
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.overflow_menu, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//
-//        switch (item.getItemId()) {
-//            case R.id.sort_Alphabetical:
-//                Toast.makeText(this, "가나다순으로 정렬", Toast.LENGTH_SHORT).show();
-//                return true;
-//
-//            case R.id.sort_rating:
-//                Toast.makeText(this, "평점순으로 정렬", Toast.LENGTH_SHORT).show();
-//                return true;
-//
-//        }
-//
-//        return true;
-//    }
 }

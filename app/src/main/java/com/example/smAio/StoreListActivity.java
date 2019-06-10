@@ -48,6 +48,8 @@ public class StoreListActivity extends AppCompatActivity  {
 
 
     ArrayList<PlaceDTO> items;
+
+    //thread 실행 결과값을 핸들러로 불러온다.
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -62,7 +64,6 @@ public class StoreListActivity extends AppCompatActivity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         //activity_store_list1~4까지 모두 같은 내용의 xml이라서 하나로 통일하였다.
         this.setContentView(R.layout.activity_store_list);
 
@@ -73,16 +74,20 @@ public class StoreListActivity extends AppCompatActivity  {
         editPlaceName=(EditText)findViewById(R.id.editPlaceName);
 
         btnSearch=(ImageButton)findViewById(R.id.btnSearch);
+
+        //검색 버튼을 클릭하면 생기는 이벤트이다.
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                //검색버튼 눌렀을때 키보드 사라지게 해준다.(밑으로 내려준다)
                 InputMethodManager im = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                 im.hideSoftInputFromWindow(editPlaceName.getWindowToken(), 0);
+
                 final Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        //editText에 입력한 상점 이름을 가져와 search()에 넣어 실행한다.
                         String placeName=editPlaceName.getText().toString();
                         search(placeName);
                     }
@@ -90,12 +95,6 @@ public class StoreListActivity extends AppCompatActivity  {
             }
         });
 
-        arrPlace=(String[])getResources().getStringArray(R.array.category);
-        ArrayAdapter adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item,
-                arrPlace);
-        adapter.setDropDownViewResource
-                (android.R.layout.simple_spinner_dropdown_item);
     }
 
     @Override
@@ -105,9 +104,11 @@ public class StoreListActivity extends AppCompatActivity  {
         list();
     }
 
+    //상점 리스트를 보여주는데 사용되는 메소드
     void list(){
         //네트워크 관련 작업은 백그라운드 스레드에서 처리
-        final StringBuilder sb=new StringBuilder(); // final은 지역변수를 상수화 시켜준다. 즉, 한번 실행한 뒤 없어지는 것이 아니라 계속해서 유지 가능하게 해준다.
+        // final은 지역변수를 상수화 시켜준다. 즉, 한번 실행한 뒤 없어지는 것이 아니라 계속해서 유지 가능하게 해준다.
+        final StringBuilder sb=new StringBuilder();
         Thread th = new Thread(new Runnable() {
             public void run() {
                 try {
@@ -117,6 +118,7 @@ public class StoreListActivity extends AppCompatActivity  {
 
                     URL url = new URL(page);
                     // 커넥션 객체 생성
+                    //HTTPURLConnection을 통해 해당 URL에 출력되는 결과물을 얻어올 수 있다.
                     HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                     // 연결되었으면.
                     if (conn != null) {
@@ -140,10 +142,10 @@ public class StoreListActivity extends AppCompatActivity  {
                         }
                         conn.disconnect();
                     }
-// 스트링을 json 객체로 변환
+                    // 스트링을 json 객체로 변환
                     JSONObject jsonObj = new JSONObject(sb.toString());
 
-// json.get("변수명")
+                    // json.get("변수명")
                     JSONArray jArray = (JSONArray) jsonObj.get("sendData"); // 이 부분 이해 안됨
                     for (int i = 0; i < jArray.length(); i++) {
                         JSONObject row = jArray.getJSONObject(i);
@@ -177,6 +179,7 @@ public class StoreListActivity extends AppCompatActivity  {
         th.start();
     }
 
+    //검색에 사용되는 메소드
     void search(final String place_name){
         //네트워크 관련 작업은 백그라운드 스레드에서 처리
         final StringBuilder sb=new StringBuilder();
@@ -212,10 +215,10 @@ public class StoreListActivity extends AppCompatActivity  {
                         }
                         conn.disconnect();
                     }
-// 스트링을 json 객체로 변환
+                    // 스트링을 json 객체로 변환
                     JSONObject jsonObj = new JSONObject(sb.toString());
 
-// json.get("변수명")
+                    // json.get("변수명")
                     JSONArray jArray = (JSONArray) jsonObj.get("sendData");
                     for (int i = 0; i < jArray.length(); i++) {
                         JSONObject row = jArray.getJSONObject(i);
@@ -250,19 +253,24 @@ public class StoreListActivity extends AppCompatActivity  {
         th.start();
     }
 
-    class PlaceAdapter extends ArrayAdapter<PlaceDTO> {                 // 여기 class 이해 안됨
+    //ListView에 아이템을 추가,수정,삭제할때 사용된다.
+    //데이터를 Adapter에 리스트 형태로 전달한다.
+    class PlaceAdapter extends ArrayAdapter<PlaceDTO> {
         //ArrayList<BookDTO> item;
         public PlaceAdapter(Context context, int textViewResourceId,
                             ArrayList<PlaceDTO> objects) {
             super(context, textViewResourceId, objects);
-//this.item= objects;
         }
 
+        //화면이 디스플레이 되기 전에 getView() 메소드가 호출된다.
+        //getView() 메소드는 화면에 보여져야 할 아이템의 수 만큼 호출된다.
         @Override
-        public View getView(int position, View convertView,                 // getView에 대한 이해 부족
+        public View getView(int position, View convertView,
                             ViewGroup parent) {
             View v = convertView;
             if (v == null) {
+                //LayoutInflater는 xml에 정의된 resource들을 view 형태로 반환해준다.
+                //배경이 될 layout을 만들어 놓고 view 형태로 반환받아 Activity에서 실행하게 된다.
                 LayoutInflater li = (LayoutInflater)
                         getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 v = li.inflate(R.layout.place_row, null);
@@ -285,11 +293,9 @@ public class StoreListActivity extends AppCompatActivity  {
                     TextView latitude = (TextView)v.findViewById(R.id.latitude);
                     TextView longitude = (TextView)v.findViewById(R.id.longitude);
 
-                    //place_idx.setText(dto.getPlace_idx()+"");  // 여기 주석처리 안하면 로그인 자체도 안됨
                     place_name.setText(dto.getPlace_name());
                     start_time.setText(dto.getStart_time());
                     end_time.setText(dto.getEnd_time());
-                    //category.setText(dto.getCategory());
                     address.setText(dto.getAddress());
                     tel.setText(dto.getTel());
                     menu.setText(dto.getMenu());
@@ -299,8 +305,9 @@ public class StoreListActivity extends AppCompatActivity  {
 
                     Glide.with(StoreListActivity.this).load(dto.getImage()).into(imgPlace);
                 }
+
                 //클릭하면 코드를 넘겨서 받아옴
-                v.setOnClickListener(new View.OnClickListener() {
+                v.setOnClickListener( new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         TextView address = (TextView) v.findViewById(R.id.address);

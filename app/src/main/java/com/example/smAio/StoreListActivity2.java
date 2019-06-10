@@ -86,12 +86,6 @@ public class StoreListActivity2 extends AppCompatActivity {
             }
         });
 
-        arrPlace = (String[]) getResources().getStringArray(R.array.category);
-        ArrayAdapter adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item,
-                arrPlace);
-        adapter.setDropDownViewResource
-                (android.R.layout.simple_spinner_dropdown_item);
     }
 
     @Override
