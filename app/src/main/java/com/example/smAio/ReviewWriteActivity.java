@@ -1,6 +1,5 @@
 package com.example.smAio;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -10,11 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,11 +48,7 @@ public class ReviewWriteActivity extends AppCompatActivity {
     String place_n;
 
     private static final int REQUEST_CODE = 1234;
-
     ImageButton Start;
-    Dialog match_text_dialog;
-    ListView textlist;
-    ArrayList<String> matches_text;
     EditText txtReview;
     TextView txtScore, nameText;
     Button button;
@@ -84,11 +76,7 @@ public class ReviewWriteActivity extends AppCompatActivity {
         button=(Button)findViewById(R.id.button_reviewsend);
         nameText=(TextView)findViewById(R.id.textView2);
 
-
         place_info(place_url);
-
-
-
 
         //reviewsend button Click Event
         button.setOnClickListener(new View.OnClickListener() {
@@ -114,22 +102,6 @@ public class ReviewWriteActivity extends AppCompatActivity {
             }
         });
 
-        //음성인식 버튼 클릭 이벤트
-        Start.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(isConnected()){
-                    Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-                    intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-                            RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-                    startActivityForResult(intent, REQUEST_CODE);
-                }
-                else{
-                    Toast.makeText(getApplicationContext(), "Plese Connect to Internet", Toast.LENGTH_LONG).show();
-                }}
-        });
-
-
         //별점 레이팅바
         final TextView tv = (TextView) findViewById(R.id.textView3);
         RatingBar rb = (RatingBar)findViewById(R.id.ratingBar);
@@ -141,11 +113,29 @@ public class ReviewWriteActivity extends AppCompatActivity {
                 tv.setText(" " + rating);
             }
         });
+
+        //음성인식 버튼 클릭 이벤트
+        Start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 인터넷 연결 되어있을 때
+                if(isConnected()){
+                    //음성인식창을 띄움
+                    Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+                    intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                            RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+                    //결과값을 텍스트로 나타낸다.
+                    startActivityForResult(intent, REQUEST_CODE);
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "Plese Connect to Internet", Toast.LENGTH_LONG).show();
+                }}
+        });
     }
 
-    //음성인식 인터넷 연결 코드
-    public  boolean isConnected()
-    {
+    //음성인식 인터넷 연결 확인 코드
+    public  boolean isConnected() {
+
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo net = cm.getActiveNetworkInfo();
         if (net!=null && net.isAvailable() && net.isConnected()) {
@@ -155,31 +145,23 @@ public class ReviewWriteActivity extends AppCompatActivity {
         }
     }
 
-    //음성인식 다이얼로그 표시
+    //음성인식 결과를 뽑아내는 메소드
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
 
-            match_text_dialog = new Dialog(ReviewWriteActivity.this);
-            match_text_dialog.setContentView(R.layout.dialog_matches_frag);
-            match_text_dialog.setTitle("Select Matching Text");
-            textlist = (ListView)match_text_dialog.findViewById(R.id.list);
-            matches_text = data
-                    .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                    android.R.layout.simple_list_item_1, matches_text);
-            textlist.setAdapter(adapter);
-            textlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view,
-                                        int position, long id) {
-                    txtReview.setText(matches_text.get(position));
-                    match_text_dialog.hide();
-                }
-            });
-            match_text_dialog.show();
-        }
         super.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode){
+            case REQUEST_CODE:{
+                if(resultCode == RESULT_OK && data != null){
+                    // 유사값을 ArrayList에 저장
+                    ArrayList<String> result =data
+                            .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    // 인식된 5개의 후보중 가장 유사한 단어부터 시작되는 0번째 문자열을 불러서 텍스트를 작성한다.
+                    txtReview.setText(result.get(0));
+                }
+                break;
+            }
+        }
     }
 
     void review(){

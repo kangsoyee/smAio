@@ -35,59 +35,37 @@
                 android:layout_weight="1"
                 android:orientation="vertical">
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:layout_marginTop="20dp"
-                    android:gravity="left"
-                    android:orientation="horizontal">
-
-                    <EditText
-                        android:id="@+id/et_eamil"
-                        android:layout_width="131dp"
-                        android:layout_height="35dp"
-                        android:layout_marginLeft="40dp"
-                        android:layout_marginRight="50dp"
-                        android:background="@drawable/edit_line"
-                        android:drawableStart="@drawable/id_icon"
-                        android:drawablePadding="5dp"
-                        android:gravity="center_vertical"
-                        android:hint="Student ID"
-                        android:inputType="text"
-                        android:paddingStart="10dp"
-                        android:textColor="#FFFFFFFF"
-                        android:textColorHint="#FFFFFFFF"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:id="@+id/sangmyungeamil"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="bottom|top"
-                        android:layout_marginStart="-40dp"
-                        android:layout_marginTop="8dp"
-                        android:text="\@sangmyung.kr"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textSize="18sp" />
-                </LinearLayout>
+                <EditText
+                    android:id="@+id/et_eamil"
+                    android:layout_width="250dp"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/edit_line"
+                    android:drawableStart="@drawable/id_icon"
+                    android:drawablePadding="5dp"
+                    android:gravity="center_vertical"
+                    android:hint="Student ID"
+                    android:inputType="text"
+                    android:paddingStart="10dp"
+                    android:textColor="#FFFFFFFF"
+                    android:textColorHint="#FFFFFFFF"
+                    android:textSize="14sp" />
 
                 <EditText
                     android:id="@+id/et_password"
-                    android:layout_width="272dp"
+                    android:layout_width="250dp"
                     android:layout_height="35dp"
-                    android:layout_marginLeft="40dp"
+                    android:layout_gravity="center_horizontal"
                     android:layout_marginTop="20dp"
-                    android:layout_marginRight="50dp"
                     android:background="@drawable/edit_line"
                     android:drawableStart="@drawable/password_icon"
                     android:drawablePadding="5dp"
-                    android:hint="4~16"
+                    android:hint="Password"
                     android:inputType="textPassword"
                     android:paddingStart="10dp"
                     android:textColor="#FFFFFFFF"
                     android:textColorHint="#FFFFFFFF"
-                    android:textSize="14dp" />
+                    android:textSize="14sp" />
 
             </LinearLayout>
 
@@ -99,7 +77,6 @@
             android:layout_width="146dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center|top"
-            android:layout_marginLeft="5dp"
             android:layout_marginTop="30dp"
             android:background="@drawable/line_fragment"
             android:gravity="center"

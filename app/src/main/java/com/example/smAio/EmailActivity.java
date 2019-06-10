@@ -21,9 +21,6 @@ import java.util.regex.Pattern;
 
 public class EmailActivity extends AppCompatActivity {
 
-    // 비밀번호 정규식
-    private static final Pattern PASSWORD_PATTERN = Pattern.compile("^[a-zA-Z0-9!@.#$%^&*?_~]{4,16}$");
-
     // 파이어베이스 인증 객체 생성
     private FirebaseAuth firebaseAuth;
 
@@ -74,9 +71,6 @@ public class EmailActivity extends AppCompatActivity {
         if (email.isEmpty()) {
             // 이메일 공백
             return false;
-        } else if (!Patterns.EMAIL_ADDRESS.matcher(email+"@sangmyung.kr").matches()) {
-            // 이메일 형식 불일치
-            return false;
         } else {
             return true;
         }
@@ -86,9 +80,6 @@ public class EmailActivity extends AppCompatActivity {
     private boolean isValidPasswd() {
         if (password.isEmpty()) {
             // 비밀번호 공백
-            return false;
-        } else if (!PASSWORD_PATTERN.matcher(password).matches()) {
-            // 비밀번호 형식 불일치
             return false;
         } else {
             return true;

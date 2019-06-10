@@ -158,9 +158,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             if (refresh)
                 googleMap.clear();
             MarkerOptions markerOptions = new MarkerOptions();
-            markerOptions.position(location);
-            markerOptions.title(check_place_name);
-            markerOptions.snippet(menu);
+            markerOptions.position(location);   //마커위치
+            markerOptions.title(check_place_name);  //가게이름
+            markerOptions.snippet(menu);    //대표메뉴
             googleMap.addMarker(markerOptions);
         } catch (Exception e) {
             Log.e("addMarker failTest", e.getMessage());
