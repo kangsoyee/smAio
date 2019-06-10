@@ -50,6 +50,7 @@ public class StoreListActivity extends AppCompatActivity  {
     ArrayList<PlaceDTO> items;
 
     //thread 실행 결과값을 핸들러로 불러온다.
+    //place_row에 있는것을 리스트 형태로 adapter에 전달한다.
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
