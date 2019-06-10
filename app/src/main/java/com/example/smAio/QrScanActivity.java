@@ -32,8 +32,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
 
-// 구글에서 제공하는 오픈 소스 라이브러리인 zxing을 사용해 QR코드 스캐너를 구현하였습니다.
-// QR 코드를 인식하게 되면 리뷰를 작성할 수 있는 페이지로 전환되게 하는 액티비티입니다.
+// 구글에서 제공하는 오픈 소스 라이브러리인 zxing을 사용해 QR코드 스캐너를 구현.
+// QR 코드를 인식하게 되면 리뷰를 작성할 수 있는 페이지로 전환되게 하는 액티비티이다.
 
 public class QrScanActivity extends AppCompatActivity implements DecoratedBarcodeView.TorchListener {
 
@@ -50,7 +50,7 @@ public class QrScanActivity extends AppCompatActivity implements DecoratedBarcod
         Intent intent=getIntent();
         id= intent.getStringExtra("id");
 
-        //뷰를 바인딩합니다.
+        //뷰를 바인딩한다.
         ButterKnife.bind(this);
 
         initLayout();
@@ -64,7 +64,7 @@ public class QrScanActivity extends AppCompatActivity implements DecoratedBarcod
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             for(PlaceDTO dto:items) {
-                if (lastText.equals(dto.getQrcode())) { // 데이터베이스에 등록된 QR코드 값과 현재 인식했던 QR코드의 값이 일치한다면 해당 상점의 리뷰 페이지로 전환되는 코드입니다.
+                if (lastText.equals(dto.getQrcode())) { // 데이터베이스에 등록된 QR코드 값과 현재 인식했던 QR코드의 값이 일치한다면 해당 상점의 리뷰 페이지로 전환되는 코드이다.
                     url=lastText;
                     Intent intent = new Intent(QrScanActivity.this, ReviewWriteActivity.class);
 
@@ -77,13 +77,13 @@ public class QrScanActivity extends AppCompatActivity implements DecoratedBarcod
     };
 
     @Override
-    public void onBackPressed() { //뒤로가기 버튼을 클릭하면 초기화면으로 전환됩니다.
+    public void onBackPressed() { //뒤로가기 버튼을 클릭하면 초기화면으로 전환된다.
         Intent intent = new Intent(QrScanActivity.this,FirstActivity.class);
         startActivity(intent);
         finish();
     }
 
-    private void initLayout() { // zxing 라이브러리를 사용할 때 필요한 메소드 입니다.
+    private void initLayout() { // zxing 라이브러리를 사용할 때 필요한 메소드이다.
 
         barcodeScannerView.setTorchListener(this);
         Collection<BarcodeFormat> formats = Arrays.asList(BarcodeFormat.QR_CODE, BarcodeFormat.CODE_128);
@@ -97,17 +97,17 @@ public class QrScanActivity extends AppCompatActivity implements DecoratedBarcod
         @Override
         public void barcodeResult(BarcodeResult result) {
 
-            //Line 100 ~ 104. 한번 인식했던 QR코드를 중복해서 인식할 수 없게 해줍니다.
+            //Line 100 ~ 104. 한번 인식했던 QR코드를 중복해서 인식할 수 없게 해준다.
             if (result.getText() == null || result.getText().equals(lastText)) {
                 // Prevent duplicate scans
                 return;
             }
-            lastText = result.getText(); // QR 인식을 통해 얻은 URL 을 lastText 변수에 저장합니다.
+            lastText = result.getText(); // QR 인식을 통해 얻은 URL 을 lastText 변수에 저장한다.
             Log.i("test", "lastText="+lastText);
 
             barcodeScannerView.setStatusText(result.getText());
 
-            list(); // 서버와 통신하기 위한 함수를 호출합니다.
+            list(); // 서버와 통신하기 위한 함수를 호출한다.
 
             //Timber.e("test: " + lastText);
         }
@@ -122,7 +122,7 @@ public class QrScanActivity extends AppCompatActivity implements DecoratedBarcod
             public void run() {
                 try {
                     items = new ArrayList<PlaceDTO>();
-                    String page = Common.SERVER_URL + "/place_all_list.php"; // php 파일에 접근하여 가게별 QR 코드를 가져올 수 있도록 합니다.
+                    String page = Common.SERVER_URL + "/place_all_list.php"; // php 파일에 접근하여 가게별 QR 코드를 가져올 수 있도록 한다.
                     Log.i("test", "php연결 완료");
 
                     URL url = new URL(page);

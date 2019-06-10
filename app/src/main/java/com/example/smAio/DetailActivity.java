@@ -43,6 +43,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+/**
+ * 각 상점을 클릭했을시 넘어오는 액티비티이다. 이곳에선 찜하기, 상점 정보, 상점 위치
+ * 상점의 리뷰 평균을 확인할 수 있다.
+ */
 
 public class DetailActivity extends AppCompatActivity {
     private ArrayList<HashMap<String,String>> Data1 = new ArrayList<HashMap<String, String>>();
@@ -54,8 +59,8 @@ public class DetailActivity extends AppCompatActivity {
 
     TextView txtCategory, txtPlaceName, txtStartTime, txtEndTime, txtAddress, txtTel, txtReview, txtMenu, txtPrice;
     PlaceDTO placeInfo;
-    ArrayList<ReviewDTO> review_list=new ArrayList<>();
-    ArrayList<ReviewDTO> score_avg = new ArrayList<>();
+    ArrayList<ReviewDTO> review_list=new ArrayList<>(); // 각 상점별 리뷰를 담을 수 있는 array list를 만들어준다.
+    ArrayList<ReviewDTO> score_avg = new ArrayList<>(); // 평균값을 담을 수 있는 array list를 만들어준다.
     ListView list;
 
 
@@ -77,27 +82,27 @@ public class DetailActivity extends AppCompatActivity {
     final private static String URL_deleteHeart = "http://eileenyoo1.cafe24.com/deleteHeart.php/";
     final private static String URL_heartCheck = "http://eileenyoo1.cafe24.com/heartcheck.php/";
 
-    Handler handler = new Handler() {
+    Handler handler = new Handler() { // 네트워크 작업을 사용했으므로 쓰레드를 만들어 이 곳에서 처리한다.
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
 
-            if(msg.what == 1) { //상세
+            if(msg.what == 1) { // placeInfo 의 값을 받아와서 txt에 넣어준다.
                 txtAddress.setText(placeInfo.getAddress());
                 txtCategory.setText(placeInfo.getCategory());
-                txtEndTime.setText(placeInfo.getEnd_time());  //placeInfo.setEnd_time(row.getString("end_time"));
+                txtEndTime.setText(placeInfo.getEnd_time());
                 txtStartTime.setText(placeInfo.getStart_time());
                 txtTel.setText(placeInfo.getTel());
                 txtMenu.setText(placeInfo.getMenu());
                 txtPlaceName.setText(placeInfo.getPlace_name());
                 txtPrice.setText(placeInfo.getPrice());
-            }else if(msg.what == 2){ //수정,삭제
-                finish();
+//            }else if(msg.what == 2){ //수정,삭제
+//                finish();
             }else if(msg.what == 3){ //리뷰 목록
                 ReviewAdapter adapter = new ReviewAdapter(
                         DetailActivity.this,
                         R.layout.review_row,
-                        review_list);       // , 로 두가지를 집어넣어도 되는건가?
+                        review_list);
                 list.setAdapter(adapter);
             }else if(msg.what==4){
                 txtReview.setText("");
@@ -105,10 +110,10 @@ public class DetailActivity extends AppCompatActivity {
             }else  if(msg.what==5){
                 //별점
                 Log.i("test","check");
-                final TextView tv = (TextView) findViewById(R.id.textView4);
-                RatingBar rb = (RatingBar) findViewById(R.id.ratingBar);
+                final TextView tv = (TextView) findViewById(R.id.textView4); // 평균점수를 나타낼 수 있는 텍스트를 설정한다.
+                RatingBar rb = (RatingBar) findViewById(R.id.ratingBar); // 점수를 별 모양으로 출력해준다.
 
-                float rate = avg;
+                float rate = avg; // 평균값을 float 형으로 변환시킨다.
 
                 Log.i("test_rate",rate+"");
 
@@ -275,7 +280,7 @@ public class DetailActivity extends AppCompatActivity {
                 try {
                     review_list = new ArrayList<ReviewDTO>();
                     String page = Common.SERVER_URL+"/review_list.php?place_idx="+place_idx;
-                    Log.e("DetailActivity","여기까지는 이동함");
+                    Log.e("DetailActivity","review_list 확인");
 
                     URL url = new URL(page);
                     // 커넥션 객체 생성
@@ -306,7 +311,7 @@ public class DetailActivity extends AppCompatActivity {
                     JSONObject jsonObj = new JSONObject(sb.toString());
                     Log.i("test","review_list:"+sb);
 // json.get("변수명")
-                    JSONArray jArray = (JSONArray) jsonObj.get("sendData");     //sendData 어떻게 쓰이는지
+                    JSONArray jArray = (JSONArray) jsonObj.get("sendData");
                     for (int i = 0; i < jArray.length(); i++) {
                         JSONObject row = jArray.getJSONObject(i);
                         ReviewDTO dto = new ReviewDTO();
@@ -407,7 +412,7 @@ public class DetailActivity extends AppCompatActivity {
                 try {
                     review_list = new ArrayList<ReviewDTO>();
                     String page = Common.SERVER_URL + "/score_avg.php?place_idx=" + place_idx;
-                    Log.i("test_avg()", "여기까지는 이동함");
+                    Log.i("DetailActivity", "score_avg 확인");
 
                     URL url = new URL(page);
                     // 커넥션 객체 생성
@@ -438,7 +443,7 @@ public class DetailActivity extends AppCompatActivity {
                     JSONObject jsonObj = new JSONObject(sb.toString());
                     Log.i("test", "score_avg:" + sb);
 // json.get("변수명")
-                    JSONArray jArray = (JSONArray) jsonObj.get("sendData");     //sendData 어떻게 쓰이는지
+                    JSONArray jArray = (JSONArray) jsonObj.get("sendData");
                     for (int i = 0; i < jArray.length(); i++) {
                         JSONObject row = jArray.getJSONObject(i);
                         ReviewDTO dto = new ReviewDTO();
