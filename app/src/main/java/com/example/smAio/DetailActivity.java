@@ -1,7 +1,6 @@
 package com.example.smAio;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.content.Intent;
@@ -29,8 +28,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import com.bumptech.glide.Glide;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,11 +36,9 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Timer;
 /**
  * 각 상점을 클릭했을시 넘어오는 액티비티이다. 이곳에선 찜하기, 상점 정보, 상점 위치
  * 상점의 리뷰 평균을 확인할 수 있다.

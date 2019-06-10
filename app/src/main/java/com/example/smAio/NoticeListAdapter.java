@@ -20,19 +20,13 @@ public class NoticeListAdapter extends BaseAdapter  { //BaseAdapter를 상속받
 
     //BaseAdapter를 상속받았을때 뜨는 오류를 implements 하여 필요한 함수들을 불러와줍니다
     @Override
-    public int getCount() {
-        return noticeList.size(); //noticelist의 Size를 반환
-    }
+    public int getCount() { return noticeList.size();}  //noticelist의 Size를 반환
 
     @Override
-    public Object getItem(int position) {
-        return noticeList.get(position); // 해당 위치에 있는 Notice들을 반환
-    }
+    public Object getItem(int position) { return noticeList.get(position);}   // 해당 위치에 있는 Notice들을 반환
 
     @Override
-    public long getItemId(int position) {
-        return position; //해당 위치의 NoticeDTO ID를 찾기위하여 position으로 반환
-    }
+    public long getItemId(int position) { return position;}   //해당 위치의 NoticeDTO ID를 찾기위하여 position으로 반환
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {

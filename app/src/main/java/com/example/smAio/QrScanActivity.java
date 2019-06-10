@@ -6,7 +6,6 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.ResultPoint;
@@ -30,7 +29,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import timber.log.Timber;
 
 // 구글에서 제공하는 오픈 소스 라이브러리인 zxing을 사용해 QR코드 스캐너를 구현.
 // QR 코드를 인식하게 되면 리뷰를 작성할 수 있는 페이지로 전환되게 하는 액티비티이다.
