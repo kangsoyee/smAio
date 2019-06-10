@@ -14,13 +14,15 @@ public class LoadingActivity extends Activity {
         setContentView(R.layout.activity_loading);
 
         ImageView iv = (ImageView)findViewById(R.id.loading_image);
+        //Glide를 이용해 gif 이미지를 이미지뷰 안에 넣어줌
         Glide.with(this).load(R.raw.loading_aio).into(iv);
-        
+
+        //쓰레드 클래스 선언
         thread_sleep sleep = new thread_sleep(this);
         sleep.start(); //쓰레드 실행
     }
 
-    //쓰레드 클래스
+    //로딩 시간 지연을 위한 쓰레드 클래스
     private class thread_sleep extends Thread{
         Activity thisAct;
         thread_sleep(Activity theAct){
