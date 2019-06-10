@@ -14,18 +14,18 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="place_name"
-            android:layout_weight="2"
+            android:layout_weight="1"
             android:textSize="20dp"
             android:id="@+id/place_name"/>
         <TextView
             android:id="@+id/myId"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="15dp"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:text="user_ID"
             />
     </LinearLayout>
