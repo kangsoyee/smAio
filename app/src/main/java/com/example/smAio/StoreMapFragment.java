@@ -116,20 +116,18 @@ public class StoreMapFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(final GoogleMap googleMap) {
+        //PlaceDTO에 저장된 위도 경도 값 불러오기
         PlaceDTO placeDTO = new PlaceDTO();
         lat = placeDTO.getLat();
         lng = placeDTO.getLng();
-        Log.e("test", ">>>>>>>>>>>>>>>>>"+placeDTO.getLat());
 
-        //처음을 현재 위치로 초기화
-        SimpleLocation location = new SimpleLocation(getContext());
-        //LatLng currentPosition = new LatLng(location.getLatitude(), location.getLongitude());
+        //처음 화면을 가게 위치로 초기화
         LatLng currentPosition = new LatLng(Double.valueOf(lat), Double.valueOf(lng));
-
         this.googleMap = googleMap;
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(currentPosition));
         googleMap.animateCamera(CameraUpdateFactory.zoomTo(17));
 
+        //가게 위치에 마커 표시
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(currentPosition);
         googleMap.addMarker(markerOptions);
