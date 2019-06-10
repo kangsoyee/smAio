@@ -25,7 +25,9 @@ import java.util.ArrayList;
 
 /**
  * MyFragment에서 내 리뷰 눌렀을때 액티비티
+ * 사용자 id값을 받아와서 그 id에 해당하는 리뷰를 불러오는 액티비티이다.
  */
+
 public class MyReviewActivity extends AppCompatActivity {
 
     ListView list;
@@ -50,6 +52,7 @@ public class MyReviewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_my_review);
         list = (ListView) findViewById(R.id.MyReviewList);
 
+        //getIntent 메서드를 이용해 MyFragment와 endWriteReview에서 보낸 데이터를 받는다.
         Intent get_myreview = getIntent();
         id_text = get_myreview.getStringExtra("id");
     }

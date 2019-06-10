@@ -145,7 +145,7 @@ public class DetailActivity extends AppCompatActivity {
 
         //intent의 get타입명Extra 메서드를 호출한다.
         // 이때 StoreListActivity에서 putExtra로 지정했던 데이터의 키 값을 지정하면 해당하는 데이터 값이 나오게 된다.
-        //만약 지정한 키 값에 맞는 데이터가 없으면 nul이 반환된다.
+        //만약 지정한 키 값에 맞는 데이터가 없으면 null이 반환된다.
         String ad_data = get_info.getStringExtra("address");
         String tel_data = get_info.getStringExtra("tel");
         String menu_data = get_info.getStringExtra("menu");
@@ -184,8 +184,11 @@ public class DetailActivity extends AppCompatActivity {
         TabHost tabHost = (TabHost) findViewById(R.id.tabHost);
 
         //TabHost를 설정할 때 가장 먼저 호출해 주어야함
+        //만약 setup() 함수를 호출하지 않으면 TabWidget이 정상적으로 표시되지 않는다.
         tabHost.setup();
 
+        //TabHost에 탭을 지정하였다.
+        //(host,title,content ID)
         setNewTab(tabHost,"정보",R.id.tabSpec1);
         setNewTab(tabHost,"리뷰",R.id.tabSpec2);
         setNewTab(tabHost,"지도",R.id.tabSpec3);
@@ -208,6 +211,7 @@ public class DetailActivity extends AppCompatActivity {
         startendtime = (TextView) findViewById(R.id.start_end_time);
 
 
+        //StoreListActivity에서 가져온 값을 텍스트뷰에 보여준다.
         info_address.setText(ad_data);
         info_tel.setText(tel_data);
         info_menu.setText(menu_data);
@@ -245,6 +249,7 @@ public class DetailActivity extends AppCompatActivity {
         avg();
     }
 
+    //TabHost에 탭을 지정해줄때 사용하기위해 만든 함수이다.
     private void setNewTab(TabHost host, String title, int contentID) {
         TabHost.TabSpec tabSpec = host.newTabSpec(title);
         tabSpec.setIndicator(getTabIndicator(title));
@@ -252,6 +257,7 @@ public class DetailActivity extends AppCompatActivity {
         host.addTab(tabSpec);
     }
 
+    //각각의 탭에 이름(title)을 붙여주기 위해 사용하는 함수이다.
     private View getTabIndicator(String title) {
         View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.tab_menu, null);
         TextView tv = view.findViewById(R.id.textView);
