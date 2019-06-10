@@ -42,7 +42,7 @@ public class endWriteReview extends AppCompatActivity {
                 finish();
             }
         });
-
+        //내 리뷰함 버튼 클릭 이벤트
         button_MyReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,12 +52,6 @@ public class endWriteReview extends AppCompatActivity {
                 finish();
             }
         });
-
-
-
-
-
-
     }
 
     //BackPress 버튼 이벤트

@@ -184,16 +184,17 @@
                         android:textSize="25sp"
                         android:text="전화번호 : "
                         android:textColor="@color/colorblue"/>
+
                     <TextView
                         android:id="@+id/info_tel"
-                        android:layout_width="match_parent"
+                        android:layout_width="175dp"
                         android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:paddingTop="5dp"
                         android:text="tell"
                         android:textColor="#0000FF"
                         android:textSize="20sp"
-                        android:textStyle="italic"
-                        android:layout_marginLeft="5dp"
-                        android:paddingTop="5dp"/>
+                        android:textStyle="italic" />
                 </LinearLayout>
 
                 <LinearLayout

@@ -286,10 +286,10 @@ public class DetailActivity extends AppCompatActivity {
                         }
                         conn.disconnect();
                     }
-// 스트링을 json 객체로 변환
+                    // 스트링을 json 객체로 변환
                     JSONObject jsonObj = new JSONObject(sb.toString());
                     Log.i("test","review_list:"+sb);
-// json.get("변수명")
+                    // json.get("변수명")
                     JSONArray jArray = (JSONArray) jsonObj.get("sendData");
                     for (int i = 0; i < jArray.length(); i++) {
                         JSONObject row = jArray.getJSONObject(i);
@@ -368,10 +368,10 @@ public class DetailActivity extends AppCompatActivity {
                         }
                         conn.disconnect();
                     }
-// 스트링을 json 객체로 변환
+                    // 스트링을 json 객체로 변환
                     JSONObject jsonObj = new JSONObject(sb.toString());
                     Log.i("test", "score_avg:" + sb);
-// json.get("변수명")
+                    // json.get("변수명")
                     JSONArray jArray = (JSONArray) jsonObj.get("sendData");
                     for (int i = 0; i < jArray.length(); i++) {
                         JSONObject row = jArray.getJSONObject(i);
@@ -422,7 +422,7 @@ public class DetailActivity extends AppCompatActivity {
             }
         };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest); //필수코드***********
+        requestQueue.add(stringRequest);
     }
 
     void deleteHeart(final String userId, final String place_name){
@@ -458,7 +458,7 @@ public class DetailActivity extends AppCompatActivity {
             }
         };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest); //필수코드***********
+        requestQueue.add(stringRequest);
     }
 
     void heartCheck(final String userId, final String place_name){
@@ -470,15 +470,13 @@ public class DetailActivity extends AppCompatActivity {
                             JSONObject jsonObject = new JSONObject(response);
                             String success = jsonObject.getString("success"); //php문에서 success라는 키에 값을 저장
                             if(success.equals("1")){//그 값이 1이면(성공)
-                                Log.e("heartCheck","true다");
                                 iv.setSelected(true);
                                 iv.setImageResource(R.drawable.ic_favorite_black_24dp); //이미지수정
                             }
                         }catch (JSONException e){ //오류발생
                             e.printStackTrace();
-                            Log.e("heartCheck","false다");
                             iv.setSelected(false); //클릭했을때 선택이 안된걸로
-                            iv.setImageResource(R.drawable.ic_favorite_border_black_24dp); //이미지도 수정
+                            iv.setImageResource(R.drawable.ic_favorite_border_black_24dp); //이미지 수정
                         }
                     }
                 },
@@ -486,7 +484,6 @@ public class DetailActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {//오류발생
                         check=false;
-                        Log.e("heartCheck","값이 없다!!");
                     }
                 })
         {
@@ -499,9 +496,8 @@ public class DetailActivity extends AppCompatActivity {
 
                 //php문에 값을 보냄
             }
-
         };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest); //필수코드***********
+        requestQueue.add(stringRequest);
     }
 }

@@ -19,11 +19,10 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_home, container, false);
         ViewGroup linearLayout2 = (ViewGroup) v.findViewById(R.id.linearLayout2);
-
+        //공지사항 클릭 이벤트
         linearLayout2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent i = new Intent(getActivity(), NoticeActivity.class);
                 startActivity(i);
             }

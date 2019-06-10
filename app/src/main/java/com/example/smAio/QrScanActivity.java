@@ -83,7 +83,6 @@ public class QrScanActivity extends AppCompatActivity implements DecoratedBarcod
     }
 
     private void initLayout() { // zxing 라이브러리를 사용할 때 필요한 메소드이다.
-
         barcodeScannerView.setTorchListener(this);
         Collection<BarcodeFormat> formats = Arrays.asList(BarcodeFormat.QR_CODE, BarcodeFormat.CODE_128);
         barcodeScannerView.getBarcodeView().setDecoderFactory(new DefaultDecoderFactory(formats));
@@ -107,8 +106,6 @@ public class QrScanActivity extends AppCompatActivity implements DecoratedBarcod
             barcodeScannerView.setStatusText(result.getText());
 
             list(); // 서버와 통신하기 위한 함수를 호출한다.
-
-            //Timber.e("test: " + lastText);
         }
         @Override
         public void possibleResultPoints(List<ResultPoint> resultPoints) {
@@ -149,10 +146,10 @@ public class QrScanActivity extends AppCompatActivity implements DecoratedBarcod
                         }
                         conn.disconnect();
                     }
-// 스트링을 json 객체로 변환
+                    // 스트링을 json 객체로 변환
                     JSONObject jsonObj = new JSONObject(sb.toString());
 
-// json.get("변수명")
+                    // json.get("변수명")
                     JSONArray jArray = (JSONArray) jsonObj.get("sendData");
                     for (int i = 0; i < jArray.length(); i++) {
                         JSONObject row = jArray.getJSONObject(i);

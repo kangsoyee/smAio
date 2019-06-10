@@ -37,7 +37,6 @@ public class SessionManager {
     public void createSession(String name,String id){
         editor.putBoolean(LOGIN, true);
         editor.putString(NAME,name);
-
         editor.putString(ID,id);
         editor.apply();
     }

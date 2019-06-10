@@ -129,13 +129,13 @@ public class ReviewWriteActivity extends AppCompatActivity {
                 }
                 else{
                     Toast.makeText(getApplicationContext(), "Plese Connect to Internet", Toast.LENGTH_LONG).show();
-                }}
+                }
+            }
         });
     }
 
     //음성인식 인터넷 연결 확인 코드
     public  boolean isConnected() {
-
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo net = cm.getActiveNetworkInfo();
         if (net!=null && net.isAvailable() && net.isConnected()) {
@@ -148,7 +148,6 @@ public class ReviewWriteActivity extends AppCompatActivity {
     //음성인식 결과를 뽑아내는 메소드
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         super.onActivityResult(requestCode, resultCode, data);
         switch(requestCode){
             case REQUEST_CODE:{
@@ -229,8 +228,6 @@ public class ReviewWriteActivity extends AppCompatActivity {
                                     JSONObject object=jsonArray.getJSONObject(i);
                                     //jsonArray에 "p_id"이라는 키값으로 저장된 데이터 가져오기
                                     place_idx=object.getInt("p_id");
-//                                    place_n=object.getString("p_name");
-                                    //review()함수 실행
                                     review();
                                 }
                             }
@@ -243,7 +240,6 @@ public class ReviewWriteActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                     }
-
                 })
         {
             //php문에 값을 보내는 코드
@@ -260,10 +256,7 @@ public class ReviewWriteActivity extends AppCompatActivity {
         //Volley 사용을 위한 코드
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
-
     }
-
-
 
     //QR 주소를 통해 DB에 저장된 해당 가게의 Name를 가져오는 코드
     private void place_info(final String url){

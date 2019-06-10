@@ -12,7 +12,6 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -20,11 +19,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -79,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
         Boolean boolc=getIntent().getBooleanExtra("boolcheck",true);
 
 
-        if(boolc==false){ //MyFragment에서 받은 값이 false일 때 (세션초기화 성공)
+        if(!boolc){ //MyFragment에서 받은 값이 false일 때 (세션초기화 성공)
             //자동로그인 CheckBox 체크 false
             auto.setChecked(false);
             //AutoPref에 저장된 CheckBox의 체크여부 초기화
@@ -88,7 +85,7 @@ public class LoginActivity extends AppCompatActivity {
             edit.commit();
         }
         else{ //MyFragement에서 logout버튼을 클릭하지 않아 true(defaltValue값)이 왔을 때
-            if(AutoPref.getBoolean("checkbox",false)==true){ //AutoPref에 저장 된 값이 true(체크됨)일 때
+            if(AutoPref.getBoolean("checkbox", false)){ //AutoPref에 저장 된 값이 true(체크됨)일 때
                 //checkbox의 체크를 계속 유지
                 auto.setChecked(true);
                 //아이디칸에 AutoPref에 저장된 id값 저장
@@ -125,91 +122,91 @@ public class LoginActivity extends AppCompatActivity {
 
         //Volley를 이용한 Server연동 - POST방식으로 php에 값 전달
         StringRequest stringRequest=new StringRequest(Request.Method.POST, URL_LOGIN,
-                //php문에서 온 응답에 대한 이벤트
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        //성공적인 응답일 경우
-                        try{
-                            //php문에서의 응답을 기록한 json파일 확인을 위한 JSONObject 객체 생성
-                            JSONObject jsonObject=new JSONObject(response);
-                            //success라는 키에 들어있는 string값 변수에 저장
-                            String success = jsonObject.getString("success");
-                            //JSONObject에 저장된 Array파일 객체 생성
-                            JSONArray jsonArray = jsonObject.getJSONArray("login");
+            //php문에서 온 응답에 대한 이벤트
+            new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    //성공적인 응답일 경우
+                    try{
+                        //php문에서의 응답을 기록한 json파일 확인을 위한 JSONObject 객체 생성
+                        JSONObject jsonObject=new JSONObject(response);
+                        //success라는 키에 들어있는 string값 변수에 저장
+                        String success = jsonObject.getString("success");
+                        //JSONObject에 저장된 Array파일 객체 생성
+                        JSONArray jsonArray = jsonObject.getJSONArray("login");
 
-                            //success라는 키에 들어있는 값이 "1" 일 때
-                            if(success.equals("1")){
-                                //jsonArray에 들어있는 데이터 확인 및 저장을 위한 for문
-                                for(int i = 0; i<jsonArray.length();i++){
-                                    JSONObject object=jsonArray.getJSONObject(i);
-                                    //jsonArray에 "name"이라는 키값으로 저장된 데이터 가져오기
-                                    String name=object.getString("name").trim();
-                                    //Toast 메시지로 성공 메시지와 이름 값을 띄운다
-                                    Toast.makeText(LoginActivity.this,
-                                            "Success Login. \nYour NAME : "
-                                                    +name,Toast.LENGTH_SHORT)
-                                            .show();
-                                    //loading ProgressBar GONE으로 변경
-                                    loading.setVisibility(View.GONE);
-                                    //SessionManager에 유저 이름과 아이디 저장
-                                    sessionManager.createSession(name,cid);
-
-                                    //자동로그인 CheckBox가 체크 됬을 때
-                                    if(auto.isChecked()){
-                                        //아이디, 비밀번호, 체크 여부를 AutoPref에 저장
-                                        edit.putString("id",cid);
-                                        edit.putString("password",cpassword);
-                                        edit.putBoolean("checkbox",true);
-                                        edit.commit();
-                                    }
-                                    //자동로그인 CheckBox가 체크가 안 됬을 때
-                                    else{
-                                        //아이디와 비밀번호값을 ""로 초기화하고 체크박스 여부도 false로
-                                        edit.putString("id","");
-                                        edit.putString("password","");
-                                        edit.putBoolean("checkbox",false);
-                                        edit.commit();
-                                    }
-
-                                    //인텐트를 통해서 FirstActivity로 이동
-                                    Intent loginIntent = new Intent(LoginActivity.this, FirstActivity.class);
-                                    LoginActivity.this.startActivity(loginIntent);
-                                    finish();
-                                }
-                            }
-                            //success값이 1이 아닐 때 (아이디에 맞는 비밀번호가 틀리다는 뜻)
-                            else{
-                                //password Error Massage 띄우기
-                                password.setError("Please check your PASSWORD!!");
+                        //success라는 키에 들어있는 값이 "1" 일 때
+                        if(success.equals("1")){
+                            //jsonArray에 들어있는 데이터 확인 및 저장을 위한 for문
+                            for(int i = 0; i<jsonArray.length();i++){
+                                JSONObject object=jsonArray.getJSONObject(i);
+                                //jsonArray에 "name"이라는 키값으로 저장된 데이터 가져오기
+                                String name=object.getString("name").trim();
+                                //Toast 메시지로 성공 메시지와 이름 값을 띄운다
+                                Toast.makeText(LoginActivity.this,
+                                        "Success Login. \nYour NAME : "
+                                                +name,Toast.LENGTH_SHORT)
+                                        .show();
                                 //loading ProgressBar GONE으로 변경
                                 loading.setVisibility(View.GONE);
+                                //SessionManager에 유저 이름과 아이디 저장
+                                sessionManager.createSession(name,cid);
+
+                                //자동로그인 CheckBox가 체크 됬을 때
+                                if(auto.isChecked()){
+                                    //아이디, 비밀번호, 체크 여부를 AutoPref에 저장
+                                    edit.putString("id",cid);
+                                    edit.putString("password",cpassword);
+                                    edit.putBoolean("checkbox",true);
+                                    edit.commit();
+                                }
+                                //자동로그인 CheckBox가 체크가 안 됬을 때
+                                else{
+                                    //아이디와 비밀번호값을 ""로 초기화하고 체크박스 여부도 false로
+                                    edit.putString("id","");
+                                    edit.putString("password","");
+                                    edit.putBoolean("checkbox",false);
+                                    edit.commit();
+                                }
+
+                                //인텐트를 통해서 FirstActivity로 이동
+                                Intent loginIntent = new Intent(LoginActivity.this, FirstActivity.class);
+                                LoginActivity.this.startActivity(loginIntent);
+                                finish();
                             }
                         }
-                        //try에서 오류 발생시 (php문에 전달한 id가 서버에 없다는 뜻)
-                        catch (JSONException e){
-                            //id Error Massage 띄우기
-                            id.setError("Please check your ID!!");
+                        //success값이 1이 아닐 때 (아이디에 맞는 비밀번호가 틀리다는 뜻)
+                        else{
+                            //password Error Massage 띄우기
+                            password.setError("Please check your PASSWORD!!");
                             //loading ProgressBar GONE으로 변경
                             loading.setVisibility(View.GONE);
-                            //login Button VISIBLE로 변경
-                            login.setVisibility(View.VISIBLE);
-
-                            e.printStackTrace();
                         }
                     }
-                },
-                //서버 접속 오류
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
+                    //try에서 오류 발생시 (php문에 전달한 id가 서버에 없다는 뜻)
+                    catch (JSONException e){
+                        //id Error Massage 띄우기
+                        id.setError("Please check your ID!!");
                         //loading ProgressBar GONE으로 변경
                         loading.setVisibility(View.GONE);
                         //login Button VISIBLE로 변경
                         login.setVisibility(View.VISIBLE);
-                    }
 
-                })
+                        e.printStackTrace();
+                    }
+                }
+            },
+            //서버 접속 오류
+            new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    //loading ProgressBar GONE으로 변경
+                    loading.setVisibility(View.GONE);
+                    //login Button VISIBLE로 변경
+                    login.setVisibility(View.VISIBLE);
+                }
+
+            })
         {
             //php문에 값을 보내는 코드
             @Override

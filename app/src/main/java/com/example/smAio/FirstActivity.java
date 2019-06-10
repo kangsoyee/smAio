@@ -34,7 +34,6 @@ public class FirstActivity extends AppCompatActivity {
     //바텀 네비게이션바 클릭 이벤트
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
@@ -43,9 +42,6 @@ public class FirstActivity extends AppCompatActivity {
                     return true;
                 case R.id.location:
                     callFragment(2);
-                    return true;
-                case R.id.focus:
-                    callFragment(3);
                     return true;
                 case R.id.favorite:
                     callFragment(4);
@@ -140,9 +136,6 @@ public class FirstActivity extends AppCompatActivity {
                 // Map 프래그먼트 호출
                 MapFragment fragment2 = new MapFragment();
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment2, "main").commit();
-                break;
-
-            case 3:
                 break;
 
             case 4:

@@ -96,10 +96,10 @@ public class MyReviewActivity extends AppCompatActivity {
                         }
                         conn.disconnect();
                     }
-// 스트링을 json 객체로 변환
+                    // 스트링을 json 객체로 변환
                     JSONObject jsonObj = new JSONObject(sb.toString());
 
-// json.get("변수명")
+                    // json.get("변수명")
                     JSONArray jArray = (JSONArray) jsonObj.get("sendData"); // 이 부분 이해 안됨
                     for (int i = 0; i < jArray.length(); i++) {
                         JSONObject row = jArray.getJSONObject(i);
@@ -119,16 +119,16 @@ public class MyReviewActivity extends AppCompatActivity {
         th.start();
     }
 
-    class MyreviewAdapter extends ArrayAdapter<MyReviewDTO> {                 // 여기 class 이해 안됨
+    class MyreviewAdapter extends ArrayAdapter<MyReviewDTO> {
         //ArrayList<BookDTO> item;
         public MyreviewAdapter(Context context, int textViewResourceId,
                                ArrayList<MyReviewDTO> objects) {
             super(context, textViewResourceId, objects);
-//this.item= objects;
+            //this.item= objects;
         }
 
         @Override
-        public View getView(int position, View convertView,                 // getView에 대한 이해 부족
+        public View getView(int position, View convertView,
                             ViewGroup parent) {
             View v = convertView;
             if (v == null) {
@@ -136,7 +136,6 @@ public class MyReviewActivity extends AppCompatActivity {
                         getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 v = li.inflate(R.layout.myreview_row, null);
             }
-
             try {
                 final MyReviewDTO dto = items.get(position);
                 if (dto != null) {

@@ -127,7 +127,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(final GoogleMap googleMap) {
-
         //처음을 현재 위치로 초기화
         SimpleLocation location = new SimpleLocation(getContext());
         LatLng currentPosition = new LatLng(location.getLatitude(), location.getLongitude());

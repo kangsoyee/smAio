@@ -16,7 +16,6 @@ public class NoticeDTO {
         return notice;
     } //각 문자열들의 getter and setter 함수
                                                     // 공지사항을 띄울 NoticeActivity에서 값을 불러오기 위하여 만들어줍니다
-
     public void setNotice(String notice) {
         this.notice = notice;
     }

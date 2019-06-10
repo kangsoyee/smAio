@@ -35,8 +35,6 @@ public class StoreListActivity extends AppCompatActivity  {
     EditText editPlaceName;
     String[] arrPlace;
     String userid;
-
-
     ArrayList<PlaceDTO> items;
 
     //thread 실행 결과값을 핸들러로 불러온다.
@@ -85,7 +83,6 @@ public class StoreListActivity extends AppCompatActivity  {
                 }, 100);
             }
         });
-
     }
 
     @Override
@@ -105,7 +102,6 @@ public class StoreListActivity extends AppCompatActivity  {
                 try {
                     items = new ArrayList<PlaceDTO>();
                     String page = Common.SERVER_URL+"/place_list.php";
-                    Log.e("StoreListActivity","여기까지야");
 
                     URL url = new URL(page);
                     // 커넥션 객체 생성
@@ -137,7 +133,7 @@ public class StoreListActivity extends AppCompatActivity  {
                     JSONObject jsonObj = new JSONObject(sb.toString());
 
                     // json.get("변수명")
-                    JSONArray jArray = (JSONArray) jsonObj.get("sendData"); // 이 부분 이해 안됨
+                    JSONArray jArray = (JSONArray) jsonObj.get("sendData");
                     for (int i = 0; i < jArray.length(); i++) {
                         JSONObject row = jArray.getJSONObject(i);
                         PlaceDTO dto = new PlaceDTO();
@@ -179,7 +175,6 @@ public class StoreListActivity extends AppCompatActivity  {
                 try {
                     items = new ArrayList<PlaceDTO>();
                     String page = Common.SERVER_URL+"/place_search_food.php?place_name="+place_name;
-                    Log.e("Mainactivity","여기까진 됨");
 
                     URL url = new URL(page);
                     // 커넥션 객체 생성
@@ -230,14 +225,12 @@ public class StoreListActivity extends AppCompatActivity  {
                             dto.setImage(row.getString("image"));
 
                         items.add(dto);
-
                     }
                     //핸들러에게 화면 갱신 요청
                     handler.sendEmptyMessage(0);
                 } catch (Exception e) {
                     list();
                     e.printStackTrace();
-
                 }
             }
         });
@@ -252,7 +245,6 @@ public class StoreListActivity extends AppCompatActivity  {
                             ArrayList<PlaceDTO> objects) {
             super(context, textViewResourceId, objects);
         }
-
         //화면이 디스플레이 되기 전에 getView() 메소드가 호출된다.
         //getView() 메소드는 화면에 보여져야 할 아이템의 수 만큼 호출된다.
         @Override
@@ -266,16 +258,13 @@ public class StoreListActivity extends AppCompatActivity  {
                         getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 v = li.inflate(R.layout.place_row, null);
             }
-
             try {
 
                 final PlaceDTO dto = items.get(position);
                 if (dto != null) {
-                    TextView place_idx = (TextView) v.findViewById(R.id.place_idx);
                     TextView place_name = (TextView) v.findViewById(R.id.place_name);
                     TextView start_time = (TextView) v.findViewById(R.id.start_time);
                     TextView end_time = (TextView) v.findViewById(R.id.end_time);
-                    TextView category = (TextView) v.findViewById(R.id.category);
                     TextView address = (TextView) v.findViewById(R.id.address);
                     TextView tel = (TextView) v.findViewById(R.id.tel);
                     TextView menu = (TextView) v.findViewById(R.id.menu);
@@ -332,7 +321,6 @@ public class StoreListActivity extends AppCompatActivity  {
 
                         //startActivity 메서드 사용하여 데이터를 DetailActivity로 보낸다.
                         startActivity(intent);
-                        Log.i("test_StoreListActivity","onClick 끝");
                     }
                 });
 

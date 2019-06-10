@@ -6,10 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -32,13 +30,6 @@ public class NoticeActivity extends AppCompatActivity {
             noticeListView.setAdapter(adapter);                                   // 화면에 공지사항을 뿌려주는 역할을 합니다.
         }
     };
-
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//
-//        notice();
-//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +77,7 @@ public class NoticeActivity extends AppCompatActivity {
                         }
                         conn.disconnect();
                     }
-// 스트링을 json 객체로 변환
+                    // 스트링을 json 객체로 변환
                     JSONObject jsonObject = new JSONObject(sb.toString());
                     JSONArray jsonArray = jsonObject.getJSONArray("response");
                     int count =0;

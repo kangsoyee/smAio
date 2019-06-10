@@ -12,10 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -24,7 +22,6 @@ import java.util.ArrayList;
 
 
 public class HeartFragment extends Fragment {
-
 
     ListView list; // heartFragment에 있는 ListView 선언
     ArrayList<HeartDTO> items; // HeartDTO에서 받아온 식당 이름값을 담아줄 ArrayList서넌
@@ -51,14 +48,11 @@ public class HeartFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
         View view = inflater.inflate(R.layout.fragment_heart, container, false); //Fragment에는 기본적으로 View가 없기때문에
                                                                                                //findViewById를 해주기 위해서
                                                                                                 // View 선언이 필요합니다
-
         list=(ListView)view.findViewById(R.id.list);
         id_text = getArguments().getString("id"); //유저 아이디 받아옴
-
         return view; // view 반환
     }
 
@@ -122,7 +116,7 @@ public class HeartFragment extends Fragment {
         th.start();
     }
 
-    class HeartAdapter extends ArrayAdapter<HeartDTO> {                 //HeartDTO를 담은 ArrayList의 정보를 뿌려줄 HeartAdapter 선언
+    class HeartAdapter extends ArrayAdapter<HeartDTO> {//HeartDTO를 담은 ArrayList의 정보를 뿌려줄 HeartAdapter 선언
         //ArrayList<BookDTO> item;
         public HeartAdapter(Context context, int textViewResourceId,
                             ArrayList<HeartDTO> objects) {
@@ -131,7 +125,7 @@ public class HeartFragment extends Fragment {
         }
 
         @Override
-        public View getView(int position, View convertView,                 //
+        public View getView(int position, View convertView,
                             ViewGroup parent) {
             View v = convertView;
             if (v == null) {

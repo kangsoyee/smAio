@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
+import android.util.Patterns;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -87,21 +88,21 @@ public class EmailActivity extends AppCompatActivity {
     private void createUser(String email, String password) {
         //firebase에 이메일 생성
         firebaseAuth.createUserWithEmailAndPassword(email+"@sangmyung.kr", password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()&&task.isComplete()) {
-                            // 회원가입 성공
-                            Toast.makeText(EmailActivity.this, "Certification", Toast.LENGTH_LONG).show();
-                            //인텐트를 사용하여 엑티비티 전환
-                            Intent signupIntent = new Intent(EmailActivity.this, SignUpActivity.class);
-                            EmailActivity.this.startActivity(signupIntent);
-                            finish();
-                        } else {
-                            // 회원가입 실패
-                            Toast.makeText(EmailActivity.this, "Certification Failed", Toast.LENGTH_LONG).show();
-                        }
+            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()&&task.isComplete()) {
+                        // 회원가입 성공
+                        Toast.makeText(EmailActivity.this, "Certification", Toast.LENGTH_LONG).show();
+                        //인텐트를 사용하여 엑티비티 전환
+                        Intent signupIntent = new Intent(EmailActivity.this, SignUpActivity.class);
+                        EmailActivity.this.startActivity(signupIntent);
+                        finish();
+                    } else {
+                        // 회원가입 실패
+                        Toast.makeText(EmailActivity.this, "Certification Failed", Toast.LENGTH_LONG).show();
                     }
-                });
+                }
+            });
     }
 }

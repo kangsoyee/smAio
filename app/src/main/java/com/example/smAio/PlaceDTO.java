@@ -25,7 +25,6 @@ public class PlaceDTO {
     static String lat;
     static String lng;
 
-    //Line 27 ~ 34. 소이야 이것좀 알려줘
     public String getLat(){ return lat; }
 
     public void setLat(String lat){ this.lat = lat; }

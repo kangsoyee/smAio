@@ -79,7 +79,6 @@ public class StoreListActivity2 extends AppCompatActivity {
                 }, 100);
             }
         });
-
     }
 
     @Override
@@ -194,10 +193,10 @@ public class StoreListActivity2 extends AppCompatActivity {
                         }
                         conn.disconnect();
                     }
-// 스트링을 json 객체로 변환
+                    // 스트링을 json 객체로 변환
                     JSONObject jsonObj = new JSONObject(sb.toString());
 
-// json.get("변수명")
+                    // json.get("변수명")
                     JSONArray jArray = (JSONArray) jsonObj.get("sendData");
                     for (int i = 0; i < jArray.length(); i++) {
                         JSONObject row = jArray.getJSONObject(i);
@@ -216,7 +215,6 @@ public class StoreListActivity2 extends AppCompatActivity {
                             dto2.setImage(row.getString("image"));
 
                         items.add(dto2);
-
                     }
                     //핸들러에게 화면 갱신 요청
                     handler.sendEmptyMessage(0);
@@ -229,7 +227,7 @@ public class StoreListActivity2 extends AppCompatActivity {
         th.start();
     }
 
-    class PlaceAdapter extends ArrayAdapter<PlaceDTO> {                 // 여기 class 이해 안됨
+    class PlaceAdapter extends ArrayAdapter<PlaceDTO> {
         //ArrayList<BookDTO> item;
         public PlaceAdapter(Context context, int textViewResourceId,
                             ArrayList<PlaceDTO> objects) {
@@ -238,7 +236,7 @@ public class StoreListActivity2 extends AppCompatActivity {
         }
 
         @Override
-        public View getView(int position, View convertView,                 // getView에 대한 이해 부족
+        public View getView(int position, View convertView,
                             ViewGroup parent) {
             View v = convertView;
             if (v == null) {
@@ -246,7 +244,6 @@ public class StoreListActivity2 extends AppCompatActivity {
                         getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 v = li.inflate(R.layout.place_row, null);
             }
-
             try {
 
                 final PlaceDTO dto2 = items.get(position);
@@ -254,7 +251,6 @@ public class StoreListActivity2 extends AppCompatActivity {
                     TextView place_name = (TextView) v.findViewById(R.id.place_name);
                     TextView start_time = (TextView) v.findViewById(R.id.start_time);
                     TextView end_time = (TextView) v.findViewById(R.id.end_time);
-                    TextView category = (TextView) v.findViewById(R.id.category);
                     TextView address = (TextView) v.findViewById(R.id.address);
                     TextView tel = (TextView) v.findViewById(R.id.tel);
                     ImageView imgPlace = (ImageView) v.findViewById(R.id.imgPlace);
@@ -308,7 +304,6 @@ public class StoreListActivity2 extends AppCompatActivity {
                         startActivity(intent);
                     }
                 });
-
             } catch (Exception e) {
                 Log.e("Network Exception", e.getMessage());
                 return null;
