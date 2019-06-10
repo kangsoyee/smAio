@@ -3,21 +3,13 @@ package com.example.smAio;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.LayerDrawable;
-import android.media.Image;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Handler;
-import android.os.Message;
 import android.speech.RecognizerIntent;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -40,8 +32,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -56,16 +46,19 @@ public class ReviewWriteActivity extends AppCompatActivity {
 
     //가게의 id값을 가져오기위한 서버에 등록된 php문 주소
     private static String URL_getPlaceID ="http://eileenyoo1.cafe24.com/get_placeID.php/";
+    private static String URL_getPlaceNAME ="http://eileenyoo1.cafe24.com/get_placeName.php/";
     //DB에서 가져온 가게의 id값을 저장하는 변수
     int place_idx;
+    String place_n;
 
     private static final int REQUEST_CODE = 1234;
+
     ImageButton Start;
     Dialog match_text_dialog;
     ListView textlist;
     ArrayList<String> matches_text;
     EditText txtReview;
-    TextView txtScore;
+    TextView txtScore, nameText;
     Button button;
 
     //QrScanActivity에서 가져온 값들
@@ -89,6 +82,13 @@ public class ReviewWriteActivity extends AppCompatActivity {
         txtReview=(EditText)findViewById(R.id.review_message);
         txtScore=(TextView)findViewById(R.id.textView3);
         button=(Button)findViewById(R.id.button_reviewsend);
+        nameText=(TextView)findViewById(R.id.textView2);
+
+
+        place_info(place_url);
+
+
+
 
         //reviewsend button Click Event
         button.setOnClickListener(new View.OnClickListener() {
@@ -101,9 +101,8 @@ public class ReviewWriteActivity extends AppCompatActivity {
                 if(!txtReview_textCheck.isEmpty()) {
                     //match_url 함수를 통해 DB에서 가게 id값 가져오기
                     match_url(place_url);
-
                     //Intent에 아이디 값을 실어 액티비티 전환
-                    Intent intent = new Intent(ReviewWriteActivity.this,endWriteReview.class);
+                    Intent intent = new Intent(ReviewWriteActivity.this, endWriteReview.class);
                     intent.putExtra("id",user_Id);
                     startActivity(intent);
                     finish();
@@ -248,6 +247,7 @@ public class ReviewWriteActivity extends AppCompatActivity {
                                     JSONObject object=jsonArray.getJSONObject(i);
                                     //jsonArray에 "p_id"이라는 키값으로 저장된 데이터 가져오기
                                     place_idx=object.getInt("p_id");
+//                                    place_n=object.getString("p_name");
                                     //review()함수 실행
                                     review();
                                 }
@@ -260,6 +260,66 @@ public class ReviewWriteActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                    }
+
+                })
+        {
+            //php문에 값을 보내는 코드
+            @Override
+            protected Map<String,String> getParams() throws AuthFailureError {
+                //HashMap 사용
+                Map<String,String> params = new HashMap<>();
+                //QR의 url
+                params.put("url",url);
+                //php문으로 return
+                return params;
+            }
+        };
+        //Volley 사용을 위한 코드
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+
+    }
+
+
+
+    //QR 주소를 통해 DB에 저장된 해당 가게의 Name를 가져오는 코드
+    private void place_info(final String url){
+        StringRequest stringRequest=new StringRequest(Request.Method.POST, URL_getPlaceNAME,
+                //php문에서 온 응답에 대한 이벤트
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //성공적인 응답일 경우
+                        try{
+                            //php문에서의 응답을 기록한 json파일 확인을 위한 JSONObject 객체 생성
+                            JSONObject jsonObject=new JSONObject(response);
+                            //success라는 키에 들어있는 string값 변수에 저장
+                            String success = jsonObject.getString("success");
+                            //JSONObject에 저장된 Array파일 객체 생성
+                            JSONArray jsonArray = jsonObject.getJSONArray("place_info");
+
+                            //success라는 키에 들어있는 값이 "1" 일 때
+                            if(success.equals("1")){
+                                //jsonArray에 들어있는 데이터 확인 및 저장을 위한 for문
+                                for(int i = 0; i<jsonArray.length();i++){
+                                    JSONObject object=jsonArray.getJSONObject(i);
+                                    //jsonArray에 "p_id"이라는 키값으로 저장된 데이터 가져오기
+                                    place_n=object.getString("p_name");
+                                    //        nameText에 가게이름 띄우기
+                                    nameText.setText(place_n);
+                                }
+                            }
+                        }catch (JSONException e){
+                            e.printStackTrace();
+                            Log.e("place_n","");
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("place_n","");
                     }
 
                 })

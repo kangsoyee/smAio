@@ -26,6 +26,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import com.bumptech.glide.Glide;
 
 import org.json.JSONArray;
@@ -238,12 +239,15 @@ public class StoreListActivity extends AppCompatActivity  {
                     //핸들러에게 화면 갱신 요청
                     handler.sendEmptyMessage(0);
                 } catch (Exception e) {
+                    list();
                     e.printStackTrace();
+
                 }
             }
         });
         th.start();
     }
+
     class PlaceAdapter extends ArrayAdapter<PlaceDTO> {                 // 여기 class 이해 안됨
         //ArrayList<BookDTO> item;
         public PlaceAdapter(Context context, int textViewResourceId,

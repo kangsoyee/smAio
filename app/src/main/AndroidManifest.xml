@@ -38,13 +38,13 @@
         <activity
             android:name=".StoreListActivity4"
             android:windowSoftInputMode="stateAlwaysHidden"/>
-        <activity android:name=".endWriteReview" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".SignUpActivity" />
         <activity android:name=".MyReviewActivity" />
         <activity android:name=".CouponActivity" />
         <activity android:name=".NoticeActivity" />
         <activity android:name=".QrScanActivity" />
+        <activity android:name=".endWriteReview"/>
         <activity
             android:name=".LoadingActivity"
             android:screenOrientation="portrait"

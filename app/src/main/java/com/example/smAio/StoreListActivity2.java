@@ -233,6 +233,7 @@ public class StoreListActivity2 extends AppCompatActivity {
                     //핸들러에게 화면 갱신 요청
                     handler.sendEmptyMessage(0);
                 } catch (Exception e) {
+                    list();
                     e.printStackTrace();
                 }
             }

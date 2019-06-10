@@ -110,9 +110,10 @@ public class DetailActivity extends AppCompatActivity {
 
                 float rate = avg;
 
-                Log.i("test_rate",String.valueOf(score_avg));
+                Log.i("test_rate",rate+"");
 
                 rb.setRating(rate);
+                tv.setText(rate+"");
 
                 rb.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
                     @Override
@@ -273,7 +274,7 @@ public class DetailActivity extends AppCompatActivity {
             public void run() {
                 try {
                     review_list = new ArrayList<ReviewDTO>();
-                    String page = Common.SERVER_URL+"/review_list2.php?place_idx="+place_idx;
+                    String page = Common.SERVER_URL+"/review_list.php?place_idx="+place_idx;
                     Log.e("DetailActivity","여기까지는 이동함");
 
                     URL url = new URL(page);

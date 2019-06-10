@@ -60,7 +60,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:gravity="center"
-        android:text=""
+        android:text="0.0"
         android:textSize="36sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -124,52 +124,116 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="15dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:textSize="25sp"
+                        android:text="주소 : "
+                        android:textColor="@color/colorblue"/>
                     <TextView
                         android:id="@+id/info_address"
                         android:layout_width="match_parent"
-                        android:layout_height="42dp"
-                        android:layout_marginTop="15dp"
+                        android:layout_height="match_parent"
                         android:text="address"
-                        android:textSize="20sp" />
+                        android:textSize="20sp"
+                        android:layout_marginLeft="5dp"
+                        android:paddingTop="5dp"/>
+                    </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="43dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:textSize="25sp"
+                            android:text="영업시간 : "
+                            android:textColor="@color/colorblue"/>
                         <TextView
                             android:id="@+id/start_end_time"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:text="11:00 ~ 21:00"
-                            android:textSize="20sp" />
+                            android:textSize="20sp"
+                            android:layout_marginLeft="5dp"
+                            android:paddingTop="5dp"/>
 
                     </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:textSize="25sp"
+                        android:text="전화번호 : "
+                        android:textColor="@color/colorblue"/>
                     <TextView
                         android:id="@+id/info_tel"
                         android:layout_width="match_parent"
-                        android:layout_height="87dp"
+                        android:layout_height="match_parent"
                         android:text="tell"
                         android:textColor="#0000FF"
                         android:textSize="20sp"
-                        android:textStyle="italic" />
+                        android:textStyle="italic"
+                        android:layout_marginLeft="5dp"
+                        android:paddingTop="5dp"/>
+                </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="30dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:textSize="25sp"
+                        android:text="대표메뉴 : "
+                        android:textColor="@color/colorblue"/>
                     <TextView
                         android:id="@+id/info_menu"
                         android:layout_width="match_parent"
-                        android:layout_height="42dp"
+                        android:layout_height="match_parent"
                         android:text="menu"
-                        android:textSize="20sp" />
+                        android:textSize="20sp"
+                        android:layout_marginLeft="5dp"
+                        android:paddingTop="5dp"/>
+                </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:textSize="25sp"
+                        android:text="가격 : "
+                        android:textColor="@color/colorblue"/>
                     <TextView
                         android:id="@+id/info_price"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:text="price"
-                        android:textSize="20sp" />
+                        android:textSize="20sp"
+                        android:layout_marginLeft="5dp"
+                        android:paddingTop="5dp"/>
                 </LinearLayout>
-
+                </LinearLayout>
                 <!--'리뷰' 탭을 클릭했을때 나오는 내용-->
                 <LinearLayout
                     android:id="@+id/tabSpec2"

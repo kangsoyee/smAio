@@ -39,7 +39,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="5dp"
                 android:gravity="center_vertical"
-                android:text="클릭해서 공지사항 확인하기!"
+                android:text="공지사항"
                 android:textSize="24sp" />
 
         </LinearLayout>
