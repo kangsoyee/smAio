@@ -370,7 +370,7 @@
 | StoreList2  | 카페에 해당하는 정보 가져오기   | activity_store_list.xml<br/>place_row.xml  |
 | StoreList3  | 노래방에 해당하는 정보 가져오기  | activity_store_list.xml<br/>place_row2.xml  |
 | StoreList4  | 피시방에 해당하는 정보 가져오기  | activity_store_list.xml<br/>place_row2.xml  |
-| StoreMapFragment  | 카드뷰 안에서 상점별 맵 보여주기   | fragment_map.xml  |
+| StoreMapFragment  | 카드뷰 안에서 상점별 맵 보여주기   | fragment_map.xml
 <br/><br/><br/>
 
 
