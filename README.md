@@ -1376,10 +1376,11 @@
 
 
 7. DetailActivity.java 설명
-<br/>
-![Datail](https://github.com/kangsoyee/smAio/blob/master/image/detail.png?raw=true)
-<br/>
+
 * StoreListActivity에서 클릭한 가게에 대한 정보를 보여줍니다.
+<br/><br/>
+![Datail](https://github.com/kangsoyee/smAio/blob/master/image/detail.png?raw=true)
+
     ``` d
     @Override
     protected void onCreate(Bundle savedInstanceState) {
