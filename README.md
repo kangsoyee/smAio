@@ -393,7 +393,7 @@
 * Firebase에 연동하여 학교이메일 유무를 확인합니다.
 * 인증후 SignUpActivity로 넘어가면서 회원가입을 진행합니다.
 <br/><br/>
-![Email](https://github.com/kangsoyee/smAio/blob/master/image/firebase.png?raw=true)
+![Email](https://github.com/kangsoyee/smAio/blob/master/image/EmailActivity.png?raw=true)
 
     ``` d
     public class EmailActivity extends AppCompatActivity {
@@ -488,6 +488,8 @@
 * 회원가입을 하기위한 Activity이다. 
 * ID,PASSWORD,NAME EditText, id_check Button, SignUp Button으로 이루어져 있다.
 * 회원가입, 아이디 중복체크 기능을 위해 서버연동을 하였다. 
+<br/><br/>
+![SignUp](https://github.com/kangsoyee/smAio/blob/master/image/SignUpActivity.png?raw=true)
 
     #### 1. Server 연결 코드 (Volley 통신)
 
@@ -703,6 +705,8 @@
 * ID,PASSWORD EditText, Login Button, SignUp Button 등 으로 이루어져 있다.
 * 로그인 기능을 위해 서버연동한다(Volley).
 * 로그인 유지를 위해 Session을 사용한다. 
+<br/><br/>
+![Login](https://github.com/kangsoyee/smAio/blob/master/image/LoginActivity.png?raw=true)
 
 
     #### 1) Server 연결 코드 (Volley 통신)
@@ -1077,6 +1081,8 @@
 * FirstActivity에서 식당,카페,노래방,피씨방 버튼을 클릭했을때 나오는 상점 목록 액티비티이다.
 * 상점 이름을 검색할 수 있는 editText와 검색버튼, 상점 목록이 나오는 ListView로 구성되어있다.
 * 리스트에 상점 이미지와 간단한 정보 등이 표시되는데 하나의 상점을 클릭하면 이 정보들을 DetailActivity로 넘겨주게 된다.
+<br/><br/>
+![StoreList](https://github.com/kangsoyee/smAio/blob/master/image/StoreListActivity(res).png?raw=true)
 
     ``` d
     public class StoreListActivity extends AppCompatActivity  {
@@ -1379,7 +1385,7 @@
 
 * StoreListActivity에서 클릭한 가게에 대한 정보를 보여줍니다.
 <br/><br/>
-![Datail](https://github.com/kangsoyee/smAio/blob/master/image/detail.png?raw=true)
+![Datail](https://github.com/kangsoyee/smAio/blob/master/image/DetailActivity.png?raw=true)
 
     ``` d
     @Override
@@ -1662,6 +1668,8 @@
 * 홈화면의 NavigationBar에 포함되어 있는 지도입니다.
 * 구글지도를 이용하여 Map을 띄웁니다.
 * Map에 현재위치와 가게들의 위치와 정보를 표시해줍니다.
+<br/><br/>
+![Map](https://github.com/kangsoyee/smAio/blob/master/image/MapFragment.png?raw=true)
 
     ``` d
     public class MapFragment extends Fragment implements OnMapReadyCallback {
@@ -1903,6 +1911,8 @@
 * DetailActivity.java에 있는 하트 버튼을 누르면 그 식당의 이름이 데이터베이스에 올라가게되고 데이터베이스에 저장된 정보를 리스트뷰에 띄워주는 기능이다.
 
 * 하트 버튼을 한번 누르면 버튼을 재클릭해서 하트를 취소하기 전까지는 어플리케이션을 종료해도 하트를 눌렀다는 정보가 유지된다.
+<br/><br/>
+![Heart](https://github.com/kangsoyee/smAio/blob/master/image/HeartFragment.png?raw=true)
 
     ``` d
     void sendHeart(final String userId, final String place_name){ 
@@ -2110,6 +2120,8 @@ HeartDTO에서 받아온 식당이름 문자열인 String place_name 을 저장�
 * MyFragment에서 내 리뷰 눌렀을때 나오는 액티비티이다.
 * 사용자 id값을 받아와서 그 id에 해당하는 리뷰를 불러오는 액티비티이다.
 * StoreListActivity.java에서 설명한 것과 같은 원리로 Handler와 list(),Adapter와 getView를 사용하였다.
+<br/><br/>
+![MyReview](https://github.com/kangsoyee/smAio/blob/master/image/MyReviewActivity.png?raw=true)
 
     * 나머지 부분은 StoreListActivity.java와 같은 원리이다.
     * 추가된 부분은 아래의 코드이다. onCreate 안에서 getIntent 메서드를 이용해 MyFragment와 endWriteReview에서 보낸 데이터를 받아온다.
