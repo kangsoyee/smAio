@@ -392,8 +392,8 @@
 * 상명대학교 학생임을 인증하고 중복가입 방지를 하기 위한 클래스입니다.
 * Firebase에 연동하여 학교이메일 유무를 확인합니다.
 * 인증후 SignUpActivity로 넘어가면서 회원가입을 진행합니다.
-<br/>
-![Email](https://github.com/kangsoyee/smAio/blob/master/image/firebase.png)
+<br/><br/>
+![Email](https://github.com/kangsoyee/smAio/blob/master/image/firebase.png?raw=true)
 
     ``` d
     public class EmailActivity extends AppCompatActivity {
@@ -1377,7 +1377,8 @@
 
 7. DetailActivity.java 설명
 <br/>
-![Datail](https://github.com/kangsoyee/smAio/blob/master/image/detail.png)
+![Datail](https://github.com/kangsoyee/smAio/blob/master/image/detail.png?raw=true)
+<br/>
 * StoreListActivity에서 클릭한 가게에 대한 정보를 보여줍니다.
     ``` d
     @Override
