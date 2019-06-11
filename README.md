@@ -370,8 +370,7 @@
 | StoreList2  | 카페에 해당하는 정보 가져오기   | activity_store_list.xml<br/>place_row.xml  |
 | StoreList3  | 노래방에 해당하는 정보 가져오기  | activity_store_list.xml<br/>place_row2.xml  |
 | StoreList4  | 피시방에 해당하는 정보 가져오기  | activity_store_list.xml<br/>place_row2.xml  |
-| StoreMapFragment  | 카드뷰 안에서 상점별 맵 보여주기   | fragment_map.xml
-
+| StoreMapFragment  | 카드뷰 안에서 상점별 맵 보여주기   | fragment_map.xml |
 
 
 ### 8. 클래스 별 주요 코드 상세 설명
@@ -393,7 +392,8 @@
 * 상명대학교 학생임을 인증하고 중복가입 방지를 하기 위한 클래스입니다.
 * Firebase에 연동하여 학교이메일 유무를 확인합니다.
 * 인증후 SignUpActivity로 넘어가면서 회원가입을 진행합니다.
-
+<br/>
+![Email](https://github.com/kangsoyee/smAio/blob/master/image/firebase.png)
 
     ``` d
     public class EmailActivity extends AppCompatActivity {
@@ -1376,6 +1376,8 @@
 
 
 7. DetailActivity.java 설명
+<br/>
+![Datail](https://github.com/kangsoyee/smAio/blob/master/image/detail.png)
 * StoreListActivity에서 클릭한 가게에 대한 정보를 보여줍니다.
     ``` d
     @Override
