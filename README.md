@@ -371,7 +371,7 @@
 | StoreList3  | 노래방에 해당하는 정보 가져오기  | activity_store_list.xml<br/>place_row2.xml  |
 | StoreList4  | 피시방에 해당하는 정보 가져오기  | activity_store_list.xml<br/>place_row2.xml  |
 | StoreMapFragment  | 카드뷰 안에서 상점별 맵 보여주기   | fragment_map.xml
-<br/><br/><br/>
+
 
 
 ### 8. 클래스 별 주요 코드 상세 설명
