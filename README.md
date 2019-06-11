@@ -345,7 +345,7 @@
 ### 7. 각 액티비티의 기능별 설명
 
 | 클래스  | 기능  | layout  |
-|---|---|---|
+|---|---|---|---|---|
 | Common  |  URL 주소 불러오기 |   |
 | Detail  | 상점 클릭시 발생하는 화면  | activity_detail.xml<br/>tab_menu.xml  |
 | Email  | 회원가입시 필요한 이메일 인증  | activity_email.xml  |
@@ -1836,7 +1836,62 @@
 <br/><br/>
 
 
-9. HeartFragment.java 설명
+9. QrScanActivity   
+
+* 구글에서 제공하는 오픈 소스 라이브러리인 zxing을 사용해 QR코드 스캐너를 구현  
+* QR 코드를 인식하게 되면 리뷰를 작성할 수 있는 페이지로 전환되게 하는 액티비티이다.
+
+    ``` d
+    public class QrScanActivity extends AppCompatActivity implements DecoratedBarcodeView.TorchListener {
+
+        private BeepManager beepManager;
+        private String lastText;
+        ArrayList<PlaceDTO> items;
+        String url,id;
+
+        @BindView(R.id.zxing_barcode_scanner)
+        DecoratedBarcodeView barcodeScannerView;
+
+        Handler handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                for(PlaceDTO dto:items) {
+                    if (lastText.equals(dto.getQrcode())) { // 데이터베이스에 등록된 QR코드 값과 현재 인식했던 QR코드의 값이 일치한다면 해당 상점의 리뷰 페이지로 전환되는 코드이다.
+                        url=lastText;
+                        Intent intent = new Intent(QrScanActivity.this, ReviewWriteActivity.class);
+
+                        intent.putExtra("url",url); // reviewWrite 로 url 값을 전달해준다.
+                        intent.putExtra("id",id);  // reviewWrite 로 id 값을 전달해준다.
+                        startActivity(intent);
+                    }
+                }
+            }
+        };
+
+        private BarcodeCallback callback = new BarcodeCallback() {
+            @Override
+            public void barcodeResult(BarcodeResult result) {
+
+                //Line 100 ~ 104. 한번 인식했던 QR코드를 중복해서 인식할 수 없게 해준다.
+                if (result.getText() == null || result.getText().equals(lastText)) {
+                    // Prevent duplicate scans
+                    return;
+                }
+                lastText = result.getText(); // QR 인식을 통해 얻은 URL 을 lastText 변수에 저장한다.
+                Log.i("test", "lastText="+lastText);
+
+                barcodeScannerView.setStatusText(result.getText());
+
+                list(); // 서버와 통신하기 위한 함수를 호출한다.
+            }
+        }
+    }
+    ```
+<br/><br/>
+
+
+10. HeartFragment.java 설명
 
 * DetailActivity.java에 있는 하트 버튼을 누르면 그 식당의 이름이 데이터베이스에 올라가게되고 데이터베이스에 저장된 정보를 리스트뷰에 띄워주는 기능이다.
 
@@ -2043,7 +2098,7 @@ HeartDTO에서 받아온 식당이름 문자열인 String place_name 을 저장�
 <br/><br/>
 
 
-10. MyReviewActivity.java 설명
+11. MyReviewActivity.java 설명
 
 * MyFragment에서 내 리뷰 눌렀을때 나오는 액티비티이다.
 * 사용자 id값을 받아와서 그 id에 해당하는 리뷰를 불러오는 액티비티이다.
@@ -2058,7 +2113,7 @@ HeartDTO에서 받아온 식당이름 문자열인 String place_name 을 저장�
 <br/><br/>
 
 
-11. MyReviewDTO.java 설명
+12. MyReviewDTO.java 설명
 
 * DB에 만들어진 필드랑 1:1 대응하는 변수 + getter & setter 를 가진 클래스를 DTO 라고 합니다.
 * 데이터베이스의 review 테이블과 user 테이블을 사용하였으며 상점이름,사용자 id,해당 id로 남긴 리뷰를 가지고있다.
