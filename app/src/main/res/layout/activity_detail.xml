@@ -204,11 +204,12 @@
                     android:layout_marginTop="30dp">
 
                     <TextView
+                        android:id="@+id/menu_text"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:textSize="25sp"
                         android:text="대표메뉴 : "
-                        android:textColor="@color/colorblue"/>
+                        android:textColor="@color/colorblue"
+                        android:textSize="25sp" />
                     <TextView
                         android:id="@+id/info_menu"
                         android:layout_width="match_parent"
@@ -227,11 +228,12 @@
                     >
 
                     <TextView
+                        android:id="@+id/price_text"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:textSize="25sp"
                         android:text="가격 : "
-                        android:textColor="@color/colorblue"/>
+                        android:textColor="@color/colorblue"
+                        android:textSize="25sp" />
                     <TextView
                         android:id="@+id/info_price"
                         android:layout_width="match_parent"

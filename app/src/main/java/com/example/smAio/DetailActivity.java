@@ -52,7 +52,7 @@ public class DetailActivity extends AppCompatActivity {
     int place_idx;
     int avg;
 
-    TextView txtCategory, txtPlaceName, txtStartTime, txtEndTime, txtAddress, txtTel, txtReview, txtMenu, txtPrice;
+    TextView txtCategory, txtPlaceName, txtStartTime, txtEndTime, txtAddress, txtTel, txtReview, txtMenu, txtPrice, txtmenu, txtprice;
     PlaceDTO placeInfo;
     ArrayList<ReviewDTO> review_list=new ArrayList<>(); // 각 상점별 리뷰를 담을 수 있는 array list를 만들어준다.
     ArrayList<ReviewDTO> score_avg = new ArrayList<>(); // 평균값을 담을 수 있는 array list를 만들어준다.
@@ -158,6 +158,8 @@ public class DetailActivity extends AppCompatActivity {
         txtEndTime=(TextView) findViewById(R.id.end_time);
         txtPlaceName=(TextView) findViewById(R.id.place_name);
         list=(ListView)findViewById(R.id.detail_review_list);
+        txtmenu=(TextView)findViewById(R.id.menu_text);
+        txtprice=(TextView)findViewById(R.id.price_text);
 
         //StoreListActivity에서 가져온 값을 텍스트뷰에 보여준다.
         info_address.setText(ad_data);
@@ -167,6 +169,10 @@ public class DetailActivity extends AppCompatActivity {
         placename.setText(name_data);
         startendtime.setText(start_data+" ~ "+end_data);
         info_tel.setPaintFlags(info_tel.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
+        if(info_menu.getText() == ""){
+            txtmenu.setText("");
+            txtprice.setText("");
+        }
 
         //전화번호가 적혀있는 info_tel 텍스트뷰의 클릭 이벤트
         info_tel.setOnClickListener(new View.OnClickListener() {
