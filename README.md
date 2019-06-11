@@ -348,7 +348,7 @@
 ### 7. 각 액티비티의 기능별 설명
 
 | 클래스  | 기능  | layout  |
-|---|---|---|---|---|
+|---|---|---|
 | Common  |  URL 주소 불러오기 |   |
 | Detail  | 상점 클릭시 발생하는 화면  | activity_detail.xml<br/>tab_menu.xml  |
 | Email  | 회원가입시 필요한 이메일 인증  | activity_email.xml  |
