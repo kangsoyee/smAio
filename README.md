@@ -1058,16 +1058,45 @@
     ``` d
     public class NoticeDTO {
 
-        String notice; // 공지사항 내용이 담길 문자열
-        String name; // 공지사항을 작성한 사람의 이름이 들어갈 문자열
-        String date; // 공지사항을 작성한 날짜가 들어갈 문자열
+    String notice; // 공지사항 내용이 담길 문자열
+    String name; // 공지사항을 작성한 사람의 이름이 들어갈 문자열
+    String date; // 공지사항을 작성한 날짜가 들어갈 문자열
 
-        public NoticeDTO(String notice, String name, String date) { // 클래스의 생성자를 선언해줌
-            this.notice = notice;
-            this.name = name;
-            this.date = date;
-        }
-    ```
+    public NoticeDTO(String notice, String name, String date) { // 클래스의 생성자를 선언해줌
+        this.notice = notice;
+        this.name = name;
+        this.date = date;
+    }
+
+    public String getNotice() {
+        return notice;
+    } //각 문자열들의 getter and setter 함수
+                                                    // 공지사항을 띄울 NoticeActivity에서 값을 불러오기 위하여 만들어줍니다
+
+    public void setNotice(String notice) {
+        this.notice = notice;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+```
+
+
+
+    
 
     * NoticeListAdapter.java
 
@@ -1106,9 +1135,34 @@
         }
     }
     ```
+ 
+    
+* NoticeActivity.java 클래스 설명
+* 공지사항 내용을 띄워줄 리스트뷰와, 미리 선언해놓은 클래스인 NoticeListAdapter를 선언하고 NoticeDTO를 인자로 삼는 List를 선언하여 정보를 띄워주는 리스트의 선언이 필요하다.
 
-* View를 선언하여 NoticeDTO.java파일에서 받아온 값들을 텍스트뷰에 설정시켜주는 화면이다. 마지막에 뷰를 리턴하여 화면에 띄워준다.
-<br/><br/>
+    
+    
+    ```
+      ListView noticeListView; // 공지사항을 띄워줄 리스트뷰 선언
+    NoticeListAdapter adapter; //NoticeListAdapter 클래스를 선언
+    List<NoticeDTO> noticeList; // 리스트에 Notice를 넣은 리스트 선언
+
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+
+            adapter = new NoticeListAdapter(getApplicationContext(), noticeList); // NoticeListAdapter를 달아줌으로써
+            noticeListView.setAdapter(adapter);                                   // 화면에 공지사항을 뿌려주는 역할을 합니다.
+        }
+    };
+    
+    
+    ```
+    
+    <br/><br/>
+
+
 
 
 6. StoreListActivity.java 설명
