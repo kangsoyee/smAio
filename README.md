@@ -1804,7 +1804,7 @@
                 public void run() {
                     try {
                         String page = Common.SERVER_URL + "/place_all_list.php";
-                        Log.e("StoreListActivity", "여기까지야");
+                        Log.e("StoreListActivity", "php");
                         items = new ArrayList<PlaceDTO>();
                         URL url = new URL(page);
                         // 커넥션 객체 생성
