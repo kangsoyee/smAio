@@ -1478,45 +1478,17 @@
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
+                
+                ...
 
-                if(msg.what == 1) { // placeInfo 의 값을 받아와서 txt에 넣어준다.
-                    txtAddress.setText(placeInfo.getAddress());
-                    txtCategory.setText(placeInfo.getCategory());
-                    txtEndTime.setText(placeInfo.getEnd_time());
-                    txtStartTime.setText(placeInfo.getStart_time());
-                    txtTel.setText(placeInfo.getTel());
-                    txtMenu.setText(placeInfo.getMenu());
-                    txtPlaceName.setText(placeInfo.getPlace_name());
-                    txtPrice.setText(placeInfo.getPrice());
-                }else if(msg.what == 3){ //리뷰 목록
+                else if(msg.what == 3){ //리뷰 목록
                     ReviewAdapter adapter = new ReviewAdapter(
                             DetailActivity.this,
                             R.layout.review_row,
                             review_list);
                     list.setAdapter(adapter);
-                }else if(msg.what==4){
-                    txtReview.setText("");
-                    review_list();
-                }else  if(msg.what==5){
-                    //별점
-                    Log.i("test","check");
-                    final TextView tv = (TextView) findViewById(R.id.textView4); // 평균점수를 나타낼 수 있는 텍스트를 설정한다.
-                    RatingBar rb = (RatingBar) findViewById(R.id.ratingBar); // 점수를 별 모양으로 출력해준다.
-
-                    float rate = avg; // 평균값을 float 형으로 변환시킨다.
-
-                    Log.i("test_rate",rate+"");
-
-                    rb.setRating(rate);
-                    tv.setText(rate+"");
-
-                    rb.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-                        @Override
-                        public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                            tv.setText(rating+"");
-                        }
-                    });
                 }
+                ...
             }
         };
     
