@@ -1169,7 +1169,7 @@
                     try {
                         items = new ArrayList<PlaceDTO>();
                         String page = Common.SERVER_URL+"/place_list.php";
-                        Log.e("StoreListActivity","여기까지야");
+                        Log.e("StoreListActivity","php 연결 확인");
 
                         URL url = new URL(page);
                         // 커넥션 객체 생성
