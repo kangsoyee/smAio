@@ -32,6 +32,9 @@
 * 식당 뿐만 아니라 카페,노래방,PC방에 대한 정보도 추가하여 다양한 문화생활에도 도움이 될 것으로 예상된다.
 
 * 핵심 기능으로는 리뷰남기기,찜 기능, 가게별 위치 보여주기, 내가 쓴 리뷰 모아보기 등이 있다.
+
+<br/><br/>[전체 기능 영상](https://www.youtube.com/watch?v=2zWmdjPgEgk)
+
 <br/><br/><br/>
 
 ### 3. 유사 앱 분석
@@ -1702,7 +1705,46 @@
 
         // 필수 메소드 모음
         @Override
-        public void onStart(), onStop(), onSaveInstanceState(Bundle outState), onResume(), onPause(), onLowMemory(), onDestroy() {  }
+        public void onStart() {
+            super.onStart();
+            mapView.onStart();
+        }
+
+        @Override
+        public void onStop() {
+            super.onStop();
+            mapView.onStop();
+        }
+
+        @Override
+        public void onSaveInstanceState(Bundle outState) {
+            super.onSaveInstanceState(outState);
+            mapView.onSaveInstanceState(outState);
+        }
+
+        @Override
+        public void onResume() {
+            super.onResume();
+            mapView.onResume();
+        }
+
+        @Override
+        public void onPause() {
+            super.onPause();
+            mapView.onPause();
+        }
+
+        @Override
+        public void onLowMemory() {
+            super.onLowMemory();
+            mapView.onLowMemory();
+        }
+
+        @Override
+        public void onDestroy() {
+            super.onDestroy();
+            mapView.onLowMemory();
+        }
 
         //액티비티가 처음 생성될 때 실행되는 메소드
         @Override
@@ -1857,6 +1899,8 @@
 
 * 구글에서 제공하는 오픈 소스 라이브러리인 zxing을 사용해 QR코드 스캐너를 구현  
   라이브러리를 다운받게 되면 gradle 부분에 아래와 같은 코드가 추가되는 것을 확인할 수 있다.
+  <br/>
+  ![Gradle](https://github.com/kangsoyee/smAio/blob/master/image/Gradle.png?raw=true)
 
 * QR 코드를 인식하게 되면 리뷰를 작성할 수 있는 페이지로 전환되게 하는 액티비티이다.
 
@@ -2172,7 +2216,6 @@ HeartDTO에서 받아온 식당이름 문자열인 String place_name 을 저장�
     ```
     <br/>[식당에서의 앱 사용](https://www.youtube.com/watch?v=3OFfdTq70mk)
 
-    <br/><br/>[전체 기능 영상](https://www.youtube.com/watch?v=2zWmdjPgEgk)
 <br/><br/><br/>
 
 ### 10. 결론
