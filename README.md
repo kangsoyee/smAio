@@ -5,12 +5,13 @@
 3. 유사 앱 분석
 4. 앱을 만들때 생기는 문제점 및 해결방안
 5. 앱을 만들기 위해 필요한 도구
-6. 데이터베이스 사용방법
-7. PHP를 사용한 서버 연동
-8. 각 액티비티의 기능별 설명
-9. 클래스 별 주요 코드 상세 설명
-10. 결론
-11. 참고 자료 
+6. 서버 사용 방법
+7. 데이터베이스 사용방법 및 구성
+8. PHP를 사용한 서버 연동
+9. 각 액티비티의 기능별 설명
+10. 클래스 별 주요 코드 상세 설명
+11. 결론
+12. 참고 자료 
 
 ---
 
@@ -75,23 +76,92 @@
 * PHP
 <br/><br/><br/>
 
-### 6. 데이터베이스 사용방법
+### 6. 서버 사용방법
+
+1. 서버를 사용하는 이유  
+   앱을 사용하는 모든 사용자가 DB에 저장되는 이미지 파일, QR코드에 접근하기  
+   위해선 하나의 서버가 필수적이다. 그렇기 때문에 호스팅을 구매하는 곳 중  
+   하나인 카페24를 사용하였다.  
+
+2. DB호스팅 구매  
+    [호스팅 종류 보여주기](https://github.com/kangsoyee/smAio/blob/master/image/how_to_use_server7.png?raw=true)
+    카페24 홈페이지를 접속하게 되면 다양한 호스팅이 존재하는데 DB와 연동하는  
+    것이 목적이기 떄문에 DB호스팅을 구매한다. (참고로 여러가지 목록중  
+    MYSQL 을 선택하게 되면 10G 광아우토판 Full SSD 를 구매하는 창으로 이동하게 되는데  
+    이를 구매하게 될 경우 MyISAM 엔진을 사용하게 되어 DB 테이블에서 기본키, 외래키를  
+    사용할 수 없게 된다. 따라서 INNODB 를 사용하는 것이 DB를 운영하는데 있어  
+    보다 편리하다.)
+
+3. MySQL 외부 IP 접근 설정 방법  
+    
+    서비스 사용 현황  
+    ![서비스 사용현황](https://github.com/kangsoyee/smAio/blob/master/image/how_to_use_server1.png?raw=true)  
+    
+    IP 접근 설정 방법  
+    ![ip접근설정](https://github.com/kangsoyee/smAio/blob/master/image/how_to_use_server2.png?raw=true)  
+
+    카페24 메인 화면에서 그림에 보이는 것 처럼 서비스 사용현황을 누른다. 
+    외부 IP 접근 설정에 내가 갖고 있는 IP를 설정해준다.  
+    (10개의 IP까지 사용 가능하다.)  
+
+4. 서버에 파일을 올리는 방법  
+    
+    카페24에서 제공하는 웹FTP인 FileZilla 를 사용한다. 서비스 사용현황을 누른 뒤 좌측의 메뉴 중  
+    서비스 접속관리 > 웹FTP 를 누르게 되면 아이디 / 도메인 / 접속 포트를 알 수 있고  
+    필요하다면 접속 방법 메뉴얼을 확인하면 된다.
+    
+    ![파일질라 접근](https://github.com/kangsoyee/smAio/blob/master/image/how_to_use_server8.png?raw=true)  
+
+    ![파일질라 접근2](https://github.com/kangsoyee/smAio/blob/master/image/how_to_use_server5.png?raw=true)  
+
+    ![파일질라 접근3](https://github.com/kangsoyee/smAio/blob/master/image/how_to_use_server6.png?raw=true)  
+
+    프로그램을 실행 시킨 뒤 호스트, 사용자명, 비밀번호를 입력하여 접속한다.  
+    접속하게 되면 로컬 사이트 / 리모트 사이트 부분으로 나뉘어져 있는데  
+    로컬 사이트는 현재 pc의 내용을 보여주고 리모트 부분은 서버를 의미한다.  
+    서버에 올리고 싶은 파일이 있다면 반드시 www 폴더 안에서 업로드를 해준다.  
+    이렇게 올린 정보의 URL을 알고싶다면 마우스 오른쪽 클릭을 이용하여 URL 복사를  
+    선택해준다.
+<br/><br/><br/>
+
+### 7. 데이터베이스 사용방법 및 구성
 
 1. [Heidi SQL 다운로드](https://www.heidisql.com/download.php)
 
-2. [접속시 화면](http://eileenyoo1.cafe24.com/image/explain2.PNG)  
+2. 접속 방법  
 
-   설치를 완료했다면,위와 같이 카페24를 통해 구매한 호스트명을 적고 사용자ID, 비밀번호를  
-   입력하고 접속한다.
+    ![접속시 화면](https://github.com/kangsoyee/smAio/blob/master/image/explain2.png?raw=true)  
 
-3. [테이블 구성](http://eileenyoo1.cafe24.com/image/show_table.PNG)  
-   [place테이블 정보](http://eileenyoo1.cafe24.com/image/show_table_place.PNG)
+   설치를 완료했다면,위와 같이 카페24를 통해 구매한 호스트명을 적고 사용자ID, 비밀번호를 입력하고 접속한다.
+
+3. 테이블 구성  
+    ![테이블 구성](https://github.com/kangsoyee/smAio/blob/master/image/explain.png?raw=true)
 
     쿼리문을 통해 테이블을 만들지 않고 툴을 사용하므로 보다 편리하게 직관적으로  
-    데이터를 관리할 수 있다.
+    데이터를 관리할 수 있다.  
+
+4. 찜 목록 테이블  
+    ![heart_table](https://github.com/kangsoyee/smAio/blob/master/image/heart.png?raw=true)  
+    찜 목록을 확인하는 테이블을 만들었다. 찜 목록에는 접속된 유저의 아이디 값을 가져오는  
+    userid, 찜 여부를 확인하는 choose 를 설정하였다. 
+
+5. 회원 가입 정보 테이블  
+    ![member_table](https://github.com/kangsoyee/smAio/blob/master/image/member.png?raw=true)  
+    만들어진 회원 아이디, 비밀번호, 이름, 회원가입 날짜 그리고 마지막 로그인을 확인할 수 있는 타임 스태프를 설정하였다.  
+
+6. 공지사항 테이블  
+    ![notice_table](https://github.com/kangsoyee/smAio/blob/master/image/notice.png?raw=true)  
+    앱의 업데이트 내용을 알려주는 notice 테이블을 구성하였다. 공지 내용, 공지하는 사람, 공지일을 담는 역할을 한다.  
+
+7. 상점 정보 테이블  
+    ![place_table](https://github.com/kangsoyee/smAio/blob/master/image/place.png?raw=true)   
+    상점의 고유번호, 상점 이름, 운영시간, 대표메뉴, 가격, 위도, 경도, 이미지 URL, QR코드 URL 을 갖고 있다.  
+8. 리뷰 테이블  
+    ![review_table](https://github.com/kangsoyee/smAio/blob/master/image/review.png?raw=true)  
+    리뷰를 남긴 사용자의 아이디, 이름, 올린 시간, 리뷰의 내용, 해당 상점의 평균 점수를 갖고있다.
 <br/><br/><br/>
 
-### 7. PHP를 사용한 서버 연동
+### 8. PHP를 사용한 서버 연동
 
 데이터베이스와 안드로이드 스튜디오 연동을 위해 서버 사이드 언어인 PHP를 이용한다. 
 
@@ -362,7 +432,7 @@
 <br/><br/><br/>
 
 
-### 8. 각 액티비티의 기능별 설명
+### 9. 각 액티비티의 기능별 설명
 
 | 클래스  | 기능  | layout  |
 |---|---|---|
@@ -393,7 +463,7 @@
 | StoreMapFragment  | 카드뷰 안에서 상점별 맵 보여주기   | fragment_map.xml |
 
 
-### 9. 클래스 별 주요 코드 상세 설명
+### 10. 클래스 별 주요 코드 상세 설명
 
 1. Common.java 설명
 
@@ -1058,45 +1128,40 @@
     ``` d
     public class NoticeDTO {
 
-    String notice; // 공지사항 내용이 담길 문자열
-    String name; // 공지사항을 작성한 사람의 이름이 들어갈 문자열
-    String date; // 공지사항을 작성한 날짜가 들어갈 문자열
+        String notice; // 공지사항 내용이 담길 문자열
+        String name; // 공지사항을 작성한 사람의 이름이 들어갈 문자열
+        String date; // 공지사항을 작성한 날짜가 들어갈 문자열
 
-    public NoticeDTO(String notice, String name, String date) { // 클래스의 생성자를 선언해줌
-        this.notice = notice;
-        this.name = name;
-        this.date = date;
-    }
-
+        public NoticeDTO(String notice, String name, String date) { // 클래스의 생성자를 선언해줌
+            this.notice = notice;
+            this.name = name;
+            this.date = date;
+        }
     public String getNotice() {
-        return notice;
-    } //각 문자열들의 getter and setter 함수
-                                                    // 공지사항을 띄울 NoticeActivity에서 값을 불러오기 위하여 만들어줍니다
+    return notice;} //각 문자열들의 getter and setter 함수
+    // 공지사항을 띄울 NoticeActivity에서 값을 불러오기 위하여 만들어줍니다
 
     public void setNotice(String notice) {
-        this.notice = notice;
+    this.notice = notice;
     }
 
     public String getName() {
-        return name;
+    return name;
     }
 
     public void setName(String name) {
-        this.name = name;
+    this.name = name;
     }
 
     public String getDate() {
-        return date;
+    return date;
     }
 
     public void setDate(String date) {
-        this.date = date;
+    this.date = date;
     }
-```
-
-
-
-     
+    
+    ```
 
     * NoticeListAdapter.java
 
@@ -1135,12 +1200,13 @@
         }
     }
     ```
- 
-    
+
+* View를 선언하여 NoticeDTO.java파일에서 받아온 값들을 텍스트뷰에 설정시켜주는 화면이다. 마지막에 뷰를 리턴하여 화면에 띄워준다.
+<br><br><br>
+
 * NoticeActivity.java 클래스 설명
 * 공지사항 내용을 띄워줄 리스트뷰와, 미리 선언해놓은 클래스인 NoticeListAdapter를 선언하고 NoticeDTO를 인자로 삼는 List를 선언하여 정보를 띄워주는 리스트의 선언이 필요하다.
 
-    
     
     ```
       ListView noticeListView; // 공지사항을 띄워줄 리스트뷰 선언
@@ -1161,8 +1227,6 @@
     ```
     
     <br/><br/>
-
-
 
 
 6. StoreListActivity.java 설명
@@ -2274,9 +2338,9 @@ HeartDTO에서 받아온 식당이름 문자열인 String place_name 을 저장�
 
 <br/><br/><br/>
 
-### 10. 결론
+### 11. 결론
 
-* 본 논문은 상명대학교 학생들을 위한 학교 주변 가게 리뷰 어플리케이션이다. 회원가입시 학교 홈페이지 아이디를 통해 인증받기 때문에 상명대학교 학생이 아닌 사람들은 가입을 할 수 없다.<br/>
+*상명대학교 학생들을 위한 학교 주변 가게 리뷰 어플리케이션이다. 회원가입시 학교 홈페이지 아이디를 통해 인증받기 때문에 상명대학교 학생이 아닌 사람들은 가입을 할 수 없다.<br/>
 가게에 대한 리뷰를 남기기 위해선 가게 내부에 있는 QR코드를 인식해야하기 때문에 허위 리뷰를 작성하는 것을 방지할 수 있다. 음식점에만 한정되어있지 않고 노래방, 피씨방, 카페까지 다양한 가게에 대해 리뷰를 남길 수 있다는 점에서 기존의 어플리케이션과의 차별성이 있다.<br/>
 데이터베이스를 중점적으로 활용하여 가게 목록, 평균 점수, 가게 검색, QR코드 인식, 카테고리별 분류, 리뷰 작성 및 점수 전달, 찜 기능, 내 리뷰 가져오기 등을 구현하였다.
 
@@ -2288,7 +2352,7 @@ HeartDTO에서 받아온 식당이름 문자열인 String place_name 을 저장�
 <br/><br/><br/><br/><br/>
 
 
-### 11. 참고자료
+### 12. 참고자료
 
 
 * volley 통신방식<br/>
