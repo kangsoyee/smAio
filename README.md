@@ -396,12 +396,12 @@
 * 상명대학교 학생임을 인증하고 중복가입 방지를 하기 위한 클래스입니다.
 * Firebase에 연동하여 학교이메일 유무를 확인합니다.
 * 인증후 SignUpActivity로 넘어가면서 회원가입을 진행합니다.
-<br/><br/>
-![Email](https://github.com/kangsoyee/smAio/blob/master/image/EmailActivity.png?raw=true)
+    <br/><br/>
+    ![Email](https://github.com/kangsoyee/smAio/blob/master/image/EmailActivity.png?raw=true)
 
-<br/>
+    <br/>
 
-![Firebase](https://github.com/kangsoyee/smAio/blob/master/image/Firebase.png?raw=true)
+    ![Firebase](https://github.com/kangsoyee/smAio/blob/master/image/Firebase.png?raw=true)
 
     ``` d
     public class EmailActivity extends AppCompatActivity {
@@ -472,6 +472,18 @@
         }
     }
     ```
+    * AndroidManifast.xml
+
+    ``` d
+    <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.smAio">
+
+        <uses-permission android:name="android.permission.INTERNET" /> <!--인터넷 사용 권한-->
+
+        ...
+    </manifast>
+    ```
+
 
     * build.gradle
 
@@ -489,7 +501,6 @@
     apply plugin: 'com.google.gms.google-services'
     ```
 <br/><br/>
-
 
 3. SignUpActivity.java 설명
 
