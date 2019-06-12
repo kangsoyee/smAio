@@ -145,6 +145,7 @@ public class DetailActivity extends AppCompatActivity {
         String start_data = get_info.getStringExtra("starttime");
         String end_data = get_info.getStringExtra("endtime");
         place_idx=get_info.getIntExtra("idx",0);
+        thisuserid=get_info.getStringExtra("userid");
         Log.i("값 테스트",name_data+"");
         Log.i("값 테스트",thisuserid+"");
 
@@ -450,6 +451,7 @@ public class DetailActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {//오류발생
+                        Log.i("dh","sendheart2");
                     }
                 })
         {
