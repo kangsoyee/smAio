@@ -139,25 +139,33 @@
     쿼리문을 통해 테이블을 만들지 않고 툴을 사용하므로 보다 편리하게 직관적으로  
     데이터를 관리할 수 있다.  
 
-4. 찜 목록 테이블  
+
+    3-1. 찜 목록 테이블  
+
     ![heart_table](https://github.com/kangsoyee/smAio/blob/master/image/heart.png?raw=true)  
     찜 목록을 확인하는 테이블을 만들었다. 찜 목록에는 접속된 유저의 아이디 값을 가져오는  
     userid, 찜 여부를 확인하는 choose 를 설정하였다. 
 
-5. 회원 가입 정보 테이블  
+    3-2. 회원 가입 정보 테이블  
+
     ![member_table](https://github.com/kangsoyee/smAio/blob/master/image/member.png?raw=true)  
     만들어진 회원 아이디, 비밀번호, 이름, 회원가입 날짜 그리고 마지막 로그인을 확인할 수 있는 타임 스태프를 설정하였다.  
 
-6. 공지사항 테이블  
+    3-3. 공지사항 테이블  
+
     ![notice_table](https://github.com/kangsoyee/smAio/blob/master/image/notice.png?raw=true)  
     앱의 업데이트 내용을 알려주는 notice 테이블을 구성하였다. 공지 내용, 공지하는 사람, 공지일을 담는 역할을 한다.  
 
-7. 상점 정보 테이블  
+    3-4. 상점 정보 테이블  
+
     ![place_table](https://github.com/kangsoyee/smAio/blob/master/image/place.png?raw=true)   
     상점의 고유번호, 상점 이름, 운영시간, 대표메뉴, 가격, 위도, 경도, 이미지 URL, QR코드 URL 을 갖고 있다.  
-8. 리뷰 테이블  
+
+    3-5. 리뷰 테이블  
+
     ![review_table](https://github.com/kangsoyee/smAio/blob/master/image/review.png?raw=true)  
     리뷰를 남긴 사용자의 아이디, 이름, 올린 시간, 리뷰의 내용, 해당 상점의 평균 점수를 갖고있다.
+    
 <br/><br/><br/>
 
 ### 8. PHP를 사용한 서버 연동
