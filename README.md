@@ -84,7 +84,7 @@
    하나인 카페24를 사용하였다.  
 
 2. DB호스팅 구매  
-    [호스팅 종류 보여주기](https://github.com/kangsoyee/smAio/blob/master/image/how_to_use_server7.png?raw=true)
+    ![호스팅 종류 보여주기](https://github.com/kangsoyee/smAio/blob/master/image/how_to_use_server7.png?raw=true)
     카페24 홈페이지를 접속하게 되면 다양한 호스팅이 존재하는데 DB와 연동하는  
     것이 목적이기 떄문에 DB호스팅을 구매한다. (참고로 여러가지 목록중  
     MYSQL 을 선택하게 되면 10G 광아우토판 Full SSD 를 구매하는 창으로 이동하게 되는데  
