@@ -1755,4 +1755,501 @@
 
             //우측 상단에 현재위치 버튼
             if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-                    ActivityCompat.checkSelfPermission(getContext(), Manifest.permission
+                    ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                googleMap.setMyLocationEnabled(true);
+                googleMap.getUiSettings().setMyLocationButtonEnabled(true);
+            }
+
+            //확대&축소
+            googleMap.getUiSettings().setZoomControlsEnabled(true);
+
+            //thread실행
+            list();
+        }
+
+        //마커찍기
+        private void addMarker(boolean refresh, LatLng location) {
+            try {
+                if (refresh)
+                    googleMap.clear();
+                MarkerOptions markerOptions = new MarkerOptions();
+                markerOptions.position(location);   //마커위치
+                markerOptions.title(check_place_name);  //가게이름
+                markerOptions.snippet(menu);    //대표메뉴
+                googleMap.addMarker(markerOptions);
+            } catch (Exception e) {
+                Log.e("addMarker failTest", e.getMessage());
+            }
+        }
+
+        void list() {
+            //네트워크 관련 작업은 백그라운드 thread에서 처리
+            final StringBuilder sb = new StringBuilder(); // final은 지역변수를 상수화 시켜준다. 즉, 한번 실행한 뒤 없어지는 것이 아니라 계속해서 유지 가능하게 해준다.
+            Thread th = new Thread(new Runnable() {
+                public void run() {
+                    try {
+                        String page = Common.SERVER_URL + "/place_all_list.php";
+                        Log.e("StoreListActivity", "여기까지야");
+                        items = new ArrayList<PlaceDTO>();
+                        URL url = new URL(page);
+                        // 커넥션 객체 생성
+                        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                        // 연결되었으면.
+                        if (conn != null) {
+                            conn.setConnectTimeout(10000);  //타임아웃 시간 설정
+                            conn.setUseCaches(false);   //캐쉬 사용 여부
+                            //url에 접속 성공하면
+                            if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                                BufferedReader br = //스트림 생성
+                                        new BufferedReader(
+                                                new InputStreamReader(
+                                                        conn.getInputStream(), "utf-8"));
+                                while (true) {
+                                    String line = br.readLine();    //한 라인을 읽음
+                                    if (line == null) break;    //더이상 내용이 없으면 종료
+                                    sb.append(line + "\n");
+                                }
+                                br.close(); //버퍼 닫기
+                            }
+                            conn.disconnect();
+                        }
+                        // 스트링을 json 객체로 변환
+                        JSONObject jsonObj = new JSONObject(sb.toString());
+
+                        // json.get("변수명")
+                        JSONArray jArray = (JSONArray) jsonObj.get("sendData");
+                        for (int i = 0; i < jArray.length(); i++) {
+                            JSONObject row = jArray.getJSONObject(i);
+                            final PlaceDTO dto = new PlaceDTO();
+                            dto.setPlace_idx(row.getInt("place_idx"));
+                            dto.setCategory(row.getString("category"));
+                            dto.setPlace_name(row.getString("place_name"));
+                            dto.setStart_time(row.getString("start_time"));
+                            dto.setEnd_time(row.getString("end_time"));
+                            dto.setAddress(row.getString("address"));
+                            dto.setTel(row.getString("tel"));
+                            dto.setMenu(row.getString("menu"));
+                            dto.setPrice(row.getString("price"));
+                            dto.setLatitude(row.getString("latitude"));
+                            dto.setLongitude(row.getString("longitude"));
+
+                            items.add(dto);
+                        }
+                        //핸들러에게 화면 갱신 요청
+                        handler.sendEmptyMessage(0);
+
+                    } catch (Exception e) {
+                        Log.e("list failTest", e.getMessage());
+                    }
+                }
+            });
+            th.start();
+        }
+    }
+    ```
+    * AndroidManifest.xml
+    ``` d
+    <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.smAio">
+        ...
+
+        <uses-permission android:name="android.permission.INTERNET" /> <!--인터넷 사용 권한-->
+        <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!--위치 권한(Cell-ID/WiFi)-->
+        <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!--위치 허용(GPS)-->
+
+        <application
+            ... >
+
+            <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyAhWqU7twCV7UmMQlrdhKB43kI3IL9DitE" /> <!--GoogleMap API 사용을 위한 API 이름 및 키 값-->
+
+            ...
+        </application>
+    </manifest>
+    ```
+    * build.gradle(Module: app)
+    ``` d
+    dependencies {
+        ...
+
+        // map
+        implementation 'com.google.android.gms:play-services-location:16.0.0'
+        implementation 'com.google.android.gms:play-services-maps:16.1.0'
+    }
+    ```
+<br/><br/>
+
+
+9. QrScanActivity   
+
+* 구글에서 제공하는 오픈 소스 라이브러리인 zxing을 사용해 QR코드 스캐너를 구현  
+* QR 코드를 인식하게 되면 리뷰를 작성할 수 있는 페이지로 전환되게 하는 액티비티이다.
+
+    ``` d
+    public class QrScanActivity extends AppCompatActivity implements DecoratedBarcodeView.TorchListener {
+
+        private BeepManager beepManager;
+        private String lastText;
+        ArrayList<PlaceDTO> items;
+        String url,id;
+
+        @BindView(R.id.zxing_barcode_scanner)
+        DecoratedBarcodeView barcodeScannerView;
+
+        Handler handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                for(PlaceDTO dto:items) {
+                    if (lastText.equals(dto.getQrcode())) { // 데이터베이스에 등록된 QR코드 값과 현재 인식했던 QR코드의 값이 일치한다면 해당 상점의 리뷰 페이지로 전환되는 코드이다.
+                        url=lastText;
+                        Intent intent = new Intent(QrScanActivity.this, ReviewWriteActivity.class);
+
+                        intent.putExtra("url",url); // reviewWrite 로 url 값을 전달해준다.
+                        intent.putExtra("id",id);  // reviewWrite 로 id 값을 전달해준다.
+                        startActivity(intent);
+                    }
+                }
+            }
+        };
+
+        private BarcodeCallback callback = new BarcodeCallback() {
+            @Override
+            public void barcodeResult(BarcodeResult result) {
+
+                //Line 100 ~ 104. 한번 인식했던 QR코드를 중복해서 인식할 수 없게 해준다.
+                if (result.getText() == null || result.getText().equals(lastText)) {
+                    // Prevent duplicate scans
+                    return;
+                }
+                lastText = result.getText(); // QR 인식을 통해 얻은 URL 을 lastText 변수에 저장한다.
+                Log.i("test", "lastText="+lastText);
+
+                barcodeScannerView.setStatusText(result.getText());
+
+                list(); // 서버와 통신하기 위한 함수를 호출한다.
+            }
+        }
+    }
+    ```
+    <br/>[QR코드 인식후 리뷰추가 영상](https://www.youtube.com/watch?v=PsHwIcWAdco)
+<br/><br/>
+
+
+10. HeartFragment.java 설명
+
+* DetailActivity.java에 있는 하트 버튼을 누르면 그 식당의 이름이 데이터베이스에 올라가게되고 데이터베이스에 저장된 정보를 리스트뷰에 띄워주는 기능이다.
+
+* 하트 버튼을 한번 누르면 버튼을 재클릭해서 하트를 취소하기 전까지는 어플리케이션을 종료해도 하트를 눌렀다는 정보가 유지된다.
+<br/><br/>
+![Heart](https://github.com/kangsoyee/smAio/blob/master/image/HeartFragment.png?raw=true)
+
+    ``` d
+    void sendHeart(final String userId, final String place_name){ 
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_sendHeart, // 함수를 실행하면 URL_sendHeart와 연결되어있는 php와 연결되게된다
+            new Response.Listener<String>(){
+                
+                @Override
+                public void onResponse(String response) { 
+
+                    try{
+                        JSONObject jsonObject = new JSONObject(response);
+                        String success = jsonObject.getString("success");  
+
+                        if(success.equals("1")){ // php연결에 성공하면 success값으로 1을 보낸다
+
+                            Toast.makeText(DetailActivity.this,"찜 성공!",Toast.LENGTH_SHORT).show();
+                        }
+                    }catch (JSONException e){ 
+                        e.printStackTrace();
+                    }
+                }
+            },
+            new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {//오류발생
+                        }
+                    })
+            {
+                //Hashmap<>을 통해 정보를 php에 보낸다. php 키 값에 맞춰 찜 한 사람의 userId, 찜 한 식당 이름인 place_name을 보낸다.
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String,String> params = new HashMap<>();
+                    params.put("userId",userId);
+                    params.put("name",place_name);
+                    return params;
+                }
+
+            };
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            requestQueue.add(stringRequest); //필수코드***********
+    }
+    ```
+
+
+* deleteHeart() 함수의 코드이다.
+* 함수를 실행하면 URL과 연결된 php에 값을 보내준다.
+    ``` d
+    //찜목록에서 가게를 삭제합니다.
+    void deleteHeart(final String userId, final String place_name){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_deleteHeart, //php문에 POST형식으로, URL_SignUp 주소에 저장된 php문에 보냄
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) { //php문 응답에 대한 코드
+                        try{
+                            JSONObject jsonObject = new JSONObject(response);
+                            String success = jsonObject.getString("success"); //php문에서 success라는 키에 값을 저장
+                            if(success.equals("1")){//그 값이 1이면(성공)
+                                Toast.makeText(DetailActivity.this,"찜목록에서 삭제되었습니다.",Toast.LENGTH_SHORT).show();//찜성공 메시지
+                            }
+                        }catch (JSONException e){ //오류발생
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {//오류발생
+                    }
+                })
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("userId",userId);
+                params.put("name",place_name);
+                return params;
+
+                //php문에 값을 보냄
+            }
+
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest); //필수코드***********
+    }
+    ```
+
+* 하트버튼을 한번 눌렀을 때 재클릭 하기전까지 버튼 상태를 유지하게 하는 코드이다.
+
+    ``` d
+    //하트버튼을 한번 눌렀을 때 재클릭 하기전까지 버튼 상태를 유지하게 하는 코드이다.
+    void heartCheck(final String userId, final String place_name){
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_heartCheck, 
+                    new Response.Listener<String>() {
+        @Override
+        public void onResponse(String response) { //php문 응답에 대한 코드
+
+                try{
+
+                    JSONObject jsonObject = new JSONObject(response);
+                    String success = jsonObject.getString("success"); //php문에서 success라는 키에 값을 저장
+                    if(success.equals("1")){
+                        Log.e("heartCheck","true다");
+                        iv.setSelected(true);
+                        iv.setImageResource(R.drawable.ic_favorite_black_24dp); //이미지수정
+
+                    }
+                }
+
+    ```
+
+* 버튼이 클릭되었을 때의 코드이다. 버튼이 클릭되어있다면  URL_heartCheck에서 설정한 success 변수 값에 1을 보낸다. 1을 보내는 이유는 php문과 연결이 성공했는지의 여부를 알아보기 위해서다. 그리고 버튼에 boolean형 변수를 true로 설정해주고, 하트가 꽉 찬 이미지로 설정한다.
+
+    ``` d
+        catch (JSONException e){ 
+
+            e.printStackTrace();
+            Log.e("heartCheck","false다");
+            iv.setSelected(false); 
+            iv.setImageResource(R.drawable.ic_favorite_border_black_24dp); 
+
+                            }
+                        }
+                    }
+    ```
+
+* 클릭이 안됐을 때의 코드이다. boolean 값을 false로 주고, 하트가 빈 이미지로 설정한다. 그리고 php에 저장한다.
+
+* HeartDTO.java의 코드이다.
+* 정보를 불러와주기 위해 필요한 클래스이다.
+* 찜 한 식당의 이름을 저장하는 문자열과 setter and getter 함수로 이루어져 있다.
+
+    ``` d
+
+    public class HeartDTO { //HeartFragment에 내가 찜 한 식당이름을 띄워주기 위해 필요한 클래스입니다
+
+        private String place_name; // 식당이름 변수 선언
+
+        public String getPlace_name() {
+            return place_name;
+        } //getter and setter 선언
+
+        public void setPlace_name(String place_name) {
+            this.place_name = place_name;
+        }
+    }
+    ```
+
+
+* HeartFragment.java
+* 찜 한 식당 이름을 띄워줄 ListView와 찜 한 식당 이름을 불러와 저장할 ArrayList<HeartDTO>,
+데이터베이스에서 저장된 식당 이름 값을 불러오는 함수 void list() 로 이루어져 있다.
+* ArrayList<HeartDTO> items; 리스트는
+HeartDTO에서 받아온 식당이름 문자열인 String place_name 을 저장하는 리스트이다.
+데이터베이스와 key값을 맞춰서 값을 받아와 리스트에 저장한다.
+
+
+* void list() 함수에 대한 코드이다.
+* ListView에 정보를 띄우기 위해 필요한 ArrayAdapter와 화면에 띄워줄 getView() 함수로 이루어져있다.
+* getView() 함수에서는 미리 디자인해둔 heart_row.xml 파일을 inflate 하여 View를 생성한다.
+
+
+
+    ``` d
+    class HeartAdapter extends ArrayAdapter<HeartDTO> { //HeartDTO를 담은 ArrayList의 정보를 뿌려줄 HeartAdapter 선언
+                //ArrayList<BookDTO> item;
+                public HeartAdapter(Context context, int textViewResourceId,
+                                    ArrayList<HeartDTO> objects) {
+                    super(context, textViewResourceId, objects);
+    //this.item= objects;
+                }
+
+            @Override
+        public View getView(int position, View convertView,                 
+                            ViewGroup parent) {
+            View v = convertView;
+            if (v == null) {
+                LayoutInflater li = (LayoutInflater)
+                        getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                v = li.inflate(R.layout.heart_row, null);
+                // Fragment 자체에 context를 갖고 있지 않기 떄문에, getActivity()로 받아준다.
+            }
+    ```
+
+* try, catch 문으로 HeartDTO 클래스에서 리스트 위치를 받아와, 만약에 리스트의 자리가 비었으면 그자리에 찜 한 식당을 추가해주고, 뷰를 반환해준다.
+
+    ``` d
+            try {
+                final HeartDTO dto = items.get(position); //DTO에서 리스트 위치를 받아와서
+                if (dto != null) { //만약 리스트뷰의 자리가 비었으면
+                    TextView place_name = (TextView) v.findViewById(R.id.place_name); //그 자리에 찜 한 식당이름을 추가해준다
+                    place_name.setText(dto.getPlace_name());
+                }
+            }catch (Exception e){
+                Log.e("Network Exception", e.getMessage());
+                return null;
+            }
+            return v; //View를 반환
+        }
+    ```
+<br/><br/>
+
+
+11. MyReviewActivity.java 설명
+
+* MyFragment에서 내 리뷰 눌렀을때 나오는 액티비티이다.
+* 사용자 id값을 받아와서 그 id에 해당하는 리뷰를 불러오는 액티비티이다.
+* StoreListActivity.java에서 설명한 것과 같은 원리로 Handler와 list(),Adapter와 getView를 사용하였다.
+<br/><br/>
+![MyReview](https://github.com/kangsoyee/smAio/blob/master/image/MyReviewActivity.png?raw=true)
+
+    * 나머지 부분은 StoreListActivity.java와 같은 원리이다.
+    * 추가된 부분은 아래의 코드이다. onCreate 안에서 getIntent 메서드를 이용해 MyFragment와 endWriteReview에서 보낸 데이터를 받아온다.
+    ``` d
+    Intent get_myreview = getIntent();
+    id_text = get_myreview.getStringExtra("id");
+    ```
+<br/><br/>
+
+
+12. MyReviewDTO.java 설명
+
+* DB에 만들어진 필드랑 1:1 대응하는 변수 + getter & setter 를 가진 클래스를 DTO 라고 합니다.
+* 데이터베이스의 review 테이블과 user 테이블을 사용하였으며 상점이름,사용자 id,해당 id로 남긴 리뷰를 가지고있다.
+* 사용 방법은 set을 통해 값을 설정하고, get을 통해 값을 가져온다.
+
+    ``` d
+    public class MyReviewDTO {
+        private String place_name;
+        private String username;
+        private String reviewcontent;
+
+        public String getPlace_name() {
+            return place_name;
+        }
+
+        public void setPlace_name(String place_name) {
+            this.place_name = place_name;
+        }
+
+        public String getmyId() {
+            return username;
+        }
+
+        public void setmyId(String Username) {this.username = Username; }
+
+        public String getmyreview_content() {
+            return reviewcontent;
+        }
+
+        public void setmyreview_content(String ReviewContent) {this.reviewcontent = ReviewContent; }
+    }
+    ```
+    <br/>[식당에서의 앱 사용](https://www.youtube.com/watch?v=3OFfdTq70mk)
+<br/><br/><br/>
+
+### 9. 결론
+
+* 본 논문은 상명대학교 학생들을 위한 학교 주변 가게 리뷰 어플리케이션이다. 회원가입시 학교 홈페이지 아이디를 통해 인증받기 때문에 상명대학교 학생이 아닌 사람들은 가입을 할 수 없다.<br/>
+가게에 대한 리뷰를 남기기 위해선 가게 내부에 있는 QR코드를 인식해야하기 때문에 허위 리뷰를 작성하는 것을 방지할 수 있다. 음식점에만 한정되어있지 않고 노래방, 피씨방, 카페까지 다양한 가게에 대해 리뷰를 남길 수 있다는 점에서 기존의 어플리케이션과의 차별성이 있다.<br/>
+데이터베이스를 중점적으로 활용하여 가게 목록, 평균 점수, 가게 검색, QR코드 인식, 카테고리별 분류, 리뷰 작성 및 점수 전달, 찜 기능, 내 리뷰 가져오기 등을 구현하였다.
+
+* 통신 방식으로는 HttpURLConnection 과 Volley 방식을 사용하여 코드의 복잡성은 있지만
+다양한 방법이 사용될 수 있다는 것을 확인하였다.<br/> 
+게의 이미지 불러오기, QR코드 스캐너, 지도 보기기능을 구현할 때 API 를 활용하여 보다 수월하게 어플리케이션을 만들 수 있었다.
+
+* 여러 명이 동시에 작업하며 코드를 구성한 것이 처음이라 복잡하지만 앱 실행이 원활하게 되는 것으로 보아 추후 코드의 간결성만 보안한다면 앱 마켓에서도 좋은 성과를 낼 것이라 확신한다.
+<br/><br/><br/><br/><br/>
+
+
+### 10. 참고자료
+
+
+* volley 통신방식<br/>
+https://gist.github.com/benelog/5981448
+
+* HttpURLConnection 통신방식<br/>
+http://rabbitpd.blogspot.com/2017/06/urlconnection.html
+
+
+* php를 활용한 데이터베이스와 안드로이드 연동<br/>
+https://twinw.tistory.com/29
+
+* JSON 파싱<br/>
+https://dpdpwl.tistory.com/23
+
+* Glide Library<br/>
+http://blog.naver.com/PostView.nhn?blogId=soiar777&logNo=221273726164
+
+* 로그인, 회원가입 기능<br/>
+https://www.youtube.com/watch?v=zkiGwNiSKLI
+
+* 세션<br/>
+https://www.youtube.com/watch?v=bBJo0Gj69Ug
+
+* Firebase 이메일인증<br/>
+http://firebase.google.com/docs/auth/android/email-link-auth?hl=ko
+
+* BottonNavigationBar<br/>
+https://webnautes.tistory.com/1221
+
+* Tab<br/>
+https://farmerkyh.tistory.com/700
+https://recipes4dev.tistory.com/115
+
+* RatingBar<br/>
+https://bitsoul.tistory.com/30
+
+* Action Dial<br/>
+https://mainia.tistory.com/4884
