@@ -61,15 +61,15 @@
 
 ### 5. 데이터베이스 사용방법
 
-1. Heidi SQL 다운로드
-(https://www.heidisql.com/download.php)
+1. [Heidi SQL 다운로드](https://www.heidisql.com/download.php)
 
-2. (http://eileenyoo1.cafe24.com/image/explain2.PNG)  
-설치를 완료했다면,위와 같이 카페24를 통해 구매한 호스트명을 적고 사용자ID, 비밀번호를  
-입력하고 접속한다.
+2. [접속시 화면](http://eileenyoo1.cafe24.com/image/explain2.PNG)  
 
-3. (http://eileenyoo1.cafe24.com/image/explain.PNG)  
-    (http://eileenyoo1.cafe24.com/image/explain3.PNG)
+   설치를 완료했다면,위와 같이 카페24를 통해 구매한 호스트명을 적고 사용자ID, 비밀번호를  
+   입력하고 접속한다.
+
+3. [테이블 구성](http://eileenyoo1.cafe24.com/image/show_table.PNG)  
+   [place테이블 정보](http://eileenyoo1.cafe24.com/image/show_table_place.PNG)
 
     쿼리문을 통해 테이블을 만들지 않고 툴을 사용하므로 보다 편리하게 직관적으로  
     데이터를 관리할 수 있다.
