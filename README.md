@@ -1116,6 +1116,7 @@
 * FirstActivity에서 식당,카페,노래방,피씨방 버튼을 클릭했을때 나오는 상점 목록 액티비티이다.
 * 상점 이름을 검색할 수 있는 editText와 검색버튼, 상점 목록이 나오는 ListView로 구성되어있다.
 * 리스트에 상점 이미지와 간단한 정보 등이 표시되는데 하나의 상점을 클릭하면 이 정보들을 DetailActivity로 넘겨주게 된다.
+* JSON 은 DB 에 있는 정보들을 문자열로 가져오는 역할을 한다.
 <br/><br/>
 ![StoreList](https://github.com/kangsoyee/smAio/blob/master/image/StoreListActivity(res).png?raw=true)
 
