@@ -22,6 +22,7 @@ import com.bumptech.glide.Glide;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -138,6 +139,8 @@ public class StoreListActivity2 extends AppCompatActivity {
                         dto2.setEnd_time(row.getString("end_time"));
                         dto2.setAddress(row.getString("address"));
                         dto2.setTel(row.getString("tel"));
+                        dto2.setMenu(row.getString("menu"));
+                        dto2.setPrice(row.getString("price"));
                         dto2.setLatitude(row.getString("latitude"));
                         dto2.setLongitude(row.getString("longitude"));
 
@@ -207,6 +210,8 @@ public class StoreListActivity2 extends AppCompatActivity {
                         dto2.setEnd_time(row.getString("end_time"));
                         dto2.setStart_time(row.getString("start_time"));
                         dto2.setTel(row.getString("tel"));
+                        dto2.setMenu(row.getString("menu"));
+                        dto2.setPrice(row.getString("price"));
                         dto2.setPlace_name(row.getString("place_name"));
                         dto2.setLatitude(row.getString("latitude"));
                         dto2.setLongitude(row.getString("longitude"));
@@ -253,6 +258,8 @@ public class StoreListActivity2 extends AppCompatActivity {
                     TextView end_time = (TextView) v.findViewById(R.id.end_time);
                     TextView address = (TextView) v.findViewById(R.id.address);
                     TextView tel = (TextView) v.findViewById(R.id.tel);
+                    TextView menu = (TextView) v.findViewById(R.id.menu);
+                    TextView price = (TextView) v.findViewById(R.id.price);
                     ImageView imgPlace = (ImageView) v.findViewById(R.id.imgPlace);
                     TextView latitude = (TextView)v.findViewById(R.id.latitude);
                     TextView longitude = (TextView)v.findViewById(R.id.longitude);
@@ -264,6 +271,8 @@ public class StoreListActivity2 extends AppCompatActivity {
                     //category.setText(dto2.getCategory());
                     address.setText(dto2.getAddress());
                     tel.setText(dto2.getTel());
+                    menu.setText(dto2.getMenu());
+                    price.setText(dto2.getPrice());
                     latitude.setText(dto2.getLatitude());
                     longitude.setText(dto2.getLongitude());
 
@@ -279,6 +288,8 @@ public class StoreListActivity2 extends AppCompatActivity {
                         TextView placename = (TextView) v.findViewById(R.id.place_name);
                         TextView starttime = (TextView) v.findViewById(R.id.start_time);
                         TextView endtime = (TextView) v.findViewById(R.id.end_time);
+                        TextView menu = (TextView) v.findViewById(R.id.menu);
+                        TextView price = (TextView) v.findViewById(R.id.price);
                         TextView latitude = (TextView)v.findViewById(R.id.latitude);
                         TextView longitude = (TextView)v.findViewById(R.id.longitude);
 
@@ -293,6 +304,8 @@ public class StoreListActivity2 extends AppCompatActivity {
                         intent.putExtra("placename", placename.getText().toString());
                         intent.putExtra("starttime", starttime.getText().toString());
                         intent.putExtra("endtime", endtime.getText().toString());
+                        intent.putExtra("menu",menu.getText().toString());
+                        intent.putExtra("price",price.getText().toString());
                         intent.putExtra("latitude",latitude.getText().toString());
                         intent.putExtra("longitude",longitude.getText().toString());
                         intent.putExtra("userid",userid);
