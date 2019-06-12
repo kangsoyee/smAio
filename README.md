@@ -523,8 +523,24 @@
 ![SignUp](https://github.com/kangsoyee/smAio/blob/master/image/SignUpActivity.png?raw=true)
 
     #### 1. Server 연결 코드 (Volley 통신)
+    
+        * Volley통신은 사용자가 직접 스레드 핸들러를 사용해서 네트워킹을 구현하지 않고 서버와 통신할 수 있는 구글의 통신 라이브러리이다.
+        * gradle에 패키지를 추가해준다.
+    ``` d
+    dependencies {
+        ...
 
-    * 회원가입 기능과 아이디 체크 기능을 사용하기 위해 Volley 통신을 이용하였다.
+        // Volley 라이브러리
+        implementation 'com.android.volley:volley:1.1.1'
+    }
+    ```
+    * php문과 서버에 연결하는 코드를 효율적으로 사용하기 위해 connect.php 파일을 만들어준다.
+    ``` d
+    <?php
+        $conn = mysqli_connect("localhost","//Server Id","//Server Password","//DB Name");
+    ?>
+    ```
+
     * 회원가입 기능을 하는 UserSignUp.php를 작성한다.
     ``` d
     <?php
@@ -742,22 +758,6 @@
 
     #### 1) Server 연결 코드 (Volley 통신)
 
-    * Volley통신은 사용자가 직접 스레드 핸들러를 사용해서 네트워킹을 구현하지 않고 서버와 통신할 수 있는 구글의 통신 라이브러리이다.
-    * gradle에 패키지를 추가해준다.
-    ``` d
-    dependencies {
-        ...
-
-        // Volley 라이브러리
-        implementation 'com.android.volley:volley:1.1.1'
-    }
-    ```
-    * php문과 서버에 연결하는 코드를 효율적으로 사용하기 위해 connect.php 파일을 만들어준다.
-    ``` d
-    <?php
-        $conn = mysqli_connect("localhost","//Server Id","//Server Password","//DB Name");
-    ?>
-    ```
     * 입력된 ID, Password를 DB에 비교해 값을 반환해주는 Login.php 파일을 작성한다.
     * DB의 member 테이블에 해당하는 아이디의 row가 있다면 Name정보를 array에 담아 return 한다.
     ``` d
@@ -988,7 +988,7 @@
     AutoPref = getSharedPreferences("auto",MODE_PRIVATE);
     edit = AutoPref.edit();
     ```
-    * Login.php파일에서 체크박스 여부에 따라서 SharedPreferences에 저장하는 값을 다르게 하기위해 Login함수에 코드를 추가한다.
+    * 체크박스의 체크 여부에 따라서 SharedPreferences에 저장하는 값을 다르게 하기위해 Login함수에 코드를 추가한다.
     ``` d
     try{
         ...
@@ -1026,7 +1026,7 @@
         //commit을 통해 AutoPref에 변경사항 저장
         edit.commit();
     }
-    else{ //MyFragement에서 logout버튼을 클릭하지 않아 true(defaltValue값)이 왔을 때
+    else{ //MyFragment에서 logout버튼을 클릭하지 않아 true(defaltValue값)이 왔을 때
         if(AutoPref.getBoolean("checkbox",false)==true){ //AutoPref에 저장 된 값이 true(체크됨)일 때
             //checkbox의 체크를 계속 유지
             auto.setChecked(true);
@@ -1201,7 +1201,7 @@
                         JSONObject jsonObj = new JSONObject(sb.toString());
 
                         // json.get("변수명")
-                        JSONArray jArray = (JSONArray) jsonObj.get("sendData"); // 이 부분 이해 안됨
+                        JSONArray jArray = (JSONArray) jsonObj.get("sendData"); 
                         for (int i = 0; i < jArray.length(); i++) {
                             JSONObject row = jArray.getJSONObject(i);
                             PlaceDTO dto = new PlaceDTO();
